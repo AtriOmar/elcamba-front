@@ -1,0 +1,94 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: rubik;
+  background: #f1f5f9;
+}
+
+/* fonts */
+@font-face {
+  font-family: Yaldevi;
+  src: url(./assets/fonts/yaldevi/Yaldevi-VariableFont_wght.ttf);
+}
+
+@font-face {
+  font-family: Rubik;
+  src: url(./assets/fonts/rubik/Rubik-VariableFont_wght.ttf);
+}
+
+@font-face {
+  font-family: Roboto;
+  src: url(./assets/fonts/roboto/Roboto-Thin.ttf);
+  font-weight: 100;
+}
+@font-face {
+  font-family: Roboto;
+  src: url(./assets/fonts/roboto/Roboto-Light.ttf);
+  font-weight: 300;
+}
+@font-face {
+  font-family: Roboto;
+  src: url(./assets/fonts/roboto/Roboto-Regular.ttf);
+  font-weight: 400;
+}
+@font-face {
+  font-family: Roboto;
+  src: url(./assets/fonts/roboto/Roboto-Medium.ttf);
+  font-weight: 500;
+}
+@font-face {
+  font-family: Roboto;
+  src: url(./assets/fonts/roboto/Roboto-Bold.ttf);
+  font-weight: 700;
+}
+@font-face {
+  font-family: Roboto;
+  src: url(./assets/fonts/roboto/Roboto-Black.ttf);
+  font-weight: 900;
+}
+
+/* scrollbars */
+:is(.scrollbar1, *)::-webkit-scrollbar-track {
+  background: #eee;
+  border-radius: 20px;
+}
+:is(.scrollbar1, *)::-webkit-scrollbar {
+  width: 8px;
+  height: 4px;
+}
+:is(.scrollbar1, *)::-webkit-scrollbar-thumb:hover {
+  background: #bbb;
+  border-radius: 20px;
+}
+:is(.scrollbar1, *)::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 20px;
+}
+
+/* custom classes */
+.line-clamp-1 {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
