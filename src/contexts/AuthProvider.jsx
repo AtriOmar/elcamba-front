@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import API from "../utils/API";
+import axios from "axios";
 
 const AuthContext = React.createContext();
 
@@ -8,7 +9,7 @@ function AuthProvider({ children }) {
 
   async function getUserStatus() {
     try {
-      const res = await API.getLoginStatus();
+      const res = await axios.get("/login/status");
       setUser(res.data.user);
       return res;
     } catch (err) {

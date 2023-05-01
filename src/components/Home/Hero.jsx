@@ -3,10 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useAuthContext } from "../../contexts/AuthProvider";
 import axios from "axios";
 import CategoriesList from "./Hero/CategoriesList";
-import { register } from "swiper/element";
 import ProductCard from "./Hero/ProductCard";
-
-register();
 
 function Hero() {
   const [products, setProducts] = useState([]);
@@ -29,7 +26,7 @@ function Hero() {
 
   return (
     <div className="mt-6 px-4">
-      <div className="flex gap-3 h-[550px] max-w-w1300 w-full m-auto py-4 px-4 rounded-xl bg-white shadow-md">
+      <div className="relative flex gap-3 h-[550px] max-w-w1300 w-full m-auto py-4 px-4 rounded-xl bg-white shadow-md">
         <CategoriesList />
         <section className="w-6/12">
           <article className="h-3/5 border border-slate-200 rounded-lg bg-[url(./assets/images/ad1.jpg)] bg-cover"></article>
@@ -38,12 +35,13 @@ function Hero() {
               slides-per-view="auto"
               slides-per-group="3"
               space-between="10"
-              pagination="true"
-              pagination-clickable="true"
-              class="w-full h-full"
+              navigation="true"
+              class="w-full h-full py-1"
+              autoplay-delay="5000"
+              autoplay-disable-on-interaction="false"
             >
               {products.map((product) => (
-                <swiper-slide key={product.id} class="w-fit">
+                <swiper-slide key={product.id} class="w-fit h-auto">
                   <ProductCard product={product} />
                 </swiper-slide>
               ))}

@@ -10,7 +10,7 @@ function Navbar() {
   const [signinModalOpen, setSigninModalOpen] = useState(false);
 
   return (
-    <header className="relative z-[10] px-4 bg-white shadow-md">
+    <header className="sticky top-0 left-0 z-[20] px-4 bg-white shadow-md">
       <SigninModal show={signinModalOpen} hide={() => setSigninModalOpen(false)} />
       <div className="flex items-center justify-between max-w-w1300 m-auto py-1">
         <Link className="flex items-center gap-1" to="/">

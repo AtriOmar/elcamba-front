@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { faImage } from "@fortawesome/free-regular-svg-icons";
-import { faArrowLeft, faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft, faExclamationTriangle, faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import SelectCategory from "./SelectCategory";
-import { register } from "swiper/element/bundle";
 import { v4 as uuidv4 } from "uuid";
-
-register();
+import { useUIContext } from "../../../contexts/UIProvider";
 
 const config = {
   onUploadProgress: (e) => {
@@ -15,11 +13,11 @@ const config = {
   },
 };
 
-function AddProduct({ setPage, updateProducts }) {
+function AddProduct({ setPage, updateProducts, category, setShowSelectCategory }) {
   const [input, setInput] = useState({
     photos: null,
     name: "",
-    category: "",
+    category: null,
     oldPrice: "",
     price: "",
     description: "",
@@ -27,15 +25,52 @@ function AddProduct({ setPage, updateProducts }) {
     deliveryBody: "",
     address: "",
   });
+  const [error, setError] = useState("");
 
-  const [showSelectCategory, setShowSelectCategory] = useState(false);
+  const { addPopup } = useUIContext();
 
   function handleChange(e) {
     setInput((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   }
 
+  useEffect(() => {
+    setInput((prev) => ({ ...prev, category }));
+  }, [category]);
+
   async function handleSubmit(e) {
     e.preventDefault();
+
+    if (!input.photos?.length) {
+      setError("Vous devez choisir au moins une photo");
+      return;
+    }
+
+    if (input.name.length < 8) {
+      setError("La longueur du nom doit être supérieure à 8");
+      return;
+    }
+
+    if (!input.category) {
+      setError("Vous devez choisir une catégorie");
+      return;
+    }
+
+    if (!input.price) {
+      setError("Vous devez spécifier un prix");
+      return;
+    }
+
+    if (input.description.length < 20) {
+      setError("La longueur de la description doit être supérieure à 20");
+      return;
+    }
+
+    if (input.address.length < 5) {
+      setError("La longueur d'adresse doit être comprise entre 5 et 100");
+      return;
+    }
+
+    error && setError("");
 
     const formData = new FormData();
     input.photos?.forEach((photo) => {
@@ -54,14 +89,22 @@ function AddProduct({ setPage, updateProducts }) {
       const result = await axios.post("/products/create", formData);
       updateProducts();
       console.log(result);
+      addPopup({
+        type: "success",
+        text: "Produit ajouté avec success",
+        lastFor: 2000,
+      });
     } catch (err) {
       console.log(err);
+      addPopup({
+        type: "danger",
+        text: "Une erreur s'est produite",
+      });
     }
   }
 
   return (
     <>
-      <SelectCategory show={showSelectCategory} setShow={setShowSelectCategory} setCategory={(categ) => setInput((prev) => ({ ...prev, category: categ }))} />
       <div className="flex items-center gap-4">
         <button onClick={() => setPage(0)}>
           <FontAwesomeIcon icon={faArrowLeft} />
@@ -104,7 +147,7 @@ function AddProduct({ setPage, updateProducts }) {
             {input.photos?.length ? (
               <>
                 {/* <img src={URL.createObjectURL(input.photos[0])} alt="" className="w-full h-full object-cover" /> */}
-                <swiper-container pagination="true" class="w-full h-full">
+                <swiper-container pagination="true" pagination-clickable="true" class="w-full h-full" no-swiping="false">
                   {input.photos.map((photo, index) => (
                     <swiper-slide key={index} className="relative w-full h-full">
                       <button
@@ -244,10 +287,16 @@ function AddProduct({ setPage, updateProducts }) {
             <label className="relative font-semibold text-base text-slate-900">Critères:</label>
             <div className="grow h-[.5px] rounded-[50%] bg-slate-400"></div>
         </div> */}
+          {error && (
+            <div className="py-3 px-4 rounded-lg text-red-500 bg-red-100 border border-red-500 w-full flex items-center gap-4">
+              <FontAwesomeIcon icon={faExclamationTriangle} size="lg" fill="red" />
+              {error}
+            </div>
+          )}
           <input
             type="submit"
             value="Ajouter"
-            className="w-full py-2 px-4 rounded-full bg-blue-500 hover:bg-blue-600 text-white cursor-pointer transition duration-300"
+            className="w-full mt-2 py-2 px-4 rounded-full bg-blue-500 hover:bg-blue-600 text-white cursor-pointer transition duration-300"
           />
         </article>
       </form>

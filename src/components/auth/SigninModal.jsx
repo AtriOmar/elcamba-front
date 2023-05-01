@@ -8,14 +8,17 @@ import axios from "axios";
 import { useAuthContext } from "../../contexts/AuthProvider";
 import { GoogleLogin } from "@react-oauth/google";
 import GoogleSvg from "../../assets/images/google.svg";
-
-const clientId = import.meta.env.VITE_CLIENT_ID;
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
+import { useUIContext } from "../../contexts/UIProvider";
 
 export default function SigninModal({ show, hide }) {
   const { user, setUser } = useAuthContext();
   const navigate = useNavigate();
   const cancelButtonRef = useRef(null);
   const emailRef = useRef(null);
+  const [error, setError] = useState("");
+  const { addPopup } = useUIContext();
   const [input, setInput] = useState({
     email: "",
     password: "",
@@ -28,22 +31,36 @@ export default function SigninModal({ show, hide }) {
   async function handleSubmit(e) {
     e.preventDefault();
 
+    error && setError("");
+
+    if (!input.email.trim().length || !input.password.trim().length) {
+      setError("Veuillez remplir tous les champs");
+    }
+
     const user = { email: input.email, password: input.password };
 
     try {
       const result = await axios.post("/login", user);
-      setUser(result.data.user);
+      console.log(result.data);
+      setUser(result.data);
+      addPopup({
+        type: "success",
+        text: "Connecté avec success",
+        lastFor: 2000,
+      });
       hide();
     } catch (err) {
-      console.log(err);
-    }
-  }
+      const message = err.response?.data;
+      if (message === "user not found") {
+        setError("Cet email n'est pas associé à un compte");
+        return;
+      }
 
-  async function handleLogin(e) {
-    try {
-      const result = await axios.get("/login/google");
-      console.log(result);
-    } catch (err) {
+      if (message === "password incorrect") {
+        setError("Mot de passe incorrecte");
+        return;
+      }
+
       console.log(err);
     }
   }
@@ -52,7 +69,7 @@ export default function SigninModal({ show, hide }) {
     <Transition.Root
       show={show}
       as={Fragment}
-      beforeEnter={() => {
+      afterEnter={() => {
         emailRef.current?.focus();
       }}
     >
@@ -68,25 +85,19 @@ export default function SigninModal({ show, hide }) {
         >
           <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
         </Transition.Child>
-        <style>
-          {`
-          @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500&display=swap");
-          @import url("https://fonts.googleapis.com/css?family=Roboto:400");
-          `}
-        </style>
 
         <div className="fixed inset-0 z-10 overflow-y-auto">
-          <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+          <div className="flex scr600:items-center justify-center min-h-full scr600:p-4 text-center ">
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"
-              enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-              enterTo="opacity-100 translate-y-0 sm:scale-100"
+              enterFrom="opacity-0 translate-y-4 scr600:translate-y-0 scr600:scale-95"
+              enterTo="opacity-100 translate-y-0 scr600:scale-100"
               leave="ease-in duration-200"
-              leaveFrom="opacity-100 translate-y-0 sm:scale-100"
-              leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+              leaveFrom="opacity-100 translate-y-0 scr600:scale-100"
+              leaveTo="opacity-0 translate-y-4 scr600:translate-y-0 scr600:scale-95"
             >
-              <Dialog.Panel className="relative sm:w-full sm:max-w-[500px] sm:my-8 py-20 px-6 rounded-[50px] bg-white text-left transform overflow-hidden shadow-xl transition-all">
+              <Dialog.Panel className="relative scr600:w-full scr600:max-w-[500px] py-20 px-6 scr600:rounded-[50px] bg-white text-left transform overflow-hidden shadow-xl transition-all">
                 <button
                   type="button"
                   onClick={() => {
@@ -121,11 +132,25 @@ export default function SigninModal({ show, hide }) {
                     value={input.password}
                     className="mt-2 py-3 pl-4 pr-11 rounded-xl text-slate-900 text-xl outline-none focus:ring-2 focus:ring-cyan-300 border border-slate-300 w-full font-rubik"
                   />
+                  {error && (
+                    <div className="mt-2 py-3 px-4 rounded-xl text-red-500 bg-red-100 border border-red-500 w-full flex items-center gap-4">
+                      <FontAwesomeIcon icon={faExclamationTriangle} size="lg" fill="red" />
+                      {error}
+                    </div>
+                  )}
                   <input
                     type="submit"
                     value="Se connecter"
                     className="w-full p-3 mt-6 rounded-full bg-amber-400 hover:bg-amber-500 font-medium text-xl text-white cursor-pointer transition duration-300"
                   />
+                  <div className="flex justify-between px-3">
+                    <Link to="/forgot-password" className="text-blue-500 hover:underline">
+                      Mot de passe oublié ?
+                    </Link>
+                    <Link to="/register" className="text-blue-500 hover:underline">
+                      S'inscrire
+                    </Link>
+                  </div>
                   <div className="relative mx-4 mt-5">
                     <div className="absolute top-1/2 left-0 -translate-y-1/2 w-full h-[1px] bg-slate-900"></div>
                     <h3 className="relative z-10 w-fit mx-auto px-2 bg-white font-medium text-lg text-center text-slate-900 capitalize">ou</h3>
@@ -138,7 +163,7 @@ export default function SigninModal({ show, hide }) {
                   </button> */}
                   <a
                     href="http://localhost:5000/login/google"
-                    className="flex items-center gap-2 w-fit mx-auto mt-3 py-2 px-2 border border-slate-300 rounded text-slate-700 text-sm font-roboto"
+                    className="flex items-center gap-2 w-fit mx-auto mt-3 py-2 px-2 border border-slate-300 rounded text-slate-700 text-scr600 font-roboto"
                   >
                     <img src={GoogleSvg} alt="" className="h-5" />
                     Se connecter avec Google

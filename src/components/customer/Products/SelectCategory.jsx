@@ -1,7 +1,7 @@
 import { Transition } from "@headlessui/react";
 import axios from "axios";
 import React, { Fragment, useEffect, useState } from "react";
-import { useAuthContext } from "../../contexts/AuthProvider";
+import { useAuthContext } from "../../../contexts/AuthProvider";
 
 function SelectCategory({ show, setShow, category, setCategory }) {
   const [unmount, setUnmount] = useState(true);

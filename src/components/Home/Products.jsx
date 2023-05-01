@@ -12,7 +12,7 @@ function Products() {
         console.log(res.data);
         const productsObj = {};
         res.data.forEach((product) => {
-          productsObj[product.SubCategory.name]?.push(product) || (productsObj[product.SubCategory.name] = [product]);
+          productsObj[product.SubCategory.Category.name]?.push(product) || (productsObj[product.SubCategory.Category.name] = [product]);
         });
         console.log(productsObj);
         setProducts(Object.values(productsObj));
@@ -25,19 +25,31 @@ function Products() {
   }, []);
 
   return (
-    <div className="[&>div:nth-of-type(2n_+_1)>div:first-of-type]:bg-blue-500 [&>div:nth-of-type(2n)>div:first-of-type]:bg-red-500">
+    <div className="px-1 [&>div:nth-of-type(2n_+_1)>div:first-of-type]:bg-amber-500 [&>div:nth-of-type(2n)>div:first-of-type]:bg-blue-500">
       {products.map((group) => (
-        <div key={group[0].SubCategory.name}>
+        <div key={group[0].SubCategory.Category.name}>
           <div className="relative mx-[200px] mt-5 py-1.5 rounded-xl">
-            <div className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 w-[400px] h-[1px] bg-white"></div>
-            <h3 className="relative z-10 w-fit mx-auto px-2 bg-inherit font-medium text-lg text-center text-white capitalize">{group[0].SubCategory.name}</h3>
+            {/* <div className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 w-[400px] h-[1px] bg-white"></div> */}
+            <h3 className="relative z-10 w-fit mx-auto px-2 bg-inherit font-medium text-lg text-center text-white capitalize">
+              {group[0].SubCategory.Category.name}
+            </h3>
           </div>
 
-          <div className="flex flex-wrap gap-3 mt-1 p-1">
+          <swiper-container
+            slides-per-view="auto"
+            slides-per-group="3"
+            space-between="10"
+            navigation="true"
+            autoplay-delay="5000"
+            autoplay-disable-on-interaction="false"
+            class="mt-2 py-1 px-1"
+          >
             {group.map((product) => (
-              <ProductCard product={product} key={product.id} />
+              <swiper-slide key={product.id} class="w-fit h-auto">
+                <ProductCard product={product} />
+              </swiper-slide>
             ))}
-          </div>
+          </swiper-container>
         </div>
       ))}
     </div>

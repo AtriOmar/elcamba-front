@@ -34,7 +34,7 @@ function Sidebar() {
         <li>
           <Link className="flex gap-2 items-center">
             <FontAwesomeIcon icon={faBox} />
-            <span>Mon profil </span>
+            <span>Mon </span>
           </Link>
         </li>
         <li>
