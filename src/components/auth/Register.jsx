@@ -11,6 +11,8 @@ import GoogleSvg from "../../assets/images/google.svg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
 import { useUIContext } from "../../contexts/UIProvider";
+import { IonIcon } from "@ionic/react";
+import { eyeOffOutline, eyeOutline } from "ionicons/icons";
 
 const clientId = import.meta.env.VITE_CLIENT_ID;
 
@@ -22,6 +24,7 @@ export default function SigninModal() {
   const navigate = useNavigate();
   const cancelButtonRef = useRef(null);
   const emailRef = useRef(null);
+  const [passwordVisible, setPasswordVisible] = useState(false);
   const [error, setError] = useState("");
   const [input, setInput] = useState({
     username: "",
@@ -100,17 +103,25 @@ export default function SigninModal() {
             className="mt-2 py-3 pl-4 pr-11 rounded-xl text-slate-900 text-xl outline-none focus:ring-2 focus:ring-cyan-300 border border-slate-300 w-full font-rubik"
             ref={emailRef}
           />
-          <input
-            placeholder="Mot de passe"
-            type="password"
-            name="password"
-            onChange={handleInput}
-            value={input.password}
-            className="mt-2 py-3 pl-4 pr-11 rounded-xl text-slate-900 text-xl outline-none focus:ring-2 focus:ring-cyan-300 border border-slate-300 w-full font-rubik"
-          />
+          <div className="relative mt-2">
+            <input
+              placeholder="Mot de passe"
+              type={passwordVisible ? "text" : "password"}
+              name="password"
+              onChange={handleInput}
+              value={input.password}
+              className="py-3 pl-4 pr-11 rounded-xl text-slate-900 text-xl outline-none focus:ring-2 focus:ring-cyan-300 border border-slate-300 w-full font-rubik"
+            />
+            <i
+              className="absolute top-1/2 -translate-y-1/2 right-4 flex items-center justify-center cursor-pointer"
+              onClick={() => setPasswordVisible((visibility) => !visibility)}
+            >
+              {passwordVisible ? <IonIcon icon={eyeOutline} className="text-2xl" /> : <IonIcon icon={eyeOffOutline} className="text-2xl" />}
+            </i>
+          </div>
           <input
             placeholder="Confirmer mot de passe"
-            type="password"
+            type={passwordVisible ? "text" : "password"}
             name="confirmPassword"
             onChange={handleInput}
             value={input.confirmPassword}
