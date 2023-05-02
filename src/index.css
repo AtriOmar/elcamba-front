@@ -92,3 +92,9 @@ body {
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+
+.hidden-arrows::-webkit-outer-spin-button,
+.hidden-arrows::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}

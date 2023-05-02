@@ -200,13 +200,13 @@ function AddProduct({ setPage, updateProducts, category, setShowSelectCategory }
             type="button"
             name="category"
             id="category"
-            className={`w-full py-1 px-2 border border-slate-700 rounded-lg text-left ${input.category ? "text-black" : "text-[#8e8e8e]"}`}
+            className={`w-full py-1 px-2 border border-slate-700 rounded-lg text-left ${input.category ? "text-black" : "text-[#8e8e8e]"} capitalize`}
             onClick={() => setShowSelectCategory(true)}
           >
             {input.category ? input.category.name : "Informatique > Ordinateur portable"}
           </button>
           <label htmlFor="oldPrice" className="relative mt-2 block text-base text-slate-700">
-            Ancien prix (s'il y a un solde, sinon laissez vide):
+            Prix ancien (s'il y a un solde, sinon laissez vide):
           </label>
           <input
             id="oldPrice"

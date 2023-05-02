@@ -12,6 +12,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
 import { useUIContext } from "../../contexts/UIProvider";
 
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
 export default function SigninModal({ show, hide }) {
   const { user, setUser } = useAuthContext();
   const navigate = useNavigate();
@@ -162,7 +164,7 @@ export default function SigninModal({ show, hide }) {
                     login
                   </button> */}
                   <a
-                    href="http://localhost:5000/login/google"
+                    href={`${BACKEND_URL}/login/google`}
                     className="flex items-center gap-2 w-fit mx-auto mt-3 py-2 px-2 border border-slate-300 rounded text-slate-700 text-scr600 font-roboto"
                   >
                     <img src={GoogleSvg} alt="" className="h-5" />

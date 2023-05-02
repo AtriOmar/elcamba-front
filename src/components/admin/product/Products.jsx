@@ -4,6 +4,8 @@ import Swal from "sweetalert2";
 import API from "../../../utils/API";
 import AddProductModal from "./AddProductModal";
 import EditProductModal from "./EditProductModal";
+import axios from "axios";
+import { MagnifyingGlass } from "react-loader-spinner";
 
 export default function Products() {
   const [loading, setLoading] = useState(true);
@@ -13,7 +15,8 @@ export default function Products() {
   const [toEdit, setToEdit] = useState({});
 
   function getItems() {
-    API.getProducts()
+    axios
+      .get("/products/getAll")
       .then((res) => {
         setItemsList(res.data);
         setLoading(false);
@@ -56,8 +59,22 @@ export default function Products() {
       }
     });
   };
+
   if (loading) {
-    return <div>loading</div>;
+    return (
+      <div className="flex items-center justify-center w-full h-[calc(100vh_-_64px)]">
+        <MagnifyingGlass
+          visible={true}
+          height="80"
+          width="80"
+          ariaLabel="MagnifyingGlass-loading"
+          wrapperStyle={{}}
+          wrapperClass="MagnifyingGlass-wrapper"
+          glassColor="#c0efff"
+          color="#e15b64"
+        />
+      </div>
+    );
   }
 
   var items_HTMLTABLE = [];
@@ -75,7 +92,7 @@ export default function Products() {
             return (
               <div key={item.id} className="mx-0 grid grid-cols-12 text-center break-all">
                 <div className="pt-3 hidden md:block text-start col-span-1">{item.id}</div>
-                <div className="pt-3 col-span-5 md:col-span-2 text-start">{item.category_name}</div>
+                <div className="pt-3 col-span-5 md:col-span-2 text-start">{item.SubCategory?.name}</div>
                 <div className="pt-3 col-span-5 md:col-span-6 text-start">{item.name}</div>
                 <div className="pt-3 text-end sm:text-center col-span-2 md:col-span-3">
                   <div className="grid grid-cols-12">

@@ -27,7 +27,7 @@ export default function AdminNavbar() {
   }
 
   return (
-    <Disclosure as="nav" className="bg-gray-800 fixed z-50 w-full">
+    <Disclosure as="nav" className="bg-gray-800 fixed z-10 w-full">
       {({ open }) => (
         <>
           <div className="mx-auto px-2 sm:px-6 lg:px-8 navbar">

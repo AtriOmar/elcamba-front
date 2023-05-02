@@ -4,6 +4,7 @@ import Swal from "sweetalert2";
 import AddCategoryModal from "./AddCategoryModal";
 import EditCategoryModal from "./EditCategoryModal";
 import API from "../../../utils/API";
+import { MagnifyingGlass } from "react-loader-spinner";
 
 export default function Categories() {
   function classNames(...classes) {
@@ -60,7 +61,20 @@ export default function Categories() {
     });
   };
   if (loading) {
-    return <div>loading</div>;
+    return (
+      <div className="flex items-center justify-center w-full h-[calc(100vh_-_64px)]">
+        <MagnifyingGlass
+          visible={true}
+          height="80"
+          width="80"
+          ariaLabel="MagnifyingGlass-loading"
+          wrapperStyle={{}}
+          wrapperClass="MagnifyingGlass-wrapper"
+          glassColor="#c0efff"
+          color="#e15b64"
+        />
+      </div>
+    );
   }
 
   var items_HTMLTABLE = [];

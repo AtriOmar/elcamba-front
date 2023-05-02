@@ -35,16 +35,16 @@ function MyProducts({ setPage, products }) {
                 Photo
               </th>
               <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Name
+                Nom
               </th>
               <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Category
+                Categorie
               </th>
               <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Old Price
+                Prix ancien
               </th>
               <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Price
+                Prix
               </th>
             </tr>
           </thead>
@@ -52,7 +52,7 @@ function MyProducts({ setPage, products }) {
             {products.map((product) => (
               <tr key={product.id}>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <img className="h-10 w-10 rounded-lg" src={"http://localhost:5000/uploads/" + product.photos?.[0]} alt={product.name} />
+                  <img className="h-10 w-10 rounded-lg" src={`${import.meta.env.VITE_BACKEND_URL}/uploads/${product.photos?.[0]}`} alt={product.name} />
                 </td>
                 <td className="px-6 py-4 whitespace-nowra">
                   <div className="text-sm font-medium text-gray-900">{product.name}</div>
@@ -61,17 +61,17 @@ function MyProducts({ setPage, products }) {
                   <div className="text-sm text-gray-500">{product.SubCategory.name}</div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm text-gray-500">{product.oldPrice}</div>
+                  <div className="text-sm text-gray-500">{product.oldPrice !== 0 ? product.oldPrice + " DT" : "-"}</div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm text-gray-500">{product.price}</div>
+                  <div className="text-sm text-gray-500">{product.price} DT</div>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
       ) : (
-        <div className="py-20 px-6 font-bold text-2xl text-center">Vous n'avez aucun produit à vendre</div>
+        <div className="py-20 px-6 font-bold text-gray-500 text-2xl text-center">Vous n'avez aucun produit à vendre</div>
       )}
     </div>
   );

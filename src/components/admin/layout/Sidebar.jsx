@@ -14,6 +14,8 @@ import {
 } from "@heroicons/react/24/outline";
 import { useAuthContext } from "../../../contexts/AuthProvider";
 import { Link } from "react-router-dom";
+import { IonIcon } from "@ionic/react";
+import { megaphoneOutline } from "ionicons/icons";
 
 export default function Sidebar() {
   const { user, setUser } = useAuthContext();
@@ -47,6 +49,10 @@ export default function Sidebar() {
           <Link to="/admin/products" className="flex flex-row gap-4 p-4 no-underline">
             <ListBulletIcon className="block h-6 w-6 flex-start" aria-hidden="true" />
             <span>Products</span>
+          </Link>
+          <Link to="/admin/ads" className="flex flex-row gap-4 p-4 no-underline">
+            <IonIcon icon={megaphoneOutline} className="text-2xl" aria-hidden="true" />
+            <span>Publicités</span>
           </Link>
         </>
       ) : (

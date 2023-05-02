@@ -22,7 +22,7 @@ function CategoriesList() {
   }, []);
 
   return (
-    <div className="flex flex-col w-[180px] rounded-lg ring ring-red-500 overflow-hidden">
+    <div className="shrink-0 flex flex-col w-[180px] rounded-lg ring ring-red-500 overflow-hidden">
       <h4 className="py-1 bg-red-500 font-semibold text-lg text-center text-white">Catégories</h4>
       <ul className="peer flex flex-col grow justify- text-[15px]">
         {categories.map((category) => (

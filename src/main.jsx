@@ -18,6 +18,7 @@ import CustomerProducts from "./components/customer/Products";
 import UIProvider from "./contexts/UIProvider";
 import Layout from "./layouts/Layout";
 import { register } from "swiper/element/bundle";
+import Ads from "./components/admin/ad/Ads";
 
 register();
 
@@ -52,6 +53,10 @@ const router = createBrowserRouter([
           {
             path: "sub-categories",
             element: <SubCategories />,
+          },
+          {
+            path: "ads",
+            element: <Ads />,
           },
         ],
       },

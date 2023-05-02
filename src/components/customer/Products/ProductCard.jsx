@@ -2,11 +2,13 @@ import { faLocationDot, faTruck } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
 function ProductCard({ product }) {
   return (
     <div className="w-[225px] rounded-lg shadow-card1 overflow-hidden">
       <div className="h-[225px] w-full border-b">
-        <img src={`http://localhost:5000/uploads/${product.photos[0]}`} alt="" className="w-full h-full object-cover" />
+        <img src={`${BACKEND_URL}/uploads/${product.photos[0]}`} alt="" className="w-full h-full object-cover" />
       </div>
       <div className="py-2 px-3">
         <h5 className="font-normal font-rubik text-slate-900 capitalize ">{product.name}</h5>

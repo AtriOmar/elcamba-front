@@ -1,16 +1,15 @@
 import { InboxIcon, PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
 import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
-import AddUserModal from "./AddUserModal";
-import EditUserModal from "./EditUserModal";
 import API from "../../../utils/API";
+import AddAdModal from "./AddAdModal";
+import EditProductModal from "./EditAdModal";
 import axios from "axios";
 import { MagnifyingGlass } from "react-loader-spinner";
 
-export default function Users() {
-  function classNames(...classes) {
-    return classes.filter(Boolean).join(" ");
-  }
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
+export default function Ads() {
   const [loading, setLoading] = useState(true);
   const [itemsList, setItemsList] = useState([]);
   const [modalShow, setModalShow] = useState(false);
@@ -19,13 +18,14 @@ export default function Users() {
 
   function getItems() {
     axios
-      .get("/users/getAll")
+      .get("/ads/getAll")
       .then((res) => {
         setItemsList(res.data);
+        console.log(res.data);
         setLoading(false);
       })
       .catch((err) => {
-        Swal.fire("Error", err.response.data.message, "error");
+        Swal.fire("Error", err.response.data, "error");
       });
   }
   useEffect(() => {
@@ -37,7 +37,7 @@ export default function Users() {
     e.preventDefault();
 
     Swal.fire({
-      title: "Delete User",
+      title: "Delete Product",
       text: `Are you sure to delete ${item.name} ?`,
       showDenyButton: true,
       confirmButtonText: "Delete",
@@ -46,7 +46,12 @@ export default function Users() {
       denyButtonColor: "#d9e2ef",
     }).then((result) => {
       if (result.isConfirmed) {
-        API.deleteUserById(item.id)
+        axios
+          .delete("/ads/deleteById", {
+            data: {
+              id: item.id,
+            },
+          })
           .then((res) => {
             Swal.fire("Success", res.data.message, "success");
             getItems();
@@ -85,23 +90,30 @@ export default function Users() {
     items_HTMLTABLE = (
       <>
         <div className="mx-0 grid grid-cols-12 text-center break-all">
-          <div className="pb-3 hidden md:block text-start col-span-3">ID</div>
-          <div className="pb-3 col-span-3 md:col-span-3 text-start">Name</div>
-          <div className="pb-3 col-span-6 md:col-span-3 text-start">Email</div>
-          <div className="pb-3 text-end sm:text-center col-span-3">Actions</div>
+          <div className="pb-3 hidden md:block text-start col-span-1">ID</div>
+
+          <div className="pb-3 col-span-3 md:col-span-3 text-start">Photo</div>
+          <div className="pb-3 col-span-4 md:col-span-4 text-start">Nom</div>
+          <div className="pb-3 col-span-2 md:col-span-1 text-start">Type</div>
+          <div className="pb-3 col-span-2 md:col-span-1 text-start">Durée</div>
+
+          <div className="pb-3 text-end sm:text-center col-span-2 md:col-span-2">Actions</div>
         </div>
         <div className="divide-y">
           {itemsList.map((item) => {
             return (
               <div key={item.id} className="mx-0 grid grid-cols-12 text-center break-all">
-                <div className="pt-3 hidden md:block text-start col-span-3">{item.id}</div>
-                <div className="pt-3 col-span-3 md:col-span-3 text-start">{item.username}</div>
-                <div className="pt-3 col-span-6 md:col-span-3 text-start">{item.email}</div>
-                <div className="pt-3 text-end sm:text-center col-span-3">
-                  <div className="grid grid-cols-12">
+                <div className="items-center pt-3 hidden md:flex text-start col-span-1">{item.id}</div>
+                <div className="flex items-center pt-3 col-span-3 md:col-span-3 text-start">
+                  <img className="h-20 w-20 rounded-lg object-cover" src={`${BACKEND_URL}/uploads/ads/${item.photo}`} alt={`Photo of ${item.name}`} />
+                </div>
+                <div className="flex items-center pt-3 col-span-4 md:col-span-4 text-start">{item.name}</div>
+                <div className="flex items-center pt-3 col-span-2 md:col-span-1 text-start">{item.type}</div>
+                <div className="flex items-center pt-3 col-span-2 md:col-span-1 text-start">{item.duration}</div>
+                <div className="flex items-center pt-3 text-end sm:text-center col-span-2 md:col-span-2">
+                  <div className="grid grid-cols-12 w-full">
                     <div className="col-span-12 sm:col-span-6 text-end sm:text-center">
                       <button
-                        disabled={item.id === 1 ? true : false}
                         type="button"
                         className="btn p-0"
                         onClick={(e) => {
@@ -109,19 +121,18 @@ export default function Users() {
                           setEditModalShow(true);
                         }}
                       >
-                        <PencilSquareIcon className={classNames(item.id === 1 ? "text-gray-400" : "text-blue-600", "block h-8 w-8")} aria-hidden="true" />
+                        <PencilSquareIcon className="block h-8 w-8 text-blue-600" aria-hidden="true" />
                       </button>
                     </div>
                     <div className="col-span-12 sm:col-span-6 text-end sm:text-center">
                       <button
-                        disabled={item.id === 1 ? true : false}
                         type="button"
                         className="btn p-0"
                         onClick={(e) => {
                           deleteItem(e, item);
                         }}
                       >
-                        <TrashIcon className={classNames(item.id === 1 ? "text-gray-400" : "text-red-600", "block h-8 w-8")} aria-hidden="true" />
+                        <TrashIcon className="block h-8 w-8 text-red-600" aria-hidden="true" />
                       </button>
                     </div>
                   </div>
@@ -136,7 +147,7 @@ export default function Users() {
     items_HTMLTABLE = (
       <div className="flex flex-col gap-4 items-center justify-center text-center h-[25vh]">
         <InboxIcon className="block h-20 w-20" aria-hidden="true" />
-        <h3 className="text-2xl font-bold">Theres no Users</h3>
+        <h3 className="text-2xl font-bold">Il n'y a aucune publicié</h3>
       </div>
     );
   }
@@ -145,7 +156,7 @@ export default function Users() {
       <div className="max-w-[80rem] p-5 mx-auto">
         <div className="rounded-lg shadow-lg">
           <div className="flex justify-between items-center bg-gray-100 p-3 rounded-t-lg">
-            <h5 className="mb-3 mb-0">Users ( {itemsList.length} )</h5>
+            <h5 className="mb-3 mb-0">Publicités ( {itemsList.length} )</h5>
             <button
               type="button"
               className="bg-blue-600 text-white p-2 rounded"
@@ -153,20 +164,20 @@ export default function Users() {
                 setModalShow(true);
               }}
             >
-              Add User
+              Ajouter une publicité
             </button>
           </div>
           <div className="p-5">{items_HTMLTABLE}</div>
         </div>
       </div>
-      <AddUserModal
+      <AddAdModal
         show={modalShow}
         hide={() => {
           setModalShow(false);
           getItems();
         }}
       />
-      <EditUserModal
+      <EditProductModal
         show={editModalShow}
         hide={() => {
           setEditModalShow(false);

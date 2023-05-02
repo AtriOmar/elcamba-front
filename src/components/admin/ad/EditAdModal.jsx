@@ -1,9 +1,9 @@
 import React, { Fragment, useRef } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import AddSubCategoryCmp from "./AddSubCategoryCmp";
+import EditProductCmp from "./EditAdCmp";
 
-export default function AddSubCategoryModal(props) {
+export default function EditAdModal(props) {
   const cancelButtonRef = useRef(null);
 
   return (
@@ -32,10 +32,10 @@ export default function AddSubCategoryModal(props) {
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <Dialog.Panel className="relative transform overflow- rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+              <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
                 <div className="flex justify-between bg-gray-50 px-4 py-3 sm:px-6">
                   <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900">
-                    Ajouter Sous-categorie
+                    Edit Product
                   </Dialog.Title>
                   <button
                     type="button"
@@ -48,7 +48,7 @@ export default function AddSubCategoryModal(props) {
                 </div>
                 <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                   <div className="mt-2">
-                    <AddSubCategoryCmp />
+                    <EditProductCmp toedit={props.toedit} />
                   </div>
                 </div>
               </Dialog.Panel>

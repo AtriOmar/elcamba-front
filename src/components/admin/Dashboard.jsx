@@ -15,6 +15,9 @@ import {
   UserPlusIcon,
   UsersIcon,
 } from "@heroicons/react/24/outline";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { IonIcon } from "@ionic/react";
+import { megaphoneOutline } from "ionicons/icons";
 
 export default function Dashboard() {
   const { user, setUser } = useAuthContext();
@@ -35,9 +38,13 @@ export default function Dashboard() {
               Sous-categories
             </Link>
             <Link className="col-span-4 shadow-lg rounded-lg p-6 flex flex-col items-center justify-center" to="/admin/products">
-              {" "}
               <ListBulletIcon className="block h-10 w-10 flex-start" aria-hidden="true" />
               Products
+            </Link>
+            <Link className="col-span-4 shadow-lg rounded-lg p-6 flex flex-col items-center justify-center" to="/admin/ads">
+              {/* <FontAwesomeIcon icon={} className="block h-10 w-10 flex-start" aria-hidden="true" /> */}
+              <IonIcon icon={megaphoneOutline} className="text-4xl" aria-hidden="true" />
+              Publicités
             </Link>
           </>
         ) : (
