@@ -46,7 +46,7 @@ function AdsSlider({ type = 1 }) {
         >
           {shuffleArray(ads).map((ad) => (
             <swiper-slide key={ad.id} class="w-full h-full">
-              <img src={`${BACKEND_URL}/uploads/ads/${ad.photo}`} alt="" className="w-full h-full object-cover" />
+              <img src={`${BACKEND_URL}/uploads/ads/${ad.photo}`} alt="" className="w-full h-full object-fill" />
             </swiper-slide>
           ))}
         </swiper-container>

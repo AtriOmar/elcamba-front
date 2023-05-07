@@ -139,7 +139,7 @@ export default function SigninModal() {
             className="w-full p-3 mt-6 rounded-full bg-amber-400 hover:bg-amber-500 font-medium text-xl text-white cursor-pointer transition duration-300"
           />
           <div className="flex justify-between px-3">
-            <Link to="/forgot-password" className="text-blue-500 hover:underline">
+            <Link to="/reset-password" className="text-blue-500 hover:underline">
               Mot de passe oublié ?
             </Link>
             <Link to="/" className="text-blue-500 hover:underline">

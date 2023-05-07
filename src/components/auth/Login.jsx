@@ -79,7 +79,7 @@ export default function Login() {
           />
           <span className="text-red-500">{errors.password}</span>
         </div>
-        <Link className="text-blue-500" to="/authentication/simple/forgot-password">
+        <Link className="text-blue-500" to="/authentication/simple/reset-password">
           Forgot your password?
         </Link>
         <button type="submit" className="self-center w-[50%] bg-blue-500 hover:bg-blue-700 rounded-full py-3 text-white font-bold">

@@ -19,6 +19,10 @@ import UIProvider from "./contexts/UIProvider";
 import Layout from "./layouts/Layout";
 import { register } from "swiper/element/bundle";
 import Ads from "./components/admin/ad/Ads";
+import ResetPasswordRequest from "./components/auth/ResetPasswordRequest";
+import ResetPassword from "./components/auth/ResetPassword";
+import Category from "./components/Category.jsx";
+import CategoryLayout from "./layouts/CategoryLayout";
 
 register();
 
@@ -65,8 +69,26 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "/register",
+        path: "register",
         element: <Register />,
+      },
+      {
+        path: "reset-password",
+        element: <ResetPasswordRequest />,
+      },
+      {
+        path: "reset-password/:token",
+        element: <ResetPassword />,
+      },
+      {
+        path: "category",
+        element: <CategoryLayout />,
+        children: [
+          {
+            path: "",
+            element: <Category />,
+          },
+        ],
       },
       {
         path: "customer",

@@ -2,15 +2,21 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import ProductCard from "./ProductCard";
 import jwtDecode from "jwt-decode";
+import { Link } from "react-router-dom";
 
 const clientId = import.meta.env.VITE_CLIENT_ID;
 
-function MyProducts({ setPage, products }) {
+function MyProducts({ setPage, swiper, products }) {
   return (
     <div className="w-full">
       <div className="flex justify-between items-center mb-5 pr-0.5">
         <h3 className="font-medium text-lg">Mes produits</h3>
-        <button className="py-2 px-4 rounded-lg bg-red-500 text-white" onClick={() => setPage(1)}>
+        <button
+          className="py-2 px-4 rounded-lg bg-red-500 text-white"
+          onClick={() => {
+            swiper.slideTo(1);
+          }}
+        >
           Ajouter un produit
         </button>
       </div>

@@ -28,12 +28,12 @@ function Navbar() {
             <CustomerDropdown />
           ) : (
             <button
-              className={`relative flex items-center gap-1 py-2 font-open font-normal transition duration-300 before:w-full before:h-[20px] before:absolute before:top-[95%]  text-slate-800`}
+              className={`relative flex items-center gap-1 font-open font-normal transition duration-300 before:w-full before:h-[20px] before:absolute before:top-[95%]  text-slate-800`}
               onClick={() => {
                 setSigninModalOpen(true);
               }}
             >
-              <UserCircleIcon className="h-6" />
+              <UserCircleIcon className="h-7" />
               Se connecter
               {/* <FontAwesomeIcon icon={faChevronDown} className={`ml-2 text-sm transition duration-300 ${isOpen ? "-rotate-180" : ""}`} /> */}
             </button>

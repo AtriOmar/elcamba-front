@@ -17,9 +17,9 @@ function Products() {
   const [showSelectCategory, setShowSelectCategory] = useState(false);
   const [category, setCategory] = useState(null);
 
-  useEffect(() => {
-    swiperElRef.current.swiper.slideTo(page);
-  }, [page]);
+  // useEffect(() => {
+  //   swiperElRef.current.swiper.slideTo(page);
+  // }, [page]);
 
   function updateProducts() {
     axios
@@ -51,10 +51,16 @@ function Products() {
       <div className="w-full overflow-hidden">
         <swiper-container ref={swiperElRef} auto-height="true">
           <swiper-slide class="swiper-no-swiping">
-            <MyProducts setPage={setPage} products={products} />
+            <MyProducts setPage={setPage} swiper={swiperElRef.current?.swiper} products={products} />
           </swiper-slide>
           <swiper-slide class="swiper-no-swiping">
-            <AddProduct setPage={setPage} updateProducts={updateProducts} category={category} setShowSelectCategory={setShowSelectCategory} />
+            <AddProduct
+              setPage={setPage}
+              swiper={swiperElRef.current?.swiper}
+              updateProducts={updateProducts}
+              category={category}
+              setShowSelectCategory={setShowSelectCategory}
+            />
           </swiper-slide>
         </swiper-container>
       </div>

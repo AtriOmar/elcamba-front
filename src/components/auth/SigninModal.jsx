@@ -30,6 +30,14 @@ export default function SigninModal({ show, hide }) {
     setInput((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   }
 
+  function resetInput() {
+    setInput({
+      email: "",
+      password: "",
+    });
+    setError("");
+  }
+
   async function handleSubmit(e) {
     e.preventDefault();
 
@@ -48,7 +56,7 @@ export default function SigninModal({ show, hide }) {
       addPopup({
         type: "success",
         text: "Connecté avec success",
-        lastFor: 2000,
+        lastFor: 4000,
       });
       hide();
     } catch (err) {
@@ -63,6 +71,8 @@ export default function SigninModal({ show, hide }) {
         return;
       }
 
+      setError("Une erreur s'est produite");
+
       console.log(err);
     }
   }
@@ -74,8 +84,11 @@ export default function SigninModal({ show, hide }) {
       afterEnter={() => {
         emailRef.current?.focus();
       }}
+      afterLeave={() => {
+        resetInput();
+      }}
     >
-      <Dialog as="div" className="relative z-10" initialFocus={cancelButtonRef} onClose={hide}>
+      <Dialog as="div" className="relative z-20" initialFocus={cancelButtonRef} onClose={hide}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -146,7 +159,7 @@ export default function SigninModal({ show, hide }) {
                     className="w-full p-3 mt-6 rounded-full bg-amber-400 hover:bg-amber-500 font-medium text-xl text-white cursor-pointer transition duration-300"
                   />
                   <div className="flex justify-between px-3">
-                    <Link to="/forgot-password" className="text-blue-500 hover:underline">
+                    <Link to="/reset-password" className="text-blue-500 hover:underline">
                       Mot de passe oublié ?
                     </Link>
                     <Link to="/register" className="text-blue-500 hover:underline">

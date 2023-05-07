@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Swal from "sweetalert2";
 import API from "../../../utils/API";
+import axios from "axios";
 
 export default function AddCategoryCmp() {
   function resetInput() {
@@ -27,7 +28,8 @@ export default function AddCategoryCmp() {
       name: Input.name,
     };
 
-    API.postNewCategory(data)
+    axios
+      .post("/categories/create", data)
       .then((res) => {
         Swal.fire("Success", res.data.message, "success");
         resetInput();

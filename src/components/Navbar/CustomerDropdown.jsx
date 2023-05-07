@@ -41,7 +41,7 @@ function CustomerDropdown({ path = "" }) {
   return (
     <div onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} onFocus={handleMouseEnter} onBlur={handleMouseLeave}>
       <button
-        className={`relative flex items-center gap-1 py-2 font-open font-normal transition duration-300 before:w-full before:h-[20px] before:absolute before:top-[95%] ${
+        className={`relative flex items-center gap-1  font-open font-normal transition duration-300 before:w-full before:h-[20px] before:absolute before:top-[95%] ${
           isOpen ? "before:block" : "before:hidden"
         }  text-slate-800`}
         ref={dropdownRef}

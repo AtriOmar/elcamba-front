@@ -42,14 +42,16 @@ export default function AddSousCategoryCmp() {
       categId: Input.categId,
     };
 
-    API.postNewSubCategory(data)
+    axios
+      .post("/sub-categories/create", data)
       .then((res) => {
-        Swal.fire("Success", res.data.message, "success");
+        Swal.fire("Success", res.data?.message, "success");
+        console.log(res.data);
         resetInput();
       })
       .catch((err) => {
         const response = err.response;
-        setErrors(response.data.validation_errors);
+        setErrors(response.data?.validation_errors);
       });
   }
 

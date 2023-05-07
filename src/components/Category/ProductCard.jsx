@@ -6,7 +6,7 @@ const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 function ProductCard({ product }) {
   return (
-    <div className="w-[175px] h-full rounded-lg bg-white shadow-card1 overflow-hidden">
+    <div className="w-[175px] rounded-lg bg-white shadow-card1 overflow-hidden">
       <div className="h-[175px] w-full border-b">
         <img src={`${BACKEND_URL}/uploads/${product.photos[0]}`} alt="" className="w-full h-full object-cover" />
       </div>

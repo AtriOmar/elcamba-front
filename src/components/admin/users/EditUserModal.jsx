@@ -1,14 +1,14 @@
-import React, { Fragment, useRef } from 'react'
-import { Dialog, Transition } from '@headlessui/react'
-import { XMarkIcon } from '@heroicons/react/24/outline'
-import EditUserCmp from './EditUserCmp'
+import React, { Fragment, useRef } from "react";
+import { Dialog, Transition } from "@headlessui/react";
+import { XMarkIcon } from "@heroicons/react/24/outline";
+import EditUserCmp from "./EditUserCmp";
 
 export default function EditUserModal(props) {
-  const cancelButtonRef = useRef(null)
+  const cancelButtonRef = useRef(null);
 
   return (
     <Transition.Root show={props.show} as={Fragment}>
-      <Dialog as="div" className="relative z-10" initialFocus={cancelButtonRef} onClose={props.hide}>
+      <Dialog as="div" className="relative z-20" initialFocus={cancelButtonRef} onClose={props.hide}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -37,21 +37,25 @@ export default function EditUserModal(props) {
                   <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900">
                     Edit User
                   </Dialog.Title>
-                  <button type='button' onClick={() => { props.hide() }}><XMarkIcon className="block h-8 w-8" aria-hidden="true" /> </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      props.hide();
+                    }}
+                  >
+                    <XMarkIcon className="block h-8 w-8" aria-hidden="true" />{" "}
+                  </button>
                 </div>
                 <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-
                   <div className="mt-2">
                     <EditUserCmp toedit={props.toedit} />
                   </div>
-
                 </div>
-
               </Dialog.Panel>
             </Transition.Child>
           </div>
         </div>
       </Dialog>
     </Transition.Root>
-  )
+  );
 }

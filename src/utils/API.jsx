@@ -25,9 +25,6 @@ export default {
   getProducts: () => {
     return axios.get("/products");
   },
-  deleteProductById: (id) => {
-    return axios.delete(`/products/${id}`);
-  },
   postNewProduct: (product) => {
     return axios.post("/products", product);
   },
@@ -80,12 +77,9 @@ export default {
   getSubCategoryById: (subCategId) => {
     return axios.get(`/sub-categories/${subCategId}`);
   },
-  getSubCategories: () => {
-    return axios.get("/sub-categories");
-  },
   getSubCategByCategId: (categId) => {
     return axios.get("/sub-categories/getByCategId", {
-      query: {
+      params: {
         categId,
       },
     });

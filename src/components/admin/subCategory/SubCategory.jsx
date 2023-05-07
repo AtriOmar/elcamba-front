@@ -5,6 +5,7 @@ import AddSubCategoryModal from "./AddSubCategoryModal";
 import EditSubCategoryModal from "./EditSubCategoryModal";
 import API from "../../../utils/API";
 import { MagnifyingGlass } from "react-loader-spinner";
+import axios from "axios";
 
 export default function SubCategories() {
   const [loading, setLoading] = useState(true);
@@ -14,14 +15,15 @@ export default function SubCategories() {
   const [toEdit, setToEdit] = useState({});
 
   function getItems() {
-    API.getSubCategories()
+    axios
+      .get("/sub-categories/getAll")
       .then((res) => {
         setItemsList(res.data);
-        setLoading(false);
       })
       .catch((err) => {
-        Swal.fire("Error", err.response.data.message, "error");
-      });
+        Swal.fire("Error", err.response?.data.message, "error");
+      })
+      .finally(() => setLoading(false));
   }
   useEffect(() => {
     getItems();

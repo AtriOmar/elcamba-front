@@ -6,6 +6,8 @@ import axios from "axios";
 import SelectCategory from "./SelectCategory";
 import { v4 as uuidv4 } from "uuid";
 import { useUIContext } from "../../../contexts/UIProvider";
+import useLocalStorage from "../../../lib/useLocalStorage";
+import { useAuthContext } from "../../../contexts/AuthProvider";
 
 const config = {
   onUploadProgress: (e) => {
@@ -13,9 +15,10 @@ const config = {
   },
 };
 
-function AddProduct({ setPage, updateProducts, category, setShowSelectCategory }) {
-  const [input, setInput] = useState({
-    photos: null,
+function AddProduct({ setPage, swiper, updateProducts, category, setShowSelectCategory }) {
+  const [photos, setPhotos] = useState(null);
+  const { user } = useAuthContext();
+  const [input, setInput] = useLocalStorage("product-" + user.id, {
     name: "",
     category: null,
     oldPrice: "",
@@ -29,18 +32,32 @@ function AddProduct({ setPage, updateProducts, category, setShowSelectCategory }
 
   const { addPopup } = useUIContext();
 
+  function resetInput() {
+    setPhotos(null);
+    setInput({
+      name: "",
+      category: null,
+      oldPrice: "",
+      price: "",
+      description: "",
+      delivery: false,
+      deliveryBody: "",
+      address: "",
+    });
+  }
+
   function handleChange(e) {
     setInput((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   }
 
   useEffect(() => {
-    setInput((prev) => ({ ...prev, category }));
+    if (category) setInput((prev) => ({ ...prev, category }));
   }, [category]);
 
   async function handleSubmit(e) {
     e.preventDefault();
 
-    if (!input.photos?.length) {
+    if (!photos?.length) {
       setError("Vous devez choisir au moins une photo");
       return;
     }
@@ -73,7 +90,7 @@ function AddProduct({ setPage, updateProducts, category, setShowSelectCategory }
     error && setError("");
 
     const formData = new FormData();
-    input.photos?.forEach((photo) => {
+    photos?.forEach((photo) => {
       formData.append(photo.id, photo);
     });
     formData.append("name", input.name);
@@ -94,6 +111,8 @@ function AddProduct({ setPage, updateProducts, category, setShowSelectCategory }
         text: "Produit ajouté avec success",
         lastFor: 2000,
       });
+      swiper.slideTo(0);
+      resetInput();
     } catch (err) {
       console.log(err);
       addPopup({
@@ -106,7 +125,11 @@ function AddProduct({ setPage, updateProducts, category, setShowSelectCategory }
   return (
     <>
       <div className="flex items-center gap-4">
-        <button onClick={() => setPage(0)}>
+        <button
+          onClick={() => {
+            swiper.slideTo(0);
+          }}
+        >
           <FontAwesomeIcon icon={faArrowLeft} />
         </button>
         <h3 className="font-medium text-lg">Ajouter un produit</h3>
@@ -121,7 +144,7 @@ function AddProduct({ setPage, updateProducts, category, setShowSelectCategory }
             <label
               htmlFor="photos"
               className={`absolute z-10 ${
-                input.photos?.length ? "right-0 translate-x-[110%]" : "right-1/2 translate-x-1/2"
+                photos?.length ? "right-0 translate-x-[110%]" : "right-1/2 translate-x-1/2"
               } top-1/2 -translate-y-1/2  flex items-center justify-center h-10 w-10 rounded-lg bg-blue-500 hover:bg-blue-600  shadow-md cursor-pointer transition-all duration-300`}
             >
               <FontAwesomeIcon icon={faPlus} className="text-white" size="2xl" />
@@ -140,21 +163,21 @@ function AddProduct({ setPage, updateProducts, category, setShowSelectCategory }
                   files[i].id = uuidv4().toString();
                   photosArr.push(files[i]);
                 }
-                if (photosArr.length) setInput((prev) => ({ ...prev, photos: [...(prev.photos || []), ...photosArr] }));
+                if (photosArr.length) setPhotos((prev) => [...(prev || []), ...photosArr]);
                 e.target.value = "";
               }}
             />
-            {input.photos?.length ? (
+            {photos?.length ? (
               <>
-                {/* <img src={URL.createObjectURL(input.photos[0])} alt="" className="w-full h-full object-cover" /> */}
+                {/* <img src={URL.createObjectURL(photos[0])} alt="" className="w-full h-full object-cover" /> */}
                 <swiper-container pagination="true" pagination-clickable="true" class="w-full h-full" no-swiping="false">
-                  {input.photos.map((photo, index) => (
+                  {photos.map((photo, index) => (
                     <swiper-slide key={index} className="relative w-full h-full">
                       <button
                         type="button"
                         className="absolute top-0 right-0"
                         onClick={() => {
-                          setInput((prev) => ({ ...prev, photos: prev.photos.filter((currPhoto) => currPhoto.id !== photo.id) }));
+                          setPhotos((prev) => prev.filter((currPhoto) => currPhoto.id !== photo.id));
                         }}
                       >
                         <i className="flex items-center justify-center h-5 w-5 rounded-[50%] bg-slate-500 bg-opacity-10">
@@ -188,8 +211,8 @@ function AddProduct({ setPage, updateProducts, category, setShowSelectCategory }
             name="name"
             id="name"
             // rows="2"
-            placeholder="PC PORTABLE MSI GAMING GF65 THIN 10UE / I7 10È GÉN / 16 GO + SAC À DOS MSI OFFERT"
-            className="w-full py-1 px-2 border border-slate-700 rounded-lg outline-0 resize-none"
+            placeholder="Nom du produit"
+            className="w-full py-1 px-2 border border-slate-700 rounded-lg outline-0 resize-none focus:ring-1 ring-inset ring-blue-500 transition-all duration-150"
             onChange={handleChange}
             value={input.name}
           ></textarea>
@@ -200,35 +223,43 @@ function AddProduct({ setPage, updateProducts, category, setShowSelectCategory }
             type="button"
             name="category"
             id="category"
-            className={`w-full py-1 px-2 border border-slate-700 rounded-lg text-left ${input.category ? "text-black" : "text-[#8e8e8e]"} capitalize`}
+            className={`w-full py-1 px-2 border border-slate-700 rounded-lg outline-0 text-left ${
+              input.category ? "text-black" : "text-[#8e8e8e]"
+            } capitalize focus:ring-1 ring-inset ring-blue-500 transition-all duration-150`}
             onClick={() => setShowSelectCategory(true)}
           >
-            {input.category ? input.category.name : "Informatique > Ordinateur portable"}
+            {input.category ? input.category.name : "Catégorie"}
           </button>
           <label htmlFor="oldPrice" className="relative mt-2 block text-base text-slate-700">
             Prix ancien (s'il y a un solde, sinon laissez vide):
           </label>
-          <input
-            id="oldPrice"
-            name="oldPrice"
-            onChange={handleChange}
-            value={input.oldPrice}
-            type="text"
-            className="w-full py-1 px-2 border border-slate-700 rounded-lg outline-0"
-            placeholder="3,999 DT"
-          />
+          <div className="flex w-1/3 rounded-lg duration-150">
+            <input
+              id="oldPrice"
+              name="oldPrice"
+              onChange={handleChange}
+              value={input.oldPrice}
+              type="number"
+              className="w-full py-1 px-2 border border-slate-700 border-r-slate-300 rounded-l-lg outline-0 focus:ring-1 ring-inset ring-blue-500 transition-all duration-150 hidden-arrows"
+              placeholder="0000"
+            />
+            <span className="flex items-center border border-l-0 border-slate-700 rounded-r-lg px-3 py-[0.25rem]">DT</span>
+          </div>
           <label htmlFor="price" className="relative mt-2 block text-base text-slate-700">
             Prix:
           </label>
-          <input
-            id="price"
-            name="price"
-            onChange={handleChange}
-            value={input.price}
-            type="text"
-            className="w-full py-1 px-2 border border-slate-700 rounded-lg outline-0"
-            placeholder="3,899 DT"
-          />
+          <div className="flex w-1/3 rounded-lg duration-150">
+            <input
+              id="price"
+              name="price"
+              onChange={handleChange}
+              value={input.price}
+              type="number"
+              className="w-full py-1 px-2 border border-slate-700 border-r-slate-300 rounded-l-lg outline-0 focus:ring-1 ring-inset ring-blue-500 transition-all duration-150 hidden-arrows"
+              placeholder="0000"
+            />
+            <span className="flex items-center border border-l-0 border-slate-700 rounded-r-lg px-3 py-[0.25rem]">DT</span>
+          </div>
         </article>
         <article className="w-full scr1000:w-1/2">
           <label htmlFor="description" className="relative text-base text-slate-700">
@@ -238,8 +269,8 @@ function AddProduct({ setPage, updateProducts, category, setShowSelectCategory }
             name="description"
             id="description"
             rows="6"
-            placeholder='Ecran 15.6" Full HD 144 Hz - Processeur Intel Core i7-10750H, up to 5 GHz, 12 Mo de mémoire cache - Mémoire 16 Go - Disque 512 Go SSD M.2- Carte graphique Nvidia GeForce RTX 2060, 6 Go de mémoire dédiée - Clavier rétroéclairé - Wifi - Bluetooth - USB 3.2 Type-C - 3x USB 3.2 - HDMI - RJ45 - Webcam HD - Garantie 2 ans'
-            className="w-full py-1 px-2 border border-slate-700 rounded-lg outline-0 resize-none"
+            placeholder="Description du produit"
+            className="w-full py-1 px-2 border border-slate-700 rounded-lg outline-0 resize-none focus:ring-1 ring-inset ring-blue-500 transition-all duration-150"
             onChange={handleChange}
             value={input.description}
           ></textarea>
@@ -263,8 +294,10 @@ function AddProduct({ setPage, updateProducts, category, setShowSelectCategory }
             name="deliveryBody"
             id="deliveryBody"
             rows="2"
-            placeholder="Gratuit à sfax,&#10;7dt pour toute la tunisie."
-            className={`w-full py-1 px-2 border border-slate-700 rounded-lg outline-0 resize-none ${input.delivery ? "" : "opacity-50"}`}
+            placeholder="Prix et zone (de livraision)"
+            className={`w-full py-1 px-2 border border-slate-700 rounded-lg outline-0 resize-none focus:ring-1 ring-inset ring-blue-500 transition-all duration-150 ${
+              input.delivery ? "" : "opacity-50"
+            }`}
             onChange={handleChange}
             value={input.deliveryBody}
           ></textarea>
@@ -278,8 +311,8 @@ function AddProduct({ setPage, updateProducts, category, setShowSelectCategory }
             name="address"
             id="address"
             rows="4"
-            placeholder="Route Bouzayen km 8.5,&#10;Sfax,&#10;au prés du marché de voitures."
-            className="w-full py-1 px-2 border border-slate-700 rounded-lg outline-0 resize-none"
+            placeholder="Votre adresse"
+            className="w-full py-1 px-2 border border-slate-700 rounded-lg outline-0 resize-none focus:ring-1 ring-inset ring-blue-500 transition-all duration-150"
             onChange={handleChange}
             value={input.address}
           ></textarea>

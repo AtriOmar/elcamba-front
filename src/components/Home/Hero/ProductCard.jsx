@@ -12,9 +12,9 @@ function ProductCard({ product }) {
       </div>
       <div className="py-0.5 px-3">
         <h5 className="font-normal font-rubik text-slate-900 text-[12px] capitalize line-clamp-2">{product.name}</h5>
-        <h5 className="w-fit ml-auto px-2 rounded-full bg-red-500 font-normal font-rubik text-white capitalize">
-          {product.oldPrice ? <span className="mr-1 text-[10px] line-through">{product.oldPrice} DT</span> : ""}
-          <span className="text-[12px]">{product.price} DT</span>
+        <h5 className="flex flex-wrap items-end w-fit ml-auto px-2 py-0.5 rounded-full bg-red-500 font-normal font-rubik text-white capitalize">
+          {product.oldPrice ? <span className="mr-1 text-[10px] line-through whitespace-nowrap">{product.oldPrice} DT</span> : ""}
+          <span className="ml-auto text-[12px] whitespace-nowrap">{product.price} DT</span>
         </h5>
       </div>
     </div>

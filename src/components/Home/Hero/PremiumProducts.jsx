@@ -7,8 +7,8 @@ function PremiumProducts() {
 
   useEffect(() => {
     axios
-      .get("/products/getLatest", {
-        query: {
+      .get("/products/getRandom", {
+        params: {
           limit: 20,
         },
       })

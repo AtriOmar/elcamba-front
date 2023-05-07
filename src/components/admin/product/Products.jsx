@@ -43,7 +43,12 @@ export default function Products() {
       denyButtonColor: "#d9e2ef",
     }).then((result) => {
       if (result.isConfirmed) {
-        API.deleteProductById(item.id)
+        axios
+          .delete("/products/deleteById", {
+            data: {
+              id: item.id,
+            },
+          })
           .then((res) => {
             Swal.fire("Success", res.data.message, "success");
             getItems();
