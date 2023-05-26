@@ -1,12 +1,16 @@
 import { faLocationDot, faTruck } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
+import { Link } from "react-router-dom";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 function ProductCard({ product }) {
   return (
-    <div className="w-[175px] h-full rounded-lg bg-white shadow-card1 overflow-hidden">
+    <Link
+      to={`/product/${product.id}`}
+      className="block w-[175px] h-full rounded-lg bg-white shadow-card1 hover:shadow-card2 hover:scale-[1.02] duration-300 overflow-hidden"
+    >
       <div className="h-[175px] w-full border-b">
         <img src={`${BACKEND_URL}/uploads/${product.photos[0]}`} alt="" className="w-full h-full object-cover" />
       </div>
@@ -29,7 +33,7 @@ function ProductCard({ product }) {
           ""
         )}
       </div>
-    </div>
+    </Link>
   );
 }
 

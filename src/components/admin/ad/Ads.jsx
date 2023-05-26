@@ -5,7 +5,7 @@ import API from "../../../utils/API";
 import AddAdModal from "./AddAdModal";
 import EditProductModal from "./EditAdModal";
 import axios from "axios";
-import { MagnifyingGlass } from "react-loader-spinner";
+import Loader from "../../Loader";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -70,17 +70,8 @@ export default function Ads() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center w-full h-[calc(100vh_-_64px)]">
-        <MagnifyingGlass
-          visible={true}
-          height="80"
-          width="80"
-          ariaLabel="MagnifyingGlass-loading"
-          wrapperStyle={{}}
-          wrapperClass="MagnifyingGlass-wrapper"
-          glassColor="#c0efff"
-          color="#e15b64"
-        />
+      <div className="flex h-[calc(100vh_-_64px)] w-full items-center justify-center">
+        <Loader />
       </div>
     );
   }
@@ -89,30 +80,30 @@ export default function Ads() {
   if (itemsList.length > 0) {
     items_HTMLTABLE = (
       <>
-        <div className="mx-0 grid grid-cols-12 text-center break-all">
-          <div className="pb-3 hidden md:block text-start col-span-1">ID</div>
+        <div className="mx-0 grid grid-cols-12 break-all text-center">
+          <div className="col-span-1 hidden pb-3 text-start md:block">ID</div>
 
-          <div className="pb-3 col-span-3 md:col-span-3 text-start">Photo</div>
-          <div className="pb-3 col-span-4 md:col-span-4 text-start">Nom</div>
-          <div className="pb-3 col-span-2 md:col-span-1 text-start">Type</div>
-          <div className="pb-3 col-span-2 md:col-span-1 text-start">Durée</div>
+          <div className="col-span-3 pb-3 text-start md:col-span-3">Photo</div>
+          <div className="col-span-4 pb-3 text-start md:col-span-4">Nom</div>
+          <div className="col-span-2 pb-3 text-start md:col-span-1">Type</div>
+          <div className="col-span-2 pb-3 text-start md:col-span-1">Durée</div>
 
-          <div className="pb-3 text-end sm:text-center col-span-2 md:col-span-2">Actions</div>
+          <div className="col-span-2 pb-3 text-end sm:text-center md:col-span-2">Actions</div>
         </div>
         <div className="divide-y">
           {itemsList.map((item) => {
             return (
-              <div key={item.id} className="mx-0 grid grid-cols-12 text-center break-all">
-                <div className="items-center pt-3 hidden md:flex text-start col-span-1">{item.id}</div>
-                <div className="flex items-center pt-3 col-span-3 md:col-span-3 text-start">
+              <div key={item.id} className="mx-0 grid grid-cols-12 break-all text-center">
+                <div className="col-span-1 hidden items-center pt-3 text-start md:flex">{item.id}</div>
+                <div className="col-span-3 flex items-center pt-3 text-start md:col-span-3">
                   <img className="h-20 w-20 rounded-lg object-cover" src={`${BACKEND_URL}/uploads/ads/${item.photo}`} alt={`Photo of ${item.name}`} />
                 </div>
-                <div className="flex items-center pt-3 col-span-4 md:col-span-4 text-start">{item.name}</div>
-                <div className="flex items-center pt-3 col-span-2 md:col-span-1 text-start">{item.type}</div>
-                <div className="flex items-center pt-3 col-span-2 md:col-span-1 text-start">{item.duration}</div>
-                <div className="flex items-center pt-3 text-end sm:text-center col-span-2 md:col-span-2">
-                  <div className="grid grid-cols-12 w-full">
-                    <div className="col-span-12 sm:col-span-6 text-end sm:text-center">
+                <div className="col-span-4 flex items-center pt-3 text-start md:col-span-4">{item.name}</div>
+                <div className="col-span-2 flex items-center pt-3 text-start md:col-span-1">{item.type}</div>
+                <div className="col-span-2 flex items-center pt-3 text-start md:col-span-1">{item.duration}</div>
+                <div className="col-span-2 flex items-center pt-3 text-end sm:text-center md:col-span-2">
+                  <div className="grid w-full grid-cols-12">
+                    <div className="col-span-12 text-end sm:col-span-6 sm:text-center">
                       <button
                         type="button"
                         className="btn p-0"
@@ -124,7 +115,7 @@ export default function Ads() {
                         <PencilSquareIcon className="block h-8 w-8 text-blue-600" aria-hidden="true" />
                       </button>
                     </div>
-                    <div className="col-span-12 sm:col-span-6 text-end sm:text-center">
+                    <div className="col-span-12 text-end sm:col-span-6 sm:text-center">
                       <button
                         type="button"
                         className="btn p-0"
@@ -145,7 +136,7 @@ export default function Ads() {
     );
   } else {
     items_HTMLTABLE = (
-      <div className="flex flex-col gap-4 items-center justify-center text-center h-[25vh]">
+      <div className="flex h-[25vh] flex-col items-center justify-center gap-4 text-center">
         <InboxIcon className="block h-20 w-20" aria-hidden="true" />
         <h3 className="text-2xl font-bold">Il n'y a aucune publicié</h3>
       </div>
@@ -153,13 +144,13 @@ export default function Ads() {
   }
   return (
     <>
-      <div className="max-w-[80rem] p-5 mx-auto">
+      <div className="mx-auto max-w-[80rem] p-5">
         <div className="rounded-lg shadow-lg">
-          <div className="flex justify-between items-center bg-gray-100 p-3 rounded-t-lg">
-            <h5 className="mb-3 mb-0">Publicités ( {itemsList.length} )</h5>
+          <div className="flex items-center justify-between rounded-t-lg bg-gray-100 p-3">
+            <h5 className="mb-0 mb-3">Publicités ( {itemsList.length} )</h5>
             <button
               type="button"
-              className="bg-blue-600 text-white p-2 rounded"
+              className="rounded bg-blue-600 p-2 text-white"
               onClick={() => {
                 setModalShow(true);
               }}

@@ -8,7 +8,7 @@ function Sidebar() {
     <div className="h-full w-[200px] py-10 px-6 bg-white shadow-md">
       <ul className="flex flex-col gap-5 text-[17px] text-cyan-600">
         <li>
-          <Link className="flex gap-2 items-center">
+          <Link className="flex gap-2 items-center" to={"/customer/products"}>
             <FontAwesomeIcon icon={faBox} />
             <span>Mes produits</span>
           </Link>

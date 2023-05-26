@@ -11,7 +11,7 @@ function CategoryLayout() {
         <article>
           <Sidebar />
         </article>
-        <article className="grow overflow-auto p-2">
+        <article className="grow overflow-auto p-2 category-layout">
           <Outlet />
         </article>
       </section>

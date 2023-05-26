@@ -2,23 +2,25 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import ProductCard from "./ProductCard";
 
-function PremiumProducts() {
+function PremiumProducts({ setLoading }) {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    axios
-      .get("/products/getRandom", {
-        params: {
-          limit: 20,
-        },
-      })
-      .then((res) => {
-        setProducts(res.data);
+    async function fetchProducts() {
+      try {
+        const res = await axios.get("/products/getRandom", {
+          params: {
+            limit: 20,
+          },
+        });
         console.log(res.data);
-      })
-      .catch((err) => {
+        setProducts(res.data);
+      } catch (err) {
         console.log(err);
-      });
+      }
+      setLoading((prev) => prev + 1);
+    }
+    fetchProducts();
   }, []);
 
   return (

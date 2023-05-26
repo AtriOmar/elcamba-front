@@ -1,12 +1,14 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import ProductCard from "./ProductCard";
 import jwtDecode from "jwt-decode";
 import { Link } from "react-router-dom";
 
 const clientId = import.meta.env.VITE_CLIENT_ID;
 
-function MyProducts({ setPage, swiper, products }) {
+function MyProducts({ setPage, swiperRef, products }) {
+  // console.log(swiper);
+
   return (
     <div className="w-full">
       <div className="flex justify-between items-center mb-5 pr-0.5">
@@ -14,7 +16,7 @@ function MyProducts({ setPage, swiper, products }) {
         <button
           className="py-2 px-4 rounded-lg bg-red-500 text-white"
           onClick={() => {
-            swiper.slideTo(1);
+            swiperRef.current?.swiper.slideTo(1);
           }}
         >
           Ajouter un produit
@@ -34,48 +36,43 @@ function MyProducts({ setPage, swiper, products }) {
         //     </div>
         //   </div>
         // ))
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
-            <tr>
-              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Photo
-              </th>
-              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Nom
-              </th>
-              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Categorie
-              </th>
-              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Prix ancien
-              </th>
-              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Prix
-              </th>
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            {products.map((product) => (
-              <tr key={product.id}>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <img className="h-10 w-10 rounded-lg" src={`${import.meta.env.VITE_BACKEND_URL}/uploads/${product.photos?.[0]}`} alt={product.name} />
-                </td>
-                <td className="px-6 py-4 whitespace-nowra">
-                  <div className="text-sm font-medium text-gray-900">{product.name}</div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm text-gray-500">{product.SubCategory.name}</div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm text-gray-500">{product.oldPrice !== 0 ? product.oldPrice + " DT" : "-"}</div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm text-gray-500">{product.price} DT</div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <>
+          <div className="grid grid-cols-[minmax(130px,150px)_minmax(200px,1fr)_160px_100px_100px]">
+            <div className="col-spa-1 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider bg-gray-50">Photo</div>
+            <div className="col-spa-3 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider bg-gray-50">Nom</div>
+            <div className="col-spa-2 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider bg-gray-50">Categorie</div>
+            <div className="col-spa-1 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider bg-gray-50">Prix ancien</div>
+            <div className="col-spa-1 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider bg-gray-50">Prix</div>
+          </div>
+
+          {products.map((product) => (
+            <Link
+              to={`/customer/products/${product.id}`}
+              className="grid grid-cols-[minmax(130px,150px)_minmax(200px,1fr)_160px_100px_100px] hover:bg-slate-100 duration-150"
+              key={product.id}
+            >
+              <div className="px-6 py-4">
+                <img
+                  className="w-full aspect-square rounded-lg object-contain "
+                  src={`${import.meta.env.VITE_BACKEND_URL}/uploads/${product.photos?.[0]}`}
+                  alt={product.name}
+                />
+              </div>
+              <div className="px-6 py-4">
+                <div className="text-sm font-medium text-gray-900">{product.name}</div>
+              </div>
+              <div className="px-6 py-4">
+                <div className="text-sm text-gray-500">{product.SubCategory.name}</div>
+              </div>
+              <div className="px-6 py-4">
+                <div className="text-sm text-gray-500">{product.oldPrice !== 0 ? product.oldPrice + " DT" : "-"}</div>
+              </div>
+              <div className="px-6 py-4">
+                <div className="text-sm text-gray-500">{product.price} DT</div>
+              </div>
+            </Link>
+          ))}
+        </>
       ) : (
         <div className="py-20 px-6 font-bold text-gray-500 text-2xl text-center">Vous n'avez aucun produit à vendre</div>
       )}

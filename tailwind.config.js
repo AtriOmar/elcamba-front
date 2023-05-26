@@ -26,7 +26,8 @@ export default {
         },
       },
       boxShadow: {
-        card1: "rgba(67, 71, 85, 0.27) 0px 0px 4px 0px, rgba(90, 125, 188, 0.05) 0px 4px 16px 0px;",
+        card1: "0px 0px 4px 0px rgba(67, 71, 85, 0.27), 0px 4px 16px 0px rgba(90, 125, 188, 0.05);",
+        card2: "0px 0px 6px 2px rgba(67, 71, 85, 0.27),0px 4px 16px 2px rgba(90, 125, 188, 0.02);",
       },
     },
   },

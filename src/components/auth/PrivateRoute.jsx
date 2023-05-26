@@ -3,7 +3,7 @@ import { useNavigate } from "react-router";
 import { useAuthContext } from "../../contexts/AuthProvider";
 import API from "../../utils/API";
 import axios from "axios";
-import { MagnifyingGlass } from "react-loader-spinner";
+import Loader from "../Loader";
 
 export default function PrivateRoute({ component: Component, aId = 1 }) {
   const { user, setUser } = useAuthContext();
@@ -33,17 +33,8 @@ export default function PrivateRoute({ component: Component, aId = 1 }) {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-w-screen min-h-screen">
-        <MagnifyingGlass
-          visible={true}
-          height="80"
-          width="80"
-          ariaLabel="MagnifyingGlass-loading"
-          wrapperStyle={{}}
-          wrapperClass="MagnifyingGlass-wrapper"
-          glassColor="#c0efff"
-          color="#e15b64"
-        />
+      <div className="min-w-screen flex min-h-screen items-center justify-center">
+        <Loader />
       </div>
     );
   }

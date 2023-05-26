@@ -11,7 +11,7 @@ function CustomerLayout() {
         <article>
           <Sidebar />
         </article>
-        <article className="grow overflow-auto p-2">
+        <article className="grow overflow-auto p-2 scroll-smooth">
           <Outlet />
         </article>
       </section>

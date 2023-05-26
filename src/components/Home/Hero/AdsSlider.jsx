@@ -13,23 +13,25 @@ function shuffleArray(arr) {
   return shuffledArr;
 }
 
-function AdsSlider({ type = 1 }) {
+function AdsSlider({ type = 1, setLoading }) {
   const [ads, setAds] = useState([]);
 
   useEffect(() => {
-    axios
-      .get("/ads/getByType", {
-        params: {
-          type,
-        },
-      })
-      .then((res) => {
+    async function fetchAds() {
+      try {
+        const res = await axios.get("/ads/getByType", {
+          params: {
+            type,
+          },
+        });
         setAds(res.data);
         console.log(res.data);
-      })
-      .catch((err) => {
+      } catch (err) {
         console.log(err);
-      });
+      }
+      setLoading((prev) => prev + 1);
+    }
+    fetchAds();
   }, [type]);
 
   return (

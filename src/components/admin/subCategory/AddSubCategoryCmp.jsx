@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
-import API from "../../../utils/API";
 import Select from "react-select";
 import axios from "axios";
 

@@ -3,22 +3,24 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import reactStringReplace from "react-string-replace";
 
-function CategoriesList() {
+function CategoriesList({ setLoading }) {
   const [categories, setCategories] = useState([]);
   const [subCategories, setSubCategories] = useState([]);
   const [filter, setFilter] = useState("");
 
   useEffect(() => {
-    axios
-      .get("/categories")
-      .then((res) => {
+    async function fetchCategories() {
+      try {
+        const res = await axios.get("/categories");
         console.log(res.data);
         setCategories(res.data);
         setSubCategories(res.data[0].SubCategories);
-      })
-      .catch((err) => {
+      } catch (err) {
         console.log(err);
-      });
+      }
+      setLoading((prev) => prev + 1);
+    }
+    fetchCategories();
   }, []);
 
   return (

@@ -8,6 +8,7 @@ import AddProduct from "./Products/AddProduct";
 import MyProducts from "./Products/MyProducts";
 import { useAuthContext } from "../../contexts/AuthProvider";
 import SelectCategory from "./Products/SelectCategory";
+import Loader from "../Loader";
 
 function Products() {
   const [page, setPage] = useState(0);
@@ -16,34 +17,44 @@ function Products() {
   const swiperElRef = useRef(null);
   const [showSelectCategory, setShowSelectCategory] = useState(false);
   const [category, setCategory] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   // useEffect(() => {
   //   swiperElRef.current.swiper.slideTo(page);
   // }, [page]);
 
-  function updateProducts() {
-    axios
-      .get("/products/getByUserId", {
+  async function updateProducts() {
+    setLoading(true);
+    try {
+      const res = await axios.get("/products/getByUserId", {
         params: {
           id: user.id,
         },
-      })
-      .then((res) => {
-        console.log(res.data);
-        // const productsObj = {};
-        // res.data.forEach((product) => {
-        //   productsObj[product.SubCategory.name]?.push(product) || (productsObj[product.SubCategory.name] = [product]);
-        // });
-        // console.log(productsObj);
-        // setProducts(Object.values(productsObj));
-        setProducts(res.data);
-      })
-      .catch(console.log);
+      });
+
+      console.log(res.data);
+      setProducts(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+    setLoading(false);
   }
 
   useEffect(() => {
     updateProducts();
+
+    return () => {
+      setProducts([]);
+    };
   }, []);
+
+  if (loading) {
+    return (
+      <div className="flex h-[calc(100vh_-_64px)] w-full items-center justify-center">
+        <Loader />
+      </div>
+    );
+  }
 
   return (
     <div className=" p-6 rounded-lg bg-white shadow-md">
@@ -51,12 +62,12 @@ function Products() {
       <div className="w-full overflow-hidden">
         <swiper-container ref={swiperElRef} auto-height="true">
           <swiper-slide class="swiper-no-swiping">
-            <MyProducts setPage={setPage} swiper={swiperElRef.current?.swiper} products={products} />
+            <MyProducts setPage={setPage} swiperRef={swiperElRef} products={products} />
           </swiper-slide>
           <swiper-slide class="swiper-no-swiping">
             <AddProduct
               setPage={setPage}
-              swiper={swiperElRef.current?.swiper}
+              swiperRef={swiperElRef}
               updateProducts={updateProducts}
               category={category}
               setShowSelectCategory={setShowSelectCategory}

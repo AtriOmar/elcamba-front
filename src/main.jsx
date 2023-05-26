@@ -23,6 +23,8 @@ import ResetPasswordRequest from "./components/auth/ResetPasswordRequest";
 import ResetPassword from "./components/auth/ResetPassword";
 import Category from "./components/Category.jsx";
 import CategoryLayout from "./layouts/CategoryLayout";
+import Product from "./components/Product";
+import ViewProduct from "./components/customer/ViewProduct";
 
 register();
 
@@ -98,7 +100,15 @@ const router = createBrowserRouter([
             path: "products",
             element: <CustomerProducts />,
           },
+          {
+            path: "products/:id",
+            element: <ViewProduct />,
+          },
         ],
+      },
+      {
+        path: "product/:id",
+        element: <Product />,
       },
     ],
   },

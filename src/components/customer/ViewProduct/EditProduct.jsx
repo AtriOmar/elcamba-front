@@ -3,48 +3,30 @@ import { faImage } from "@fortawesome/free-regular-svg-icons";
 import { faArrowLeft, faExclamationTriangle, faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
-import SelectCategory from "./SelectCategory";
 import { v4 as uuidv4 } from "uuid";
 import { useUIContext } from "../../../contexts/UIProvider";
-import useLocalStorage from "../../../lib/useLocalStorage";
 import { useAuthContext } from "../../../contexts/AuthProvider";
+import { useNavigate, useParams } from "react-router";
+import { Link } from "react-router-dom";
 
-const config = {
-  onUploadProgress: (e) => {
-    console.log(e);
-  },
-};
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
-function AddProduct({ setPage, swiperRef, updateProducts, category, setShowSelectCategory }) {
-  const [photos, setPhotos] = useState(null);
-  const { user } = useAuthContext();
-  const [input, setInput] = useLocalStorage("product-" + user.id, {
-    name: "",
-    category: null,
-    oldPrice: "",
-    price: "",
-    description: "",
-    delivery: false,
-    deliveryBody: "",
-    address: "",
+function EditProduct({ product, category, setShowSelectCategory }) {
+  const [photos, setPhotos] = useState([...product.photos]);
+  const [input, setInput] = useState({
+    name: product.name,
+    category: { name: product.SubCategory.Category.name + " > " + product.SubCategory.name, id: product.SubCategory.id },
+    oldPrice: product.oldPrice,
+    price: product.price,
+    description: product.description,
+    delivery: product.delivery,
+    deliveryBody: product.deliveryBody,
+    address: product.address,
   });
   const [error, setError] = useState("");
 
   const { addPopup } = useUIContext();
-
-  function resetInput() {
-    setPhotos(null);
-    setInput({
-      name: "",
-      category: null,
-      oldPrice: "",
-      price: "",
-      description: "",
-      delivery: false,
-      deliveryBody: "",
-      address: "",
-    });
-  }
+  const navigate = useNavigate();
 
   function handleChange(e) {
     setInput((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -90,9 +72,14 @@ function AddProduct({ setPage, swiperRef, updateProducts, category, setShowSelec
     error && setError("");
 
     const formData = new FormData();
+    const photosArr = [];
     photos?.forEach((photo) => {
-      formData.append(photo.id, photo);
+      if (typeof photo === "string") photosArr.push(photo);
+      else formData.append(photo.id, photo);
     });
+
+    formData.append("id", product.id);
+    formData.append("photos", JSON.stringify(photosArr));
     formData.append("name", input.name);
     formData.append("subCategoryId", input.category.id);
     formData.append("oldPrice", input.oldPrice);
@@ -103,16 +90,14 @@ function AddProduct({ setPage, swiperRef, updateProducts, category, setShowSelec
     formData.append("address", input.address);
 
     try {
-      const result = await axios.post("/products/create", formData);
-      updateProducts();
+      const result = await axios.post("/products/update", formData);
       console.log(result);
       addPopup({
         type: "success",
-        text: "Produit ajouté avec success",
+        text: "Produit modifié avec success",
         lastFor: 2000,
       });
-      swiperRef.current?.swiper.slideTo(0);
-      resetInput();
+      // navigate("/products");
     } catch (err) {
       console.log(err);
       addPopup({
@@ -122,17 +107,14 @@ function AddProduct({ setPage, swiperRef, updateProducts, category, setShowSelec
     }
   }
 
+  useEffect(() => {
+    console.log(photos);
+  }, [photos]);
+
   return (
     <>
-      <div className="flex items-center gap-4">
-        <button
-          onClick={() => {
-            swiperRef.current?.swiper.slideTo(0);
-          }}
-        >
-          <FontAwesomeIcon icon={faArrowLeft} />
-        </button>
-        <h3 className="text-lg font-medium">Ajouter un produit</h3>
+      <div className="flex items-center gap-4" id="edit-product">
+        <h3 className="text-lg font-medium">Modifier produit:</h3>
       </div>
       <form action="" className="flex flex-col gap-2 scr1000:flex-row scr1000:gap-10" onSubmit={handleSubmit}>
         <article className="w-full scr1000:w-1/2 ">
@@ -157,7 +139,6 @@ function AddProduct({ setPage, swiperRef, updateProducts, category, setShowSelec
               multiple
               onChange={(e) => {
                 const files = e.target.files;
-                console.log(files);
                 const photosArr = [];
                 for (let i = 0; i < files.length; i++) {
                   if (!files[i].type.startsWith("image")) continue;
@@ -170,24 +151,30 @@ function AddProduct({ setPage, swiperRef, updateProducts, category, setShowSelec
             />
             {photos?.length ? (
               <>
-                {/* <img src={URL.createObjectURL(photos[0])} alt="" className="w-full h-full object-cover" /> */}
-                <swiper-container pagination="true" pagination-clickable="true" class="h-full w-full" no-swiping="false">
-                  {photos.map((photo, index) => (
-                    <swiper-slide key={index} className="relative h-full w-full">
-                      <button
-                        type="button"
-                        className="absolute right-0 top-0"
-                        onClick={() => {
-                          setPhotos((prev) => prev.filter((currPhoto) => currPhoto.id !== photo.id));
-                        }}
-                      >
-                        <i className="flex h-5 w-5 items-center justify-center rounded-[50%] bg-slate-500 bg-opacity-10">
-                          <FontAwesomeIcon icon={faXmark} className="text-slate-700" />
-                        </i>
-                      </button>
-                      <img src={URL.createObjectURL(photo)} alt="" className="h-full w-full object-contain" />
-                    </swiper-slide>
-                  ))}
+                <swiper-container pagination="true" pagination-clickable="true" class="h-full w-full" slides-per-view="1">
+                  {photos.map((photo, index) => {
+                    console.log(index);
+                    return (
+                      <swiper-slide key={typeof photo === "string" ? Math.random() : photo.id} class="relative h-full w-full rounded-lg overflow-hidden">
+                        <button
+                          type="button"
+                          className="absolute right-0 top-0"
+                          onClick={() => {
+                            setPhotos((prev) => prev.filter((currPhoto) => (typeof photo === "string" && currPhoto !== photo) || currPhoto.id !== photo.id));
+                          }}
+                        >
+                          <i className="flex h-5 w-5 items-center justify-center rounded-[50%] bg-slate-500 bg-opacity-10">
+                            <FontAwesomeIcon icon={faXmark} className="text-slate-700" />
+                          </i>
+                        </button>
+                        <img
+                          src={typeof photo === "string" ? `${BACKEND_URL}/uploads/${photo}` : URL.createObjectURL(photo)}
+                          alt=""
+                          className="h-full w-full object-contain"
+                        />
+                      </swiper-slide>
+                    );
+                  })}
                 </swiper-container>
               </>
             ) : (
@@ -280,11 +267,17 @@ function AddProduct({ setPage, swiperRef, updateProducts, category, setShowSelec
             <div className="h-[.5px] grow rounded-[50%] bg-slate-400"></div>
           </div>
           <div>
-            <input type="radio" name="delivery" id="yes" onChange={() => setInput((prev) => ({ ...prev, delivery: true }))} />
+            <input type="radio" name="delivery" id="yes" onChange={() => setInput((prev) => ({ ...prev, delivery: true }))} checked={input.delivery === true} />
             <label htmlFor="yes" className="mr-6">
               Oui
             </label>
-            <input type="radio" name="delivery" id="no" onChange={() => setInput((prev) => ({ ...prev, delivery: false }))} defaultChecked />
+            <input
+              type="radio"
+              name="delivery"
+              id="no"
+              onChange={() => setInput((prev) => ({ ...prev, delivery: false }))}
+              checked={input.delivery === false}
+            />
             <label htmlFor="no">Non</label>
           </div>
           <label htmlFor="delivery" className={`relative text-base text-slate-700 ${input.delivery ? "" : "opacity-50"}`}>
@@ -318,24 +311,32 @@ function AddProduct({ setPage, swiperRef, updateProducts, category, setShowSelec
             value={input.address}
           ></textarea>
           {/* <div className="flex items-center gap-2">
-            <label className="relative font-semibold text-base text-slate-900">Critères:</label>
-            <div className="grow h-[.5px] rounded-[50%] bg-slate-400"></div>
-        </div> */}
+        <label className="relative font-semibold text-base text-slate-900">Critères:</label>
+        <div className="grow h-[.5px] rounded-[50%] bg-slate-400"></div>
+    </div> */}
           {error && (
             <div className="flex w-full items-center gap-4 rounded-lg border border-red-500 bg-red-100 px-4 py-3 text-red-500">
               <FontAwesomeIcon icon={faExclamationTriangle} size="lg" fill="red" />
               {error}
             </div>
           )}
-          <input
-            type="submit"
-            value="Ajouter"
-            className="mt-2 w-full cursor-pointer rounded-full bg-blue-500 px-4 py-2 text-white transition duration-300 hover:bg-blue-600"
-          />
+          <div className="flex flex-col scr800:flex-row gap-1">
+            <input
+              type="submit"
+              value="Enregister"
+              className=" w-full scr800:w-1/2 mt-2 cursor-pointer rounded-full bg-blue-500 px-4 py-2 text-white transition duration-300 hover:bg-blue-600"
+            />
+            <Link
+              to={"/customer/products"}
+              className="block w-full scr800:w-1/2 mt-2 px-4 py-2 cursor-pointer rounded-full bg-red-600 hover:bg-red-700 text-white text-center transition duration-300 "
+            >
+              Annuler
+            </Link>
+          </div>
         </article>
       </form>
     </>
   );
 }
 
-export default AddProduct;
+export default EditProduct;

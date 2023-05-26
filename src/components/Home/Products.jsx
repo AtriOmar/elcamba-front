@@ -42,7 +42,7 @@ function Products() {
             navigation="true"
             autoplay-delay="5000"
             autoplay-disable-on-interaction="false"
-            class="mt-2 py-1 px-1"
+            class="mt-2 py-2 px-1"
           >
             {group.map((product) => (
               <swiper-slide key={product.id} class="w-fit h-auto">

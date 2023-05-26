@@ -4,8 +4,8 @@ import Swal from "sweetalert2";
 import AddSubCategoryModal from "./AddSubCategoryModal";
 import EditSubCategoryModal from "./EditSubCategoryModal";
 import API from "../../../utils/API";
-import { MagnifyingGlass } from "react-loader-spinner";
 import axios from "axios";
+import Loader from "../../Loader";
 
 export default function SubCategories() {
   const [loading, setLoading] = useState(true);
@@ -61,17 +61,8 @@ export default function SubCategories() {
   };
   if (loading) {
     return (
-      <div className="flex items-center justify-center w-full h-[calc(100vh_-_64px)]">
-        <MagnifyingGlass
-          visible={true}
-          height="80"
-          width="80"
-          ariaLabel="MagnifyingGlass-loading"
-          wrapperStyle={{}}
-          wrapperClass="MagnifyingGlass-wrapper"
-          glassColor="#c0efff"
-          color="#e15b64"
-        />
+      <div className="flex h-[calc(100vh_-_64px)] w-full items-center justify-center">
+        <Loader />
       </div>
     );
   }
@@ -80,22 +71,22 @@ export default function SubCategories() {
   if (itemsList.length > 0) {
     items_HTMLTABLE = (
       <>
-        <div className="mx-0 grid grid-cols-12 text-center break-all">
-          <div className="pb-3 hidden md:block text-start col-span-2">ID</div>
-          <div className="pb-3 col-span-9 md:col-span-4 text-start">Categorie</div>
-          <div className="pb-3 col-span-9 md:col-span-3 text-start">Name</div>
-          <div className="pb-3 text-end sm:text-center col-span-3">Actions</div>
+        <div className="mx-0 grid grid-cols-12 break-all text-center">
+          <div className="col-span-2 hidden pb-3 text-start md:block">ID</div>
+          <div className="col-span-9 pb-3 text-start md:col-span-4">Categorie</div>
+          <div className="col-span-9 pb-3 text-start md:col-span-3">Name</div>
+          <div className="col-span-3 pb-3 text-end sm:text-center">Actions</div>
         </div>
         <div className="divide-y">
           {itemsList.map((item) => {
             return (
-              <div key={item.id} className="mx-0 grid grid-cols-12 text-center break-all">
-                <div className="pt-3 hidden md:block text-start col-span-2">{item.id}</div>
-                <div className="pt-3 col-span-9 md:col-span-4 text-start">{item.Category?.name}</div>
-                <div className="pt-3 col-span-9 md:col-span-3 text-start">{item.name}</div>
-                <div className="pt-3 text-end sm:text-center col-span-3">
+              <div key={item.id} className="mx-0 grid grid-cols-12 break-all text-center">
+                <div className="col-span-2 hidden pt-3 text-start md:block">{item.id}</div>
+                <div className="col-span-9 pt-3 text-start md:col-span-4">{item.Category?.name}</div>
+                <div className="col-span-9 pt-3 text-start md:col-span-3">{item.name}</div>
+                <div className="col-span-3 pt-3 text-end sm:text-center">
                   <div className="grid grid-cols-12">
-                    <div className="col-span-12 sm:col-span-6 text-end sm:text-center">
+                    <div className="col-span-12 text-end sm:col-span-6 sm:text-center">
                       <button
                         type="button"
                         className="btn p-0"
@@ -104,10 +95,10 @@ export default function SubCategories() {
                           setEditModalShow(true);
                         }}
                       >
-                        <PencilSquareIcon className={"text-blue-600 block h-8 w-8"} aria-hidden="true" />
+                        <PencilSquareIcon className={"block h-8 w-8 text-blue-600"} aria-hidden="true" />
                       </button>
                     </div>
-                    <div className="col-span-12 sm:col-span-6 text-end sm:text-center">
+                    <div className="col-span-12 text-end sm:col-span-6 sm:text-center">
                       <button
                         type="button"
                         className="btn p-0"
@@ -115,7 +106,7 @@ export default function SubCategories() {
                           deleteItem(e, item);
                         }}
                       >
-                        <TrashIcon className={"text-red-600 block h-8 w-8"} aria-hidden="true" />
+                        <TrashIcon className={"block h-8 w-8 text-red-600"} aria-hidden="true" />
                       </button>
                     </div>
                   </div>
@@ -128,7 +119,7 @@ export default function SubCategories() {
     );
   } else {
     items_HTMLTABLE = (
-      <div className="flex flex-col gap-4 items-center justify-center text-center h-[25vh]">
+      <div className="flex h-[25vh] flex-col items-center justify-center gap-4 text-center">
         <InboxIcon className="block h-20 w-20" aria-hidden="true" />
         <h3 className="text-2xl font-bold">Il n'y a pas de sous-categories</h3>
       </div>
@@ -136,13 +127,13 @@ export default function SubCategories() {
   }
   return (
     <>
-      <div className="max-w-[80rem] p-5 mx-auto">
+      <div className="mx-auto max-w-[80rem] p-5">
         <div className="rounded-lg shadow-lg">
-          <div className="flex justify-between items-center bg-gray-100 p-3 rounded-t-lg">
-            <h5 className="mb-3 mb-0">Sous-categories ( {itemsList.length} )</h5>
+          <div className="flex items-center justify-between rounded-t-lg bg-gray-100 p-3">
+            <h5 className="mb-0 mb-3">Sous-categories ( {itemsList.length} )</h5>
             <button
               type="button"
-              className="bg-blue-600 text-white p-2 rounded"
+              className="rounded bg-blue-600 p-2 text-white"
               onClick={() => {
                 setModalShow(true);
               }}
