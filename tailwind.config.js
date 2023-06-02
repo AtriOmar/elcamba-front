@@ -15,6 +15,8 @@ export default {
         scr900: "900px",
         scr1000: "1000px",
         scr1100: "1100px",
+        scr1150: "1150px",
+        scr1200: "1200px",
         scr1250: "1250px",
       },
       maxWidth: {

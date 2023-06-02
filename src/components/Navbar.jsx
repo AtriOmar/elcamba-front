@@ -10,14 +10,14 @@ function Navbar() {
   const [signinModalOpen, setSigninModalOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 left-0 z-[20] px-4 bg-white shadow-md">
+    <header className="sticky top-0 left-0 z-[20] px-4 py-1.5 scr800:py-0 bg-white shadow-md">
       <SigninModal show={signinModalOpen} hide={() => setSigninModalOpen(false)} />
       <div className="flex items-center justify-between max-w-w1300 m-auto py-1">
         <Link className="flex items-center gap-1" to="/">
           <img src="/logo.svg" alt="" className="h-8 -mt-1.5" />
           <span className=" font-rubik font-bold text-2xl text-red-600">CHARYOUL</span>
         </Link>
-        <div className="flex border border-amber-300 rounded-lg overflow-hidden">
+        <div className="hidden scr800:flex border border-amber-300 rounded-lg overflow-hidden">
           <input type="text" className="w-[300px] py-2 px-4 outline-none" placeholder="Rechercher dans CHARYOUL" />
           <button className="flex items-center p-1 bg-amber-300" onClick={() => {}}>
             <MagnifyingGlassIcon className="h-7 w-7 text-amber-700" />

@@ -43,12 +43,12 @@ function AdsSlider({ type = 1, setLoading }) {
           pagination="true"
           pagination-clickable="true"
           class="w-full h-full"
-          autoplay-delay="5000"
+          autoplay-delay="8000"
           autoplay-disable-on-interaction="false"
         >
           {shuffleArray(ads).map((ad) => (
             <swiper-slide key={ad.id} class="w-full h-full">
-              <img src={`${BACKEND_URL}/uploads/ads/${ad.photo}`} alt="" className="w-full h-full object-fill" />
+              <img src={`${BACKEND_URL}/uploads/ads/${ad.photo}`} alt="" className="w-full h-full object-cover" />
             </swiper-slide>
           ))}
         </swiper-container>

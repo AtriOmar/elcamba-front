@@ -6,6 +6,7 @@ import reactStringReplace from "react-string-replace";
 function CategoriesList({ setLoading }) {
   const [categories, setCategories] = useState([]);
   const [subCategories, setSubCategories] = useState([]);
+  const [active, setActive] = useState(-1);
   const [filter, setFilter] = useState("");
 
   useEffect(() => {
@@ -24,26 +25,37 @@ function CategoriesList({ setLoading }) {
   }, []);
 
   return (
-    <div className="shrink-0 flex flex-col w-[180px] rounded-lg ring ring-red-500 overflow-hidden">
-      <h4 className="py-1 bg-red-500 font-semibold text-lg text-center text-white">Catégories</h4>
+    <div
+      className="shrink-0 hidden min-[1350px]:flex flex-col w-[180px] rounded-lg border-4 border-slate-400 overflow-hidden"
+      onMouseLeave={() => setActive(-1)}
+    >
+      <h4 className="py-1 bg-slate-400 font-semibold text-lg text-center text-white">Catégories</h4>
       <ul className="peer flex flex-col grow justify- text-[15px]">
-        {categories.map((category) => (
-          <li key={category.id} className="flex grow " onMouseOver={() => setSubCategories(category.SubCategories)}>
-            <Link to={`/category?c=${category.id}`} className="flex items-center w-full px-3 hover:bg-slate-100">
+        {categories.map((category, index) => (
+          <li
+            key={category.id}
+            className="flex grow "
+            onMouseEnter={() => {
+              setSubCategories(category.SubCategories);
+              setActive(index);
+            }}
+          >
+            <Link to={`/category?c=${category.id}`} className={`flex items-center w-full px-3 ${active === index ? "bg-slate-200" : ""}`}>
               <h6 className="capitalize">{category.name}</h6>
             </Link>
           </li>
         ))}
       </ul>
       <section
-        className={`absolute top-0 left-[195px] z-10 hidden ${
+        className={`absolute top-0 left-[208px] z-10 hidden ${
           subCategories.length ? "peer-hover:flex hover:flex flex-col" : ""
-        }  h-full w-[calc(100%_-_195px)] rounded-lg bg-white ring ring-red-500`}
+        }  h-full w-[calc(100%_-_208px)] rounded-lg bg-white shadow-card2`}
       >
+        <div className="absolute left-0 -translate-x-full w-2 h-full bg-transparent"></div>
         <div className="py-2 px-3">
           <input
             type="text"
-            className="block w-full max-w-[500px] mx-auto py-2 px-4 border rounded-lg outline-none"
+            className="block w-full max-w-[500px] mx-auto py-2 px-4 border border-slate-400 rounded-lg outline-none"
             placeholder="Rechercher des catégories"
             value={filter}
             onChange={(e) => setFilter(e.target.value)}

@@ -9,9 +9,9 @@ function ProductCard({ product }) {
   return (
     <Link
       to={`/product/${product.id}`}
-      className="block w-[175px] h-full rounded-lg bg-white shadow-card1 hover:shadow-card2 hover:scale-[1.02] duration-300 overflow-hidden"
+      className="block w-[125px] scr1150:w-[175px] h-full rounded-lg bg-white shadow-card1 hover:shadow-card2 hover:scale-[1.02] duration-300 overflow-hidden"
     >
-      <div className="h-[175px] w-full border-b">
+      <div className="aspect-square w-full border-b">
         <img src={`${BACKEND_URL}/uploads/${product.photos[0]}`} alt="" className="w-full h-full object-cover" />
       </div>
       <div className="py-2 px-3">

@@ -10,7 +10,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserGear, faUserPen } from "@fortawesome/free-solid-svg-icons";
 import { faRectangleList } from "@fortawesome/free-regular-svg-icons";
 import { IonIcon } from "@ionic/react";
-import { logOutOutline } from "ionicons/icons";
+import { logOutOutline, megaphoneOutline } from "ionicons/icons";
 
 function CustomerDropdown({ path = "" }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -69,6 +69,12 @@ function CustomerDropdown({ path = "" }) {
             <Link to="/customer/products" className="flex gap-2 items-center hover:bg-slate-100 p-2 rounded-lg">
               <FontAwesomeIcon icon={faRectangleList} className="" />
               Mes produits
+            </Link>
+          </li>
+          <li className="">
+            <Link to="/customer/promote/manage" className="flex gap-2 items-center hover:bg-slate-100 p-2 rounded-lg">
+              <IonIcon icon={megaphoneOutline} className="text-xl" aria-hidden="true" />
+              Mes publicités
             </Link>
           </li>
           <li className="">

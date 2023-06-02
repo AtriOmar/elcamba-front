@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { faImage } from "@fortawesome/free-regular-svg-icons";
 import { faArrowLeft, faExclamationTriangle, faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -8,6 +8,7 @@ import { useUIContext } from "../../../contexts/UIProvider";
 import { useAuthContext } from "../../../contexts/AuthProvider";
 import { useNavigate, useParams } from "react-router";
 import { Link } from "react-router-dom";
+import Switch from "../../Switch";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -22,6 +23,8 @@ function EditProduct({ product, category, setShowSelectCategory }) {
     delivery: product.delivery,
     deliveryBody: product.deliveryBody,
     address: product.address,
+    visible: product.visible,
+    sold: product.sold,
   });
   const [error, setError] = useState("");
 
@@ -88,6 +91,8 @@ function EditProduct({ product, category, setShowSelectCategory }) {
     formData.append("delivery", input.delivery);
     formData.append("deliveryBody", input.deliveryBody);
     formData.append("address", input.address);
+    formData.append("visible", input.visible);
+    formData.append("sold", input.sold);
 
     try {
       const result = await axios.post("/products/update", formData);
@@ -107,19 +112,66 @@ function EditProduct({ product, category, setShowSelectCategory }) {
     }
   }
 
-  useEffect(() => {
-    console.log(photos);
-  }, [photos]);
+  // useEffect(() => {
+  //   console.log(photos);
+  // }, [photos]);
+
+  console.log(photos);
+
+  const photosSwiper = useMemo(
+    () =>
+      photos?.length ? (
+        <swiper-container pagination="true" pagination-clickable="true" class="h-full w-full">
+          {photos.map((photo, index) => (
+            <swiper-slide key={Math.random()} class="relative h-full w-full rounded-lg overflow-hidden">
+              <button
+                type="button"
+                className="absolute right-0 top-0"
+                onClick={() => {
+                  setPhotos((prev) => prev.filter((currPhoto) => (typeof photo === "string" && currPhoto !== photo) || currPhoto.id !== photo.id));
+                }}
+              >
+                <i className="flex h-5 w-5 items-center justify-center rounded-[50%] bg-slate-500 bg-opacity-10">
+                  <FontAwesomeIcon icon={faXmark} className="text-slate-700" />
+                </i>
+              </button>
+              <img
+                src={typeof photo === "string" ? `${BACKEND_URL}/uploads/${photo}` : URL.createObjectURL(photo)}
+                alt=""
+                className="h-full w-full object-contain"
+              />
+            </swiper-slide>
+          ))}
+        </swiper-container>
+      ) : (
+        <>
+          <i className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+            <FontAwesomeIcon icon={faImage} className="text-slate-300" size="10x" />
+          </i>
+        </>
+      ),
+    [photos]
+  );
 
   return (
     <>
       <div className="flex items-center gap-4" id="edit-product">
         <h3 className="text-lg font-medium">Modifier produit:</h3>
       </div>
-      <form action="" className="flex flex-col gap-2 scr1000:flex-row scr1000:gap-10" onSubmit={handleSubmit}>
+      <form action="" className="flex flex-col gap-2 scr1000:flex-row scr1000:gap-10 mt-2" onSubmit={handleSubmit}>
         <article className="w-full scr1000:w-1/2 ">
+          <div className="flex mt-2">
+            <div>
+              <p className=" font-medium text-sky-700">Visible:</p>
+              <Switch checked={input.visible} setChecked={(value) => setInput((prev) => ({ ...prev, visible: value }))} />
+            </div>
+            <div className="ml-10 pl-10 border-l-2 border-slate-300">
+              <p className=" font-medium text-sky-700">Vendu:</p>
+              <Switch checked={input.sold} setChecked={(value) => setInput((prev) => ({ ...prev, sold: value }))} />
+            </div>
+          </div>
           <div className="flex items-center gap-2">
-            <label className="relative text-base text-slate-700">Photo(s):</label>
+            <label className="relative font-medium text-sky-700">Photo(s):</label>
             <div className="h-[.5px] grow rounded-[50%] bg-slate-400"></div>
           </div>
           <div className="relative h-[300px] w-[300px] rounded-lg border">
@@ -149,45 +201,11 @@ function EditProduct({ product, category, setShowSelectCategory }) {
                 e.target.value = "";
               }}
             />
-            {photos?.length ? (
-              <>
-                <swiper-container pagination="true" pagination-clickable="true" class="h-full w-full" slides-per-view="1">
-                  {photos.map((photo, index) => {
-                    console.log(index);
-                    return (
-                      <swiper-slide key={typeof photo === "string" ? Math.random() : photo.id} class="relative h-full w-full rounded-lg overflow-hidden">
-                        <button
-                          type="button"
-                          className="absolute right-0 top-0"
-                          onClick={() => {
-                            setPhotos((prev) => prev.filter((currPhoto) => (typeof photo === "string" && currPhoto !== photo) || currPhoto.id !== photo.id));
-                          }}
-                        >
-                          <i className="flex h-5 w-5 items-center justify-center rounded-[50%] bg-slate-500 bg-opacity-10">
-                            <FontAwesomeIcon icon={faXmark} className="text-slate-700" />
-                          </i>
-                        </button>
-                        <img
-                          src={typeof photo === "string" ? `${BACKEND_URL}/uploads/${photo}` : URL.createObjectURL(photo)}
-                          alt=""
-                          className="h-full w-full object-contain"
-                        />
-                      </swiper-slide>
-                    );
-                  })}
-                </swiper-container>
-              </>
-            ) : (
-              <>
-                <i className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-                  <FontAwesomeIcon icon={faImage} className="text-slate-300" size="10x" />
-                </i>
-              </>
-            )}
+            {photosSwiper}
           </div>
 
           <div className="flex items-center gap-2">
-            <h6 className="relative text-base font-semibold text-slate-900">Informations sur le produit:</h6>
+            <h6 className="relative mt-2 text-base font-semibold text-sky-700">Informations sur le produit:</h6>
             <div className="h-[.5px] grow rounded-[50%] bg-slate-400"></div>
           </div>
           <label htmlFor="name" className="relative text-base text-slate-700">
@@ -263,7 +281,7 @@ function EditProduct({ product, category, setShowSelectCategory }) {
             value={input.description}
           ></textarea>
           <div className="flex items-center gap-2">
-            <label className="relative text-base font-semibold text-slate-900">Livraison:</label>
+            <label className="relative text-base font-semibold text-sky-700">Livraison:</label>
             <div className="h-[.5px] grow rounded-[50%] bg-slate-400"></div>
           </div>
           <div>
@@ -287,7 +305,7 @@ function EditProduct({ product, category, setShowSelectCategory }) {
             disabled={!input.delivery}
             name="deliveryBody"
             id="deliveryBody"
-            rows="2"
+            rows="6"
             placeholder="Prix et zone (de livraision)"
             className={`w-full resize-none rounded-lg border border-slate-700 px-2 py-1 outline-0 ring-inset ring-blue-500 transition-all duration-150 focus:ring-1 ${
               input.delivery ? "" : "opacity-50"
@@ -296,7 +314,7 @@ function EditProduct({ product, category, setShowSelectCategory }) {
             value={input.deliveryBody}
           ></textarea>
           <div className="flex items-center gap-2">
-            <label htmlFor="adresse" className="relative text-base font-semibold text-slate-900">
+            <label htmlFor="adresse" className="relative text-base font-semibold text-sky-700">
               Adresse:
             </label>
             <div className="h-[.5px] grow rounded-[50%] bg-slate-400"></div>

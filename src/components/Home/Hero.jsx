@@ -9,30 +9,41 @@ import AdsSlider from "./Hero/AdsSlider";
 
 function Hero({ setLoading }) {
   return (
-    <div className="mt-6 px-4">
-      <div className="relative flex gap-2 w-fit m-auto py-4 px-4 rounded-xl bg-white shadow-md">
+    <div className="mt-2 scr1150:mt-6 scr1150:px-4 [&_*]:box-content box-content">
+      <div className="relative flex flex-col scr1150:flex-row gap-2 scr1150:w-fit m-auto py-4 px-4 rounded-xl bg-white shadow-md">
         <CategoriesList setLoading={setLoading} />
-        <section className="flex flex-col justify-between w-[600px] ml-1">
-          <article className="w-full h-[300px] border border-slate-200 rounded-lg bg-cover overflow-hidden">
+        <section className="flex flex-col justify-between  scr1150:w-[600px]">
+          <article className="grid aspect-[2/1] border border-slate-200 rounded-lg bg-cover overflow-hidden">
             <AdsSlider type={1} setLoading={setLoading} />
           </article>
-          <article className="w-full h-[220px] border border-slate-200 rounded-lg">
+          <article className="scr1150:aspect-[600/220] border border-slate-200 rounded-lg">
             <PremiumProducts setLoading={setLoading} />
           </article>
         </section>
-        <section className="flex flex-col justify-between w-[450px]">
-          <article className="grid grid-cols-2 justify-between h-[260px]">
-            <div className="w-[220px] border border-slate-200 rounded-lg bg-cover overflow-hidden">
+        <section className="grid grid-cols-2 scr600:grid-cols-4 scr1150:grid-cols-2 gap-2 w-full scr1150:w-[450px]">
+          <div className="aspect-[220/260] border border-slate-200 rounded-lg bg-cover overflow-hidden">
+            <AdsSlider type={2} setLoading={setLoading} />
+          </div>
+          <div className="aspect-[220/260] border border-slate-200 rounded-lg bg-cover overflow-hidden">
+            <AdsSlider type={2} setLoading={setLoading} />
+          </div>
+          <article className="col-span-2 aspect-[450/260] mt-1 border border-slate-200 rounded-lg bg-cover overflow-hidden">
+            <AdsSlider type={3} setLoading={setLoading} />
+          </article>
+        </section>
+        {/* <section className="flex flex-col justify-between w-[450px]">
+          <article className="grid grid-cols-2 gap-2 justify-between aspect-[450/260]">
+            <div className="aspect-[220/260] h-full border border-slate-200 rounded-lg bg-cover overflow-hidden">
               <AdsSlider type={2} setLoading={setLoading} />
             </div>
-            <div className="w-[220px] border border-slate-200 rounded-lg bg-cover overflow-hidden">
+            <div className="w-[220px aspect-[220/260] h-full border border-slate-200 rounded-lg bg-cover overflow-hidden">
               <AdsSlider type={2} setLoading={setLoading} />
             </div>
           </article>
           <article className="grid grid-cols-1 h-[260px] mt-1 border border-slate-200 rounded-lg bg-cover overflow-hidden">
             <AdsSlider type={3} setLoading={setLoading} />
           </article>
-        </section>
+        </section> */}
       </div>
     </div>
   );

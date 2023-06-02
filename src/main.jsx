@@ -25,6 +25,12 @@ import Category from "./components/Category.jsx";
 import CategoryLayout from "./layouts/CategoryLayout";
 import Product from "./components/Product";
 import ViewProduct from "./components/customer/ViewProduct";
+import PromoteProduct from "./components/customer/PromoteProduct";
+import PromoteLayout from "./layouts/PromoteLayout";
+import PromoteManager from "./components/customer/PromoteManager";
+import PromotePoster from "./components/customer/PromotePoster";
+import Payment from "./components/Payment";
+import ViewAd from "./components/customer/ViewAd";
 
 register();
 
@@ -104,11 +110,31 @@ const router = createBrowserRouter([
             path: "products/:id",
             element: <ViewProduct />,
           },
+          {
+            path: "promote/manage",
+            element: <PromoteManager />,
+          },
+          {
+            path: "promote/product",
+            element: <PromoteProduct />,
+          },
+          {
+            path: "promote/poster",
+            element: <PromotePoster />,
+          },
+          {
+            path: "promote/:id",
+            element: <ViewAd />,
+          },
         ],
       },
       {
         path: "product/:id",
         element: <Product />,
+      },
+      {
+        path: "payment/:token",
+        element: <Payment />,
       },
     ],
   },

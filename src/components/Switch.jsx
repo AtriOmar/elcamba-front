@@ -1,6 +1,6 @@
 import React from "react";
 
-function Switch({ checked, setChecked, disabled }) {
+function Switch({ checked, setChecked, disabled = false }) {
   return (
     <label className={`relative inline-flex items-center ${disabled ? "" : "cursor-pointer"}`}>
       <input
@@ -14,7 +14,7 @@ function Switch({ checked, setChecked, disabled }) {
             return;
           }
 
-          setChecked((prev) => !prev);
+          setChecked(!checked);
         }}
       />
       <div

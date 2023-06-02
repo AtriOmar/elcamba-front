@@ -5,7 +5,7 @@ import { useParams } from "react-router";
 import formatPath from "../../lib/formatPath";
 import { UserIcon } from "@heroicons/react/24/solid";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLocationDot, faMessage, faStar, faStarHalfStroke, faTruck } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft, faLocationDot, faMessage, faStar, faStarHalfStroke, faTruck } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
@@ -13,6 +13,10 @@ const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 function ProductDetails({ product, path }) {
   return (
     <div className="m-2 rounded-lg bg-white p-6 shadow-md">
+      <Link to={`/category?s=${product.SubCategory.id}`} className="flex items-center gap-2 mb-4 text-black hover:text-slate-700 duration-300">
+        <FontAwesomeIcon icon={faArrowLeft} size="sm" className="" />
+        <h2 className=" font-semibold capitalize">Gérer</h2>
+      </Link>
       <section className="flex flex-col scr800:flex-row gap-4 items-start">
         <article className="scr800:sticky top-[64px] shrink-0 w-full scr800:w-2/5 min-w-[300px] max-w-[500px] mx-auto">
           <swiper-container class="rounded-lg border-2 border-slate-200" no-swiping="false" thumbs-swiper=".product-thumbs">
@@ -42,7 +46,7 @@ function ProductDetails({ product, path }) {
           </p>
           <p className="mt-10 font-medium text-sky-700">Description:</p>
           <p className="max-w-[700px] whitespace-pre-wrap">{product.description}</p>
-          <div className="flex items-center mt-10 max-w-[700px]">
+          <div className="flex flex-col scr600:flex-row items-start scr600:items-center gap-4 mt-10 max-w-[700px]">
             <div className="flex flex-col gap-2 grow">
               <p className="font-medium text-sky-700">Vendeur:</p>
               <p className="flex items-center gap-3">

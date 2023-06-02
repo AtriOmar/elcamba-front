@@ -3,18 +3,19 @@ import React, { useEffect, useState } from "react";
 import ProductCard from "./ProductCard";
 
 function PremiumProducts({ setLoading }) {
-  const [products, setProducts] = useState([]);
+  const [ads, setAds] = useState([]);
 
   useEffect(() => {
     async function fetchProducts() {
       try {
-        const res = await axios.get("/products/getRandom", {
+        const res = await axios.get("/ads/getRandom", {
           params: {
+            type: 0,
             limit: 20,
           },
         });
         console.log(res.data);
-        setProducts(res.data);
+        setAds(res.data);
       } catch (err) {
         console.log(err);
       }
@@ -29,13 +30,13 @@ function PremiumProducts({ setLoading }) {
       slides-per-group="3"
       space-between="10"
       navigation="true"
-      class="w-full h-full py-1"
+      class="h-full p-1"
       autoplay-delay="5000"
       autoplay-disable-on-interaction="false"
     >
-      {products.map((product) => (
-        <swiper-slide key={product.id} class="w-fit h-auto">
-          <ProductCard product={product} />
+      {ads.map((ad) => (
+        <swiper-slide key={ad.id} class="w-fit h-auto">
+          <ProductCard product={ad.Product} />
         </swiper-slide>
       ))}
     </swiper-container>

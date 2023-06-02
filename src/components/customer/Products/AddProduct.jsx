@@ -173,7 +173,7 @@ function AddProduct({ setPage, swiperRef, updateProducts, category, setShowSelec
                 {/* <img src={URL.createObjectURL(photos[0])} alt="" className="w-full h-full object-cover" /> */}
                 <swiper-container pagination="true" pagination-clickable="true" class="h-full w-full" no-swiping="false">
                   {photos.map((photo, index) => (
-                    <swiper-slide key={index} className="relative h-full w-full">
+                    <swiper-slide key={photo.id} className="relative h-full w-full">
                       <button
                         type="button"
                         className="absolute right-0 top-0"
@@ -294,7 +294,7 @@ function AddProduct({ setPage, swiperRef, updateProducts, category, setShowSelec
             disabled={!input.delivery}
             name="deliveryBody"
             id="deliveryBody"
-            rows="2"
+            rows="6"
             placeholder="Prix et zone (de livraision)"
             className={`w-full resize-none rounded-lg border border-slate-700 px-2 py-1 outline-0 ring-inset ring-blue-500 transition-all duration-150 focus:ring-1 ${
               input.delivery ? "" : "opacity-50"

@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import PriceSlider from "../PriceSlider";
 import { useUIContext } from "../../contexts/UIProvider";
-import { ColorRing } from "react-loader-spinner";
+import RingLoader from "../RingLoader";
 
 function Sidebar() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -25,23 +25,11 @@ function Sidebar() {
   // }, [searchParams]);
 
   return (
-    <div className="h-full w-[250px] py-10 px-4 bg-white font-medium text-lg shadow-md">
+    <div className="hidden scr900:block h-full w-[250px] py-10 px-4 bg-white font-medium text-lg shadow-md">
       <h3 className="flex items-center gap-2 font-semibold text-xl text-slate-900">
         <FontAwesomeIcon icon={faFilter} />
         Filtrer
-        {filtering ? (
-          <ColorRing
-            visible={true}
-            height="25"
-            width="25"
-            ariaLabel="blocks-loading"
-            wrapperStyle={{ marginLeft: "auto" }}
-            wrapperClass="blocks-wrapper"
-            colors={["#0F172A"]}
-          />
-        ) : (
-          ""
-        )}
+        {filtering ? <RingLoader /> : ""}
       </h3>
       <h4 className="mt-2 text-slate-700">Prix</h4>
       <div className="px-2">

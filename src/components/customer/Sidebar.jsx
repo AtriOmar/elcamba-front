@@ -1,5 +1,7 @@
 import { faBox, faBoxArchive, faBoxOpen } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { IonIcon } from "@ionic/react";
+import { megaphoneOutline } from "ionicons/icons";
 import React from "react";
 import { Link } from "react-router-dom";
 
@@ -11,6 +13,12 @@ function Sidebar() {
           <Link className="flex gap-2 items-center" to={"/customer/products"}>
             <FontAwesomeIcon icon={faBox} />
             <span>Mes produits</span>
+          </Link>
+        </li>
+        <li>
+          <Link className="flex gap-2 items-center" to={"/customer/promote/manage"}>
+            <IonIcon icon={megaphoneOutline} className="text-xl" aria-hidden="true" />
+            <span>Publicités</span>
           </Link>
         </li>
         <li>

@@ -7,20 +7,21 @@ import ProductCard from "../Home/Hero/ProductCard";
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 function PremiumProducts() {
-  const [products, setProducts] = useState(null);
+  const [ads, setAds] = useState(null);
   const [loading, setLoading] = useState(true);
   const [path, setPath] = useState([]);
   const { id } = useParams();
 
   async function fetchProduct() {
     try {
-      const res = await axios.get("/products/getRandom", {
+      const res = await axios.get("/ads/getRandom", {
         params: {
-          limit: 20,
+          // limit: 20,
+          type: "product",
         },
       });
 
-      setProducts(res.data);
+      setAds(res.data);
       console.log(res.data);
     } catch (err) {
       console.log(err);
@@ -54,9 +55,9 @@ function PremiumProducts() {
         autoplay-delay="5000"
         autoplay-disable-on-interaction="false"
       >
-        {products.map((product) => (
-          <swiper-slide key={product.id} class="w-fit h-auto">
-            <ProductCard product={product} />
+        {ads.map((ad) => (
+          <swiper-slide key={ad.id} class="w-fit h-auto">
+            <ProductCard product={ad.Product} />
           </swiper-slide>
         ))}
       </swiper-container>

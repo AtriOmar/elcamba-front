@@ -12,7 +12,7 @@ const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 function ProductDetails({ product }) {
   return (
     <div className="">
-      {/* photos swiper */}
+      {/* ------------------------- photos swiper ----------------------------- */}
       <section className="flex flex-col scr1000:flex-row gap-4 items-start">
         <article className="scr1000:sticky top-10 shrink-0 w-full scr1000:w-2/5 min-w-[200px] max-w-[400px] mx-auto">
           <swiper-container class="rounded-lg border-2 border-slate-200" no-swiping="false" thumbs-swiper=".product-thumbs">
@@ -22,18 +22,18 @@ function ProductDetails({ product }) {
               </swiper-slide>
             ))}
           </swiper-container>
-          <swiper-container slides-per-view="auto" space-between="10" class="product-thumbs w-fit p-2">
+          <swiper-container navigation="true" slides-per-group="4" slides-per-view="auto" space-between="10" class="product-thumbs w-fit p-2">
             {product.photos.map((photo, index) => (
               <swiper-slide
                 key={index}
-                class=" w-fit rounded-md opacity-60 ring-2 ring-slate-200 transition-all duration-300 [&.swiper-slide-thumb-active]:opacity-100 [&.swiper-slide-thumb-active]:ring-slate-300"
+                class=" w-fit rounded-md opacity-60 ring-2 ring-slate-200 transition-all duration-300 [&.swiper-slide-thumb-active]:opacity-100 [&.swiper-slide-thumb-active]:ring-red-500 [&.swiper-slide-thumb-active]:ring-offset-1"
               >
-                <img src={`${BACKEND_URL}/uploads/${photo}`} alt="" className="aspect-square h-20 cursor-pointer rounded-md object-contain" />
+                <img src={`${BACKEND_URL}/uploads/${photo}`} alt="" className="aspect-square h-14 cursor-pointer rounded-md object-contain" />
               </swiper-slide>
             ))}
           </swiper-container>
         </article>
-        {/* product details */}
+        {/* ---------------------------- product details ---------------------------- */}
         <article className="grow w-full scr1000:w-auto">
           <h2 className="mt-4 text-2xl font-bold capitalize text-sky-600">{product.name}</h2>
           <div className="flex items-center flex-wrap gap-x-4">
@@ -44,15 +44,18 @@ function ProductDetails({ product }) {
               }}
             >
               <FontAwesomeIcon icon={faPenToSquare} size="lg" />
-              Modifer le produit
+              Modifier
             </button>
-            <button className="flex items-center gap-4 w-fit mt-4  py-2 px-10 rounded-lg bg-green-500 hover:bg-green-600 text-white duration-300">
+            <Link
+              to={`/customer/promote/product?p=${product.id}`}
+              className="flex items-center gap-4 w-fit mt-4  py-2 px-10 rounded-lg bg-green-500 hover:bg-green-600 text-white duration-300"
+            >
               <IonIcon icon={megaphoneOutline} className="text-2xl" aria-hidden="true" />
-              Promouvoir le produit
-            </button>
+              Promouvoir
+            </Link>
             <button className="flex items-center gap-4 w-fit mt-4  py-2 px-10 rounded-lg bg-red-500 hover:bg-red-600 text-white duration-300">
               <IonIcon icon={trash} className="text-2xl" aria-hidden="true" />
-              Supprimer le produit
+              Supprimer
             </button>
           </div>
           <p className="mt-10 font-medium text-sky-700">Date de création:</p>
