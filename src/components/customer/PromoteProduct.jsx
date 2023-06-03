@@ -67,7 +67,7 @@ function PromoteProduct() {
   }
 
   return (
-    <div className="p-6 pb-40 rounded-lg bg-white shadow-md">
+    <div className="py-6 px-3 scr1000:px-6 pb-40 rounded-lg bg-white shadow-md">
       <div className="max-w-[800px]">
         <div className="flex items-center gap-4 mb-8">
           <Link to="/customer/promote/manage">
@@ -75,7 +75,7 @@ function PromoteProduct() {
           </Link>
           <h2 className=" text-2xl font-bold capitalize text-sky-600">Promouvoir produit:</h2>
         </div>
-        <section className="flex gap-10 mt-10">
+        <section className="flex flex-col scr600:flex-row gap-x-10 mt-10">
           <article className="grow">
             <p className=" mb-1 font-medium text-lg text-sky-900">Selectionner un produit:</p>
             <ProductSelect product={product} setProduct={setProduct} />
@@ -83,7 +83,7 @@ function PromoteProduct() {
             <p className="mt-3 mb-1 font-medium text-lg text-sky-900">Durée:</p>
             <DurationSelect input={input} setInput={setInput} />
           </article>
-          <article className="flex items-center justify-center flex-col w-full max-w-[200px] h-auto mt-8 border-2 border-slate-300 rounded-lg font-bold text-gray-800">
+          <article className="flex items-center justify-center flex-col w-full max-w-[200px] h-auto mt-8 py-6 border-2 border-slate-300 rounded-lg font-bold text-gray-800">
             <p>Prix:</p>
             <p>{amount} DT</p>
           </article>

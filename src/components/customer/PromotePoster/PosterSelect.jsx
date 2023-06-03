@@ -38,10 +38,10 @@ function PosterSelect({ input, setInput }) {
       ) : (
         <>
           <span
-            className={`absolute z-10 right-1/2 translate-x-1/2 top-1/2 flex  h-10 w-10 -translate-y-1/2 cursor-pointer items-center justify-center rounded-lg bg-blue-500  shadow-md transition-all duration-300 hover:bg-blue-600`}
+            className={`absolute z-10 right-1/2 translate-x-1/2 top-1/2 flex  w-8 scr800:w-10 aspect-square -translate-y-1/2 cursor-pointer items-center justify-center rounded-lg bg-blue-500  shadow-md transition-all duration-300 hover:bg-blue-600`}
           >
-            <FontAwesomeIcon icon={faPlus} className="text-white" size="2xl" />
-            <p className="absolute top-[120%] font-medium text-lg">{RATIO[input.type].replace("/", ":")}</p>
+            <FontAwesomeIcon icon={faPlus} className="text-white w-3/4 h-3/4" />
+            <p className="absolute top-[120%] font-medium text-sm scr800:text-lg">{RATIO[input.type].replace("/", ":")}</p>
           </span>
         </>
       )}
@@ -82,7 +82,7 @@ function PosterSelect({ input, setInput }) {
       ) : (
         <>
           <i className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-            <FontAwesomeIcon icon={faImage} className="text-slate-300" size="10x" />
+            <FontAwesomeIcon icon={faImage} className="text-slate-300 h-28 scr600:h-32 scr800:h-40" />
           </i>
         </>
       )}

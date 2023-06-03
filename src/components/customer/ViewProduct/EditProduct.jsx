@@ -239,7 +239,7 @@ function EditProduct({ product, category, setShowSelectCategory }) {
           <label htmlFor="oldPrice" className="relative mt-2 block text-base text-slate-700">
             Prix ancien (s'il y a un solde, sinon laissez vide):
           </label>
-          <div className="flex w-1/3 rounded-lg duration-150">
+          <div className="flex max-w-[250px] rounded-lg duration-150">
             <input
               id="oldPrice"
               name="oldPrice"
@@ -254,7 +254,7 @@ function EditProduct({ product, category, setShowSelectCategory }) {
           <label htmlFor="price" className="relative mt-2 block text-base text-slate-700">
             Prix:
           </label>
-          <div className="flex w-1/3 rounded-lg duration-150">
+          <div className="flex max-w-[250px] rounded-lg duration-150">
             <input
               id="price"
               name="price"

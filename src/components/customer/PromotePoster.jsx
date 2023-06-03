@@ -55,7 +55,7 @@ function PromotePoster() {
   }
 
   return (
-    <div className="p-6 pb-20 rounded-lg bg-white shadow-md">
+    <div className="py-6 px-3 scr1000:px-6 pb-20 rounded-lg bg-white shadow-md">
       <div className="max-w-[700px]">
         <div className="flex items-center gap-4 mb-8">
           <Link to="/customer/promote/manage">
@@ -65,14 +65,14 @@ function PromotePoster() {
         </div>
         <h3 className="mt-10 mb-2 font-medium text-xl text-center ">Page d'acceuil</h3>
         <TypeSelect input={input} setInput={setInput} />
-        <section className="flex gap-10 mt-10">
+        <section className="flex flex-col scr600:flex-row gap-x-10 mt-10">
           <article className="grow">
             <p className="mt-4 mb-1 font-medium text-lg text-sky-900">Affiche:</p>
             <PosterSelect input={input} setInput={setInput} />
             <p className="mt-4 mb-1 font-medium text-lg text-sky-900">Durée:</p>
             <DurationSelect input={input} setInput={setInput} />
           </article>
-          <article className="flex items-center justify-center shrink-0 flex-col w-full max-w-[200px] h-auto mt-8 border-2 border-slate-300 rounded-lg font-bold text-gray-800">
+          <article className="flex items-center justify-center shrink-0 flex-col w-full max-w-[200px] h-auto mt-8 py-6 border-2 border-slate-300 rounded-lg font-bold text-gray-800">
             <p>Prix:</p>
             <p>{amount} DT</p>
           </article>

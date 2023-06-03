@@ -53,10 +53,10 @@ function ProductDetails({ product }) {
               <IonIcon icon={megaphoneOutline} className="text-2xl" aria-hidden="true" />
               Promouvoir
             </Link>
-            <button className="flex items-center gap-4 w-fit mt-4  py-2 px-10 rounded-lg bg-red-500 hover:bg-red-600 text-white duration-300">
+            {/* <button className="flex items-center gap-4 w-fit mt-4  py-2 px-10 rounded-lg bg-red-500 hover:bg-red-600 text-white duration-300">
               <IonIcon icon={trash} className="text-2xl" aria-hidden="true" />
               Supprimer
-            </button>
+            </button> */}
           </div>
           <p className="mt-10 font-medium text-sky-700">Date de création:</p>
           <p className="max-w-[700px] whitespace-pre-wrap">
