@@ -8,6 +8,7 @@ import { IonIcon } from "@ionic/react";
 import { megaphoneOutline } from "ionicons/icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import RingLoader from "../RingLoader";
 
 const PRICES = {
   1: 12,
@@ -25,12 +26,16 @@ function PromotePoster() {
   const amount = useMemo(() => input.duration * PRICES[input.type], [input.type, input.duration]);
   const [paymentUrl, setPaymentUrl] = useState(null);
   const navigate = useNavigate();
+  const [sending, setSending] = useState(false);
 
   useEffect(() => {
     console.log(product);
   }, []);
 
   async function createPayment() {
+    if (sending) return;
+
+    setSending(true);
     try {
       const formData = new FormData();
       formData.append("photo", input.photo);
@@ -39,12 +44,14 @@ function PromotePoster() {
       formData.append("amount", amount);
       const res = await axios.post("/ads/createPosterPayment", formData);
       console.log("create poster payment", res.data);
-      navigate(`/payment/${res.data}`);
+      // navigate(`/payment/${res.data}`);
+      window.open(`/payment/${res.data}`, "_blank");
       // setPaymentUrl(`https://sandbox.paymee.tn/gateway/${res.data.data.token}`);
       // window.addEventListener("message", handlePayment);
     } catch (err) {
       console.log(err);
     }
+    setSending(false);
   }
 
   return (
@@ -70,13 +77,22 @@ function PromotePoster() {
             <p>{amount} DT</p>
           </article>
         </section>
-        <button
-          className="flex items-center gap-4 w-fit mt-4  py-2 px-10 rounded-lg bg-green-500 hover:bg-green-600 text-white duration-300"
-          onClick={createPayment}
-        >
-          <IonIcon icon={megaphoneOutline} className="text-2xl" aria-hidden="true" />
-          Promouvoir
-        </button>
+        <div className="relative w-fit">
+          <button
+            className="flex items-center gap-4 w-fit mt-4  py-2 px-10 rounded-lg bg-green-500 hover:bg-green-600 text-white duration-300"
+            onClick={createPayment}
+          >
+            <IonIcon icon={megaphoneOutline} className="text-2xl" aria-hidden="true" />
+            Promouvoir
+          </button>
+          {sending ? (
+            <i className="absolute right-1 top-1/2 -translate-y-1/2">
+              <RingLoader color="white" />
+            </i>
+          ) : (
+            ""
+          )}
+        </div>
       </div>
     </div>
   );

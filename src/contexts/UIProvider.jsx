@@ -8,6 +8,37 @@ function UIProvider({ children }) {
   const [popups, setPopups] = useState([]);
   const [priceRange, setPriceRange] = useState({ min: 0, max: 5000, inputMin: 0, inputMax: 5000 });
   const [filtering, setFiltering] = useState(false);
+  const [mobileNavbarOpen, setMobileNavbarOpen] = useState(false);
+
+  useEffect(() => {
+    function handleResize(e) {
+      if (mobileNavbarOpen && window.innerWidth > 1000) {
+        setMobileNavbarOpen(false);
+      }
+    }
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [mobileNavbarOpen]);
+
+  useEffect(() => {
+    function handleKeydown(e) {
+      if (e.key === "Escape") {
+        setMobileNavbarOpen(false);
+      }
+    }
+
+    if (mobileNavbarOpen) {
+      document.addEventListener("keydown", handleKeydown);
+
+      return () => {
+        document.removeEventListener("keydown", handleKeydown);
+      };
+    }
+  }, [mobileNavbarOpen]);
 
   useEffect(() => {
     console.log("price range", priceRange);
@@ -27,6 +58,8 @@ function UIProvider({ children }) {
     setPriceRange,
     filtering,
     setFiltering,
+    mobileNavbarOpen,
+    setMobileNavbarOpen,
   };
 
   return <UIContext.Provider value={value}>{children}</UIContext.Provider>;

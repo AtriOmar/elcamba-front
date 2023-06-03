@@ -57,7 +57,7 @@ function Products() {
   }
 
   return (
-    <div className=" p-6 rounded-lg bg-white shadow-md">
+    <div className=" py-6 px-3 scr1000:px-6 rounded-lg bg-white shadow-md">
       <SelectCategory show={showSelectCategory} setShow={setShowSelectCategory} setCategory={setCategory} />
       <div className="w-full overflow-hidden">
         <swiper-container ref={swiperElRef} auto-height="true">

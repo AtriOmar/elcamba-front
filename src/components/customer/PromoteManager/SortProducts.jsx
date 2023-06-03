@@ -41,7 +41,7 @@ function SortProducts({ input, setInput }) {
         </Popover.Button>
 
         <Popover.Panel
-          className={`absolute left-1/2 w-fit -translate-x-1/2 divide-y rounded-md bg-white p-1 shadow-card1 ring-2 ring-slate-300 ${
+          className={`absolute left-1/2 w-fit -translate-x-1/2 z-10 divide-y rounded-md bg-white p-1 shadow-card1 ring-2 ring-slate-300 ${
             isOverflowing ? "bottom-full mb-1" : "top-full mt-1"
           }`}
         >

@@ -47,7 +47,7 @@ function CategoriesList({ setLoading }) {
         ))}
       </ul>
       <section
-        className={`absolute top-0 left-[208px] z-10 hidden ${
+        className={`absolute top-0 left-[208px] z-20 hidden ${
           subCategories.length ? "peer-hover:flex hover:flex flex-col" : ""
         }  h-full w-[calc(100%_-_208px)] rounded-lg bg-white shadow-card2`}
       >

@@ -8,6 +8,8 @@ import { v4 as uuidv4 } from "uuid";
 import { useUIContext } from "../../../contexts/UIProvider";
 import useLocalStorage from "../../../lib/useLocalStorage";
 import { useAuthContext } from "../../../contexts/AuthProvider";
+import RingLoader from "../../RingLoader";
+import { mdTransitionAnimation } from "@ionic/react";
 
 const config = {
   onUploadProgress: (e) => {
@@ -29,6 +31,7 @@ function AddProduct({ setPage, swiperRef, updateProducts, category, setShowSelec
     address: "",
   });
   const [error, setError] = useState("");
+  const [sending, setSending] = useState(false);
 
   const { addPopup } = useUIContext();
 
@@ -56,6 +59,8 @@ function AddProduct({ setPage, swiperRef, updateProducts, category, setShowSelec
 
   async function handleSubmit(e) {
     e.preventDefault();
+
+    if (sending) return;
 
     if (!photos?.length) {
       setError("Vous devez choisir au moins une photo");
@@ -102,6 +107,7 @@ function AddProduct({ setPage, swiperRef, updateProducts, category, setShowSelec
     formData.append("deliveryBody", input.deliveryBody);
     formData.append("address", input.address);
 
+    setSending(true);
     try {
       const result = await axios.post("/products/create", formData);
       updateProducts();
@@ -111,8 +117,8 @@ function AddProduct({ setPage, swiperRef, updateProducts, category, setShowSelec
         text: "Produit ajouté avec success",
         lastFor: 2000,
       });
-      swiperRef.current?.swiper.slideTo(0);
       resetInput();
+      swiperRef.current?.swiper.slideTo(0);
     } catch (err) {
       console.log(err);
       addPopup({
@@ -120,6 +126,7 @@ function AddProduct({ setPage, swiperRef, updateProducts, category, setShowSelec
         text: "Une erreur s'est produite",
       });
     }
+    setSending(false);
   }
 
   return (
@@ -234,7 +241,7 @@ function AddProduct({ setPage, swiperRef, updateProducts, category, setShowSelec
           <label htmlFor="oldPrice" className="relative mt-2 block text-base text-slate-700">
             Prix ancien (s'il y a un solde, sinon laissez vide):
           </label>
-          <div className="flex w-1/3 rounded-lg duration-150">
+          <div className="flex max-w-[250px] rounded-lg duration-150">
             <input
               id="oldPrice"
               name="oldPrice"
@@ -249,7 +256,7 @@ function AddProduct({ setPage, swiperRef, updateProducts, category, setShowSelec
           <label htmlFor="price" className="relative mt-2 block text-base text-slate-700">
             Prix:
           </label>
-          <div className="flex w-1/3 rounded-lg duration-150">
+          <div className="flex max-w-[250px] rounded-lg duration-150">
             <input
               id="price"
               name="price"
@@ -327,11 +334,20 @@ function AddProduct({ setPage, swiperRef, updateProducts, category, setShowSelec
               {error}
             </div>
           )}
-          <input
-            type="submit"
-            value="Ajouter"
-            className="mt-2 w-full cursor-pointer rounded-full bg-blue-500 px-4 py-2 text-white transition duration-300 hover:bg-blue-600"
-          />
+          <div className="relative mt-2 mb-14">
+            <input
+              type="submit"
+              value="Ajouter"
+              className="w-full cursor-pointer rounded-full bg-blue-500 px-4 py-2 text-white transition duration-300 hover:bg-blue-600"
+            />
+            {sending ? (
+              <i className="absolute right-1 top-1/2 -translate-y-1/2">
+                <RingLoader color="white" />
+              </i>
+            ) : (
+              ""
+            )}
+          </div>
         </article>
       </form>
     </>

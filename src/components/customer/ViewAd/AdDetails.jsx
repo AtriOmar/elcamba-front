@@ -17,6 +17,8 @@ function AdDetails({ ad, fetchAd }) {
   const [sending, setSending] = useState(false);
 
   async function toggleStatus() {
+    if (sending) return;
+
     setSending(true);
     try {
       await axios.post("/ads/toggleStatus", { id: ad.id });

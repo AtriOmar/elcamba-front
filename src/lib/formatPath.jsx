@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-export default function formatPath(path, className = "mt-2 font-medium text-sm") {
+export default function formatPath(path, className = "flex-wrap mt-2 font-medium text-sm") {
   const jsxPath = (
     <div className={`flex gap-2 capitalize ${className}`}>
       <div className="flex gap-1">

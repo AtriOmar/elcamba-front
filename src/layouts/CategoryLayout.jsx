@@ -11,7 +11,7 @@ function CategoryLayout() {
         <article>
           <Sidebar />
         </article>
-        <article className="grow overflow-auto p-2 category-layout">
+        <article className="grow overflow-auto py-2 scr800:px-2 category-layout">
           <Outlet />
         </article>
       </section>

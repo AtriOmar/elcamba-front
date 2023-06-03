@@ -8,10 +8,10 @@ function CustomerLayout() {
     <div className="flex flex-col h-screen">
       <Navbar />
       <section className="flex grow overflow-auto">
-        <article className="hidden scr1000:block">
+        <article className="">
           <Sidebar />
         </article>
-        <article className="grow overflow-auto p-2 scroll-smooth">
+        <article className="grow overflow-auto py-2 scr1000:px-2 scroll-smooth">
           <Outlet />
         </article>
       </section>

@@ -61,7 +61,7 @@ function CustomerDropdown({ path = "" }) {
         leaveFrom="translate-y-0 opacity-100"
         leaveTo="translate-y-[30px] opacity-0"
       >
-        <ul className="absolute top-full left-[-20px] translate-y-[10px] w-max max-w-[200px] p-2 rounded shadow bg-white text-[15px] list-none">
+        <ul className="absolute top-full left-[-20px] translate-y-[10px] w-max max-w-[200px] p-2 rounded shadow-card1 bg-white text-[15px] list-none">
           {/* <li>
             <Link to="/customer/products">Mes produits</Link>
           </li> */}

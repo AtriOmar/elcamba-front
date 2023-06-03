@@ -3,6 +3,8 @@ import React, { useEffect, useMemo, useState } from "react";
 import ProductCard from "./ProductCard";
 import jwtDecode from "jwt-decode";
 import { Link } from "react-router-dom";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const clientId = import.meta.env.VITE_CLIENT_ID;
 
@@ -14,11 +16,12 @@ function MyProducts({ setPage, swiperRef, products }) {
       <div className="flex justify-between items-center mb-5 pr-0.5">
         <h3 className="font-medium text-lg">Mes produits</h3>
         <button
-          className="py-2 px-4 rounded-lg bg-red-500 text-white"
+          className={`flex gap-2 items-center px-4 py-2 border border-slate-300 rounded bg-green-500 hover:bg-green-600 outline-0 text-white transition-all duration-150 focus:ring-1`}
           onClick={() => {
             swiperRef.current?.swiper.slideTo(1);
           }}
         >
+          <FontAwesomeIcon icon={faPlus} size="lg" />
           Ajouter un produit
         </button>
       </div>
@@ -37,38 +40,42 @@ function MyProducts({ setPage, swiperRef, products }) {
         //   </div>
         // ))
         <>
-          <div className="grid grid-cols-[minmax(130px,150px)_minmax(200px,1fr)_160px_100px_100px]">
-            <div className="col-spa-1 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider bg-gray-50">Photo</div>
-            <div className="col-spa-3 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider bg-gray-50">Nom</div>
-            <div className="col-spa-2 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider bg-gray-50">Categorie</div>
-            <div className="col-spa-1 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider bg-gray-50">Prix ancien</div>
-            <div className="col-spa-1 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider bg-gray-50">Prix</div>
+          <div className="hidden scr800:grid grid-cols-[minmax(100px,110px)_minmax(120px,2fr)_minmax(160px,1fr)_160px_160px] bg-sky-600 font-medium text-white text-xs text-left uppercase ">
+            <div className="col-spa-1 px-6 py-3 uppercase tracking-wider">Photo</div>
+            <div className="col-spa-3 px-6 py-3 uppercase tracking-wider">Nom</div>
+            <div className="col-spa-2 px-6 py-3 uppercase tracking-wider">Categorie</div>
+            <div className="col-spa-1 px-6 py-3 uppercase tracking-wider">Prix ancien</div>
+            <div className="col-spa-1 px-6 py-3 uppercase tracking-wider">Prix</div>
           </div>
 
           {products.map((product) => (
             <Link
               to={`/customer/products/${product.id}`}
-              className="grid grid-cols-[minmax(130px,150px)_minmax(200px,1fr)_160px_100px_100px] hover:bg-slate-100 duration-150"
+              className="grid grid-cols-[90px_1fr] scr800:grid-cols-[minmax(100px,110px)_minmax(120px,2fr)_minmax(160px,1fr)_160px_160px] py-2 scr800:py-0 [&:nth-of-type(2n+1)]:bg-gray-50 hover:bg-slate-100 duration-150"
               key={product.id}
             >
-              <div className="px-6 py-4">
+              <div className="px-1 scr800:px-3 py-1 scr800:py-2 row-span-4 scr800:row-span-1">
                 <img
-                  className="w-full aspect-square rounded-lg object-contain "
+                  className="sticky top-0 w-full aspect-square border rounded-lg object-contain"
                   src={`${import.meta.env.VITE_BACKEND_URL}/uploads/${product.photos?.[0]}`}
                   alt={product.name}
                 />
               </div>
-              <div className="px-6 py-4">
-                <div className="text-sm font-medium text-gray-900">{product.name}</div>
+              <div className="grid grid-cols-[80px_1fr] scr800:grid-cols-1 px-2 scr800:px-6 py-1 scr800:py-4">
+                <p className="scr800:hidden font-bold text-sm text-sky-700 uppercase">nom:</p>
+                <p className="text-sm font-medium text-gray-900">{product.name}</p>
               </div>
-              <div className="px-6 py-4">
-                <div className="text-sm text-gray-500">{product.SubCategory.name}</div>
+              <div className="grid grid-cols-[80px_1fr] scr800:grid-cols-1 px-2 scr800:px-6 py-1 scr800:py-4">
+                <p className="scr800:hidden font-bold text-sm text-sky-700 uppercase">catég:</p>
+                <p className="text-sm text-gray-500">{product.SubCategory.name}</p>
               </div>
-              <div className="px-6 py-4">
-                <div className="text-sm text-gray-500">{product.oldPrice !== 0 ? product.oldPrice + " DT" : "-"}</div>
+              <div className="grid grid-cols-[80px_1fr] scr800:grid-cols-1 px-2 scr800:px-6 py-1 scr800:py-4">
+                <p className="scr800:hidden font-bold text-sm text-sky-700 uppercase">prix anc:</p>
+                <p className="text-sm text-gray-500">{product.oldPrice !== 0 ? product.oldPrice + " DT" : "-"}</p>
               </div>
-              <div className="px-6 py-4">
-                <div className="text-sm text-gray-500">{product.price} DT</div>
+              <div className="grid grid-cols-[80px_1fr] scr800:grid-cols-1 px-2 scr800:px-6 py-1 scr800:py-4">
+                <p className="scr800:hidden font-bold text-sm text-sky-700 uppercase">prix:</p>
+                <p className="text-sm text-gray-500">{product.price} DT</p>
               </div>
             </Link>
           ))}
