@@ -50,13 +50,13 @@ function SimilarProducts({ categoryId, categoryName }) {
       </div>
       <div className="relative">
         <button
-          id={`similar-next-` + categoryName}
+          id={`similar-next-` + (categoryId.categoryId || categoryId.subCategoryId)}
           className="absolute right-0 top-1/2 z-10 -translate-y-1/2 flex items-center justify-center h-14 w-8 rounded-md bg-[rgb(0,0,0,.65)] hover:bg-[rgb(0,0,0,.8)] duration-150 disabled:opacity-25"
         >
           <FontAwesomeIcon icon={faChevronRight} className="text-white" />
         </button>
         <button
-          id={`similar-prev-` + categoryName}
+          id={`similar-prev-` + (categoryId.categoryId || categoryId.subCategoryId)}
           className="absolute left-0 top-1/2 z-10 -translate-y-1/2 flex items-center justify-center h-14 w-8 rounded-md bg-[rgb(0,0,0,.65)] hover:bg-[rgb(0,0,0,.8)] duration-150 disabled:opacity-25"
         >
           <FontAwesomeIcon icon={faChevronLeft} className="text-white" />
@@ -69,8 +69,8 @@ function SimilarProducts({ categoryId, categoryName }) {
           autoplay-delay="5000"
           autoplay-disable-on-interaction="false"
           class="mt-2 py-2 px-1"
-          navigation-next-el={"#similar-next-" + categoryName}
-          navigation-prev-el={"#similar-prev-" + categoryName}
+          navigation-next-el={"#similar-next-" + (categoryId.categoryId || categoryId.subCategoryId)}
+          navigation-prev-el={"#similar-prev-" + (categoryId.categoryId || categoryId.subCategoryId)}
         >
           {products.map((product) => (
             <swiper-slide key={product.id} class="w-fit h-auto">
