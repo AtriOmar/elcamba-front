@@ -44,7 +44,7 @@ function SimilarProducts({ categoryId, categoryName }) {
   }
 
   return (
-    <div className="mx-2 my-10 rounded-lg bg-white p-6 shadow-md">
+    <div className="scr800:mx-2 my-10 py-6 px-3 scr800:px-6 rounded-lg bg-white shadow-md">
       <div className="relative max-w-[700px] mx-auto mb-6 py-1.5 rounded-xl bg-sky-500">
         <h3 className="relative z-10 w-fit mx-auto px-2 bg-inherit font-medium text-lg text-center text-white capitalize">Produits de '{categoryName}'</h3>
       </div>
