@@ -11,6 +11,7 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import CreateDropdown from "./PromoteManager/CreateDropdown";
 import circleDollar from "../../assets/images/dollar-circle-delete.svg";
 import RingLoader from "../RingLoader";
+import Loader from "../Loader";
 
 function PromoteManager() {
   const [ads, setAds] = useState([]);
@@ -41,6 +42,14 @@ function PromoteManager() {
   }, [filter]);
 
   console.log(filter);
+
+  if (loading === 1) {
+    return (
+      <div className="flex h-[calc(100vh_-_64px)] w-full items-center justify-center">
+        <Loader />
+      </div>
+    );
+  }
 
   return (
     <div className="py-6 px-3 scr1000:px-6 pb-20 rounded-lg bg-white shadow-md">

@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IonIcon } from "@ionic/react";
 import { megaphoneOutline } from "ionicons/icons";
 import React from "react";
-import { Link } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import { useUIContext } from "../../contexts/UIProvider";
 
 function Sidebar() {
@@ -11,61 +11,101 @@ function Sidebar() {
 
   return (
     <div
-      className={`fixed top-0 left-0 scr1000:relative z-30 scr1000:z-0 h-full w-[200px] py-10 px-6 bg-white shadow-md duration-300 ${
+      className={`fixed top-0 left-0 scr1000:relative z-30 scr1000:z-0 h-full w-[200px] py-10 px-3 bg-white shadow-md duration-300 ${
         mobileNavbarOpen ? "" : "-translate-x-full scr1000:translate-x-0"
       }`}
     >
       <button className="scr1000:hidden absolute top-3 right-3" onClick={() => setMobileNavbarOpen(false)}>
         <FontAwesomeIcon icon={faXmark} className="text-black" />
       </button>
-      <ul className="flex flex-col gap-5 text-[17px] text-cyan-600">
+      <ul className="flex flex-col gap-1 text-[17px] text-cyan-600">
         <li>
-          <Link className="flex gap-2 items-center" to={"/customer/products"}>
+          <NavLink
+            className={({ isActive }) =>
+              `grid grid-cols-[20px_1fr] gap-2 items-center py-3 px-2 rounded-lg duration-200 ${isActive ? "bg-slate-200" : "hover:bg-slate-100"}`
+            }
+            to={"/customer/products"}
+          >
             <FontAwesomeIcon icon={faBox} />
             <span>Mes produits</span>
-          </Link>
+          </NavLink>
         </li>
         <li>
-          <Link className="flex gap-2 items-center" to={"/customer/promote/manage"}>
+          <NavLink
+            className={({ isActive }) =>
+              `grid grid-cols-[20px_1fr] gap-2 items-center py-3 px-2 rounded-lg duration-200 ${isActive ? "bg-slate-200" : "hover:bg-slate-100"}`
+            }
+            to={"/customer/promote/manage"}
+          >
             <IonIcon icon={megaphoneOutline} className="text-xl" aria-hidden="true" />
             <span>Publicités</span>
-          </Link>
+          </NavLink>
         </li>
         <li>
-          <Link className="flex gap-2 items-center">
+          <NavLink
+            to="/"
+            className={({ isActive }) =>
+              `grid grid-cols-[20px_1fr] gap-2 items-center py-3 px-2 rounded-lg duration-200 ${isActive ? "bg-slate-200" : "hover:bg-slate-100"}`
+            }
+          >
             <FontAwesomeIcon icon={faBoxOpen} />
             <span>Mon compte</span>
-          </Link>
+          </NavLink>
         </li>
         <li>
-          <Link className="flex gap-2 items-center">
+          <NavLink
+            to="/"
+            className={({ isActive }) =>
+              `grid grid-cols-[20px_1fr] gap-2 items-center py-3 px-2 rounded-lg duration-200 ${isActive ? "bg-slate-200" : "hover:bg-slate-100"}`
+            }
+          >
             <FontAwesomeIcon icon={faBoxArchive} />
             <span>Mon panier</span>
-          </Link>
+          </NavLink>
         </li>
         <li>
-          <Link className="flex gap-2 items-center">
+          <NavLink
+            to="/"
+            className={({ isActive }) =>
+              `grid grid-cols-[20px_1fr] gap-2 items-center py-3 px-2 rounded-lg duration-200 ${isActive ? "bg-slate-200" : "hover:bg-slate-100"}`
+            }
+          >
             <FontAwesomeIcon icon={faBox} />
             <span>Mes discussions</span>
-          </Link>
+          </NavLink>
         </li>
         <li>
-          <Link className="flex gap-2 items-center">
+          <NavLink
+            to="/"
+            className={({ isActive }) =>
+              `grid grid-cols-[20px_1fr] gap-2 items-center py-3 px-2 rounded-lg duration-200 ${isActive ? "bg-slate-200" : "hover:bg-slate-100"}`
+            }
+          >
             <FontAwesomeIcon icon={faBox} />
             <span>Mon </span>
-          </Link>
+          </NavLink>
         </li>
         <li>
-          <Link className="flex gap-2 items-center">
+          <NavLink
+            to="/"
+            className={({ isActive }) =>
+              `grid grid-cols-[20px_1fr] gap-2 items-center py-3 px-2 rounded-lg duration-200 ${isActive ? "bg-slate-200" : "hover:bg-slate-100"}`
+            }
+          >
             <FontAwesomeIcon icon={faBox} />
             <span>Mes </span>
-          </Link>
+          </NavLink>
         </li>
         <li>
-          <Link className="flex gap-2 items-center">
+          <NavLink
+            to="/"
+            className={({ isActive }) =>
+              `grid grid-cols-[20px_1fr] gap-2 items-center py-3 px-2 rounded-lg duration-200 ${isActive ? "bg-slate-200" : "hover:bg-slate-100"}`
+            }
+          >
             <FontAwesomeIcon icon={faBox} />
             <span>Mes </span>
-          </Link>
+          </NavLink>
         </li>
       </ul>
     </div>

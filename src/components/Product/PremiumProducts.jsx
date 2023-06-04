@@ -42,7 +42,6 @@ function PremiumProducts() {
       </div>
     );
   }
-
   return (
     <div className="scr800:mx-2 my-10 py-6 px-3 scr800:px-6 rounded-lg bg-white shadow-md">
       <div className="relative max-w-[700px] mx-auto mb-6 py-1.5 rounded-xl bg-red-500">

@@ -40,12 +40,12 @@ function MyProducts({ setPage, swiperRef, products }) {
         //   </div>
         // ))
         <>
-          <div className="hidden scr800:grid grid-cols-[minmax(100px,110px)_minmax(120px,2fr)_minmax(160px,1fr)_160px_160px] bg-sky-600 font-medium text-white text-xs text-left uppercase ">
-            <div className="col-spa-1 px-6 py-3 uppercase tracking-wider">Photo</div>
-            <div className="col-spa-3 px-6 py-3 uppercase tracking-wider">Nom</div>
-            <div className="col-spa-2 px-6 py-3 uppercase tracking-wider">Categorie</div>
-            <div className="col-spa-1 px-6 py-3 uppercase tracking-wider">Prix ancien</div>
-            <div className="col-spa-1 px-6 py-3 uppercase tracking-wider">Prix</div>
+          <div className="hidden scr800:grid grid-cols-[minmax(100px,110px)_minmax(120px,2fr)_minmax(160px,1fr)_160px_160px] bg-sky-600 font-medium text-white text-xs text-left uppercase">
+            <div className="col-spa-1 px-6 py-3 tracking-wider">Photo</div>
+            <div className="col-spa-3 px-6 py-3 tracking-wider">Nom</div>
+            <div className="col-spa-2 px-6 py-3 tracking-wider">Categorie</div>
+            <div className="col-spa-1 px-6 py-3 tracking-wider">Prix ancien</div>
+            <div className="col-spa-1 px-6 py-3 tracking-wider">Prix</div>
           </div>
 
           {products.map((product) => (

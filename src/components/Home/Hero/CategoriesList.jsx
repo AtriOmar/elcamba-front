@@ -26,7 +26,7 @@ function CategoriesList({ setLoading }) {
 
   return (
     <div
-      className="shrink-0 hidden min-[1350px]:flex flex-col w-[180px] rounded-lg border-4 border-slate-400 overflow-hidden"
+      className="shrink-0 hidden min-[1350px]:flex flex-col w-[190px] rounded-lg border-4 border-slate-400 overflow-hidden"
       onMouseLeave={() => setActive(-1)}
     >
       <h4 className="py-1 bg-slate-400 font-semibold text-lg text-center text-white">Catégories</h4>

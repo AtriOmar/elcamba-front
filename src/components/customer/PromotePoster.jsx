@@ -17,20 +17,14 @@ const PRICES = {
 };
 
 function PromotePoster() {
-  const [product, setProduct] = useState(null);
   const [input, setInput] = useState({
     duration: 1,
     type: 1,
     photo: null,
   });
   const amount = useMemo(() => input.duration * PRICES[input.type], [input.type, input.duration]);
-  const [paymentUrl, setPaymentUrl] = useState(null);
   const navigate = useNavigate();
   const [sending, setSending] = useState(false);
-
-  useEffect(() => {
-    console.log(product);
-  }, []);
 
   async function createPayment() {
     if (sending) return;
@@ -46,7 +40,6 @@ function PromotePoster() {
       console.log("create poster payment", res.data);
       // navigate(`/payment/${res.data}`);
       window.open(`/payment/${res.data}`, "_blank");
-      // setPaymentUrl(`https://sandbox.paymee.tn/gateway/${res.data.data.token}`);
       // window.addEventListener("message", handlePayment);
     } catch (err) {
       console.log(err);
