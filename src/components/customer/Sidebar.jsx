@@ -22,7 +22,9 @@ function Sidebar() {
         <li>
           <NavLink
             className={({ isActive }) =>
-              `grid grid-cols-[20px_1fr] gap-2 items-center py-3 px-2 rounded-lg duration-200 ${isActive ? "bg-slate-200" : "hover:bg-slate-100"}`
+              `grid grid-cols-[20px_1fr] gap-2 items-center py-3 px-2 rounded-lg duration-200 ${
+                isActive ? "bg-slate-200 shadow-xl bg-opacity-[.86]" : "hover:bg-slate-100 hover:shadow-md"
+              }`
             }
             to={"/customer/products"}
           >
@@ -33,7 +35,9 @@ function Sidebar() {
         <li>
           <NavLink
             className={({ isActive }) =>
-              `grid grid-cols-[20px_1fr] gap-2 items-center py-3 px-2 rounded-lg duration-200 ${isActive ? "bg-slate-200" : "hover:bg-slate-100"}`
+              `grid grid-cols-[20px_1fr] gap-2 items-center py-3 px-2 rounded-lg duration-200 ${
+                isActive ? "bg-slate-200 shadow-xl bg-opacity-[.86]" : "hover:bg-slate-100 hover:shadow-md"
+              }`
             }
             to={"/customer/promote/manage"}
           >
@@ -45,7 +49,9 @@ function Sidebar() {
           <NavLink
             to="/"
             className={({ isActive }) =>
-              `grid grid-cols-[20px_1fr] gap-2 items-center py-3 px-2 rounded-lg duration-200 ${isActive ? "bg-slate-200" : "hover:bg-slate-100"}`
+              `grid grid-cols-[20px_1fr] gap-2 items-center py-3 px-2 rounded-lg duration-200 ${
+                isActive ? "bg-slate-200 shadow-xl bg-opacity-[.86]" : "hover:bg-slate-100 hover:shadow-md"
+              }`
             }
           >
             <FontAwesomeIcon icon={faBoxOpen} />
@@ -56,7 +62,9 @@ function Sidebar() {
           <NavLink
             to="/"
             className={({ isActive }) =>
-              `grid grid-cols-[20px_1fr] gap-2 items-center py-3 px-2 rounded-lg duration-200 ${isActive ? "bg-slate-200" : "hover:bg-slate-100"}`
+              `grid grid-cols-[20px_1fr] gap-2 items-center py-3 px-2 rounded-lg duration-200 ${
+                isActive ? "bg-slate-200 shadow-xl bg-opacity-[.86]" : "hover:bg-slate-100 hover:shadow-md"
+              }`
             }
           >
             <FontAwesomeIcon icon={faBoxArchive} />
@@ -67,7 +75,9 @@ function Sidebar() {
           <NavLink
             to="/"
             className={({ isActive }) =>
-              `grid grid-cols-[20px_1fr] gap-2 items-center py-3 px-2 rounded-lg duration-200 ${isActive ? "bg-slate-200" : "hover:bg-slate-100"}`
+              `grid grid-cols-[20px_1fr] gap-2 items-center py-3 px-2 rounded-lg duration-200 ${
+                isActive ? "bg-slate-200 shadow-xl bg-opacity-[.86]" : "hover:bg-slate-100 hover:shadow-md"
+              }`
             }
           >
             <FontAwesomeIcon icon={faBox} />
@@ -78,7 +88,9 @@ function Sidebar() {
           <NavLink
             to="/"
             className={({ isActive }) =>
-              `grid grid-cols-[20px_1fr] gap-2 items-center py-3 px-2 rounded-lg duration-200 ${isActive ? "bg-slate-200" : "hover:bg-slate-100"}`
+              `grid grid-cols-[20px_1fr] gap-2 items-center py-3 px-2 rounded-lg duration-200 ${
+                isActive ? "bg-slate-200 shadow-xl bg-opacity-[.86]" : "hover:bg-slate-100 hover:shadow-md"
+              }`
             }
           >
             <FontAwesomeIcon icon={faBox} />
@@ -89,7 +101,9 @@ function Sidebar() {
           <NavLink
             to="/"
             className={({ isActive }) =>
-              `grid grid-cols-[20px_1fr] gap-2 items-center py-3 px-2 rounded-lg duration-200 ${isActive ? "bg-slate-200" : "hover:bg-slate-100"}`
+              `grid grid-cols-[20px_1fr] gap-2 items-center py-3 px-2 rounded-lg duration-200 ${
+                isActive ? "bg-slate-200 shadow-xl bg-opacity-[.86]" : "hover:bg-slate-100 hover:shadow-md"
+              }`
             }
           >
             <FontAwesomeIcon icon={faBox} />
@@ -100,7 +114,9 @@ function Sidebar() {
           <NavLink
             to="/"
             className={({ isActive }) =>
-              `grid grid-cols-[20px_1fr] gap-2 items-center py-3 px-2 rounded-lg duration-200 ${isActive ? "bg-slate-200" : "hover:bg-slate-100"}`
+              `grid grid-cols-[20px_1fr] gap-2 items-center py-3 px-2 rounded-lg duration-200 ${
+                isActive ? "bg-slate-200 shadow-xl bg-opacity-[.86]" : "hover:bg-slate-100 hover:shadow-md"
+              }`
             }
           >
             <FontAwesomeIcon icon={faBox} />

@@ -144,16 +144,16 @@ function Products() {
   const filters = (
     <div className="mt-6 flex flex-wrap gap-x-10">
       <div>
-        <p className="">Il existe {count} produit(s)</p>
+        <p className="font-medium text-slate-900">Il existe {count} produit(s)</p>
         <PageNavigation searchParams={searchParams} setSearchParams={setSearchParams} count={count} filter={filter} />
       </div>
       {/* <OrderBy /> */}
       <div>
-        <p className="">Produits/page:</p>
+        <p className="font-medium text-slate-900">Produits/page:</p>
         <ProductsPerPage input={filter} setInput={setFilter} />
       </div>
       <div>
-        <p className="">Trier par:</p>
+        <p className="font-medium text-slate-900">Trier par:</p>
         <SortProducts input={filter} setInput={setFilter} />
       </div>
     </div>

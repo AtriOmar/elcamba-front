@@ -1,4 +1,4 @@
-import { faArrowDownShortWide, faArrowDownWideShort } from "@fortawesome/free-solid-svg-icons";
+import { faArrowDownShortWide, faArrowDownWideShort, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Popover } from "@headlessui/react";
 import React, { useEffect, useRef, useState } from "react";
@@ -27,11 +27,12 @@ function ProductsPerPage({ input, setInput }) {
   return (
     <Popover className="relative">
       <Popover.Button
-        className={`h-9 rounded border border-slate-300 bg-slate-100 px-2 outline-0 ring-inset transition-all duration-150 hover:bg-slate-200 focus:ring-1 [&[aria-expanded='true']]:bg-slate-200 `}
+        className={`h-9 rounded border border-slate-300 bg-sky-600 px-2 outline-0 ring-inset text-white transition-all duration-150 hover:bg-sky-700 focus:ring-1 [&[aria-expanded='true']]:bg-sky-700 `}
         ref={buttonRef}
       >
-        <div>
-          <p className="">{input.productsPerPage} Produits</p>
+        <div className="flex items-center gap-2">
+          {input.productsPerPage} Produits
+          <FontAwesomeIcon icon={faChevronDown} size="sm" />
         </div>
       </Popover.Button>
 

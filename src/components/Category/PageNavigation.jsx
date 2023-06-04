@@ -11,9 +11,9 @@ function PageNavigation({ searchParams, setSearchParams, count, filter }) {
       arr.push(
         <button
           key={i}
-          className={`flex h-9 w-9 items-center justify-center rounded-md border ${
-            (Number(query.page) || 1) === i ? "!bg-slate-300" : "bg-slate-100"
-          } text-slate-700 duration-300 hover:bg-slate-200`}
+          className={`flex h-9 w-9 items-center justify-center rounded-md border bg-sky-600 text-white ${
+            (Number(query.page) || 1) === i ? "ring-2 ring-offset-1 ring-sky-500" : ""
+          } duration-300 hover:bg-sky-700`}
           onClick={() => setSearchParams((prev) => ({ ...parseQuery(prev), page: i }))}
         >
           {i}
@@ -26,8 +26,8 @@ function PageNavigation({ searchParams, setSearchParams, count, filter }) {
   return (
     <section className="flex gap-1">
       <button
-        className={`flex h-9 w-9 items-center justify-center rounded-md border bg-slate-100 text-xl font-medium text-slate-700 duration-300 ${
-          (Number(query.page) || 1) <= 1 ? "cursor-not-allowed" : "hover:bg-slate-200"
+        className={`flex h-9 w-9 items-center justify-center rounded-md border bg-sky-600 text-xl font-medium text-white duration-300 ${
+          (Number(query.page) || 1) <= 1 ? "cursor-not-allowed" : "hover:bg-sky-700"
         }`}
         onClick={() => {
           if ((Number(query.page) || 1) > 1) setSearchParams({ ...query, page: (Number(query.page) || 1) - 1 });
@@ -38,8 +38,8 @@ function PageNavigation({ searchParams, setSearchParams, count, filter }) {
       {pages()}
 
       <button
-        className={`flex h-9 w-9 items-center justify-center rounded-md border bg-slate-100 text-xl font-medium text-slate-700 duration-300 ${
-          (Number(query.page) || 1) >= Math.floor(count / (filter.productsPerPage + 1)) + 1 ? "cursor-not-allowed" : "hover:bg-slate-200"
+        className={`flex h-9 w-9 items-center justify-center rounded-md border bg-sky-600 text-xl font-medium text-white duration-300 ${
+          (Number(query.page) || 1) >= Math.floor(count / (filter.productsPerPage + 1)) + 1 ? "cursor-not-allowed" : "hover:bg-sky-700"
         }`}
         onClick={() => {
           if ((Number(query.page) || 1) < Math.floor(count / (filter.productsPerPage + 1)) + 1)
