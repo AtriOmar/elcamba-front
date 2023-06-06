@@ -31,6 +31,9 @@ import PromoteManager from "./components/customer/PromoteManager";
 import PromotePoster from "./components/customer/PromotePoster";
 import Payment from "./components/Payment";
 import ViewAd from "./components/customer/ViewAd";
+import Chat from "./components/customer/Chat/Chat";
+import ChatDashboard from "./components/customer/Chat/ChatDashboard";
+import ChatProvider from "./contexts/ChatProvider";
 
 register();
 
@@ -126,6 +129,14 @@ const router = createBrowserRouter([
             path: "promote/:id",
             element: <ViewAd />,
           },
+          {
+            path: "chat/:id",
+            element: <Chat />,
+          },
+          {
+            path: "chat",
+            element: <ChatDashboard />,
+          },
         ],
       },
       {
@@ -142,8 +153,10 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <AuthProvider>
-    <UIProvider>
-      <RouterProvider router={router} />
-    </UIProvider>
+    <ChatProvider>
+      <UIProvider>
+        <RouterProvider router={router} />
+      </UIProvider>
+    </ChatProvider>
   </AuthProvider>
 );

@@ -63,7 +63,7 @@ function AddProduct({ setPage, swiperRef, updateProducts, category, setShowSelec
     if (sending) return;
 
     if (!photos?.length) {
-      setError("Vous devez choisir au moins une photo");
+      setError("Veuillez choisir au moins une photo");
       return;
     }
 
@@ -73,12 +73,12 @@ function AddProduct({ setPage, swiperRef, updateProducts, category, setShowSelec
     }
 
     if (!input.category) {
-      setError("Vous devez choisir une catégorie");
+      setError("Veuillez choisir une catégorie");
       return;
     }
 
     if (!input.price) {
-      setError("Vous devez spécifier un prix");
+      setError("Veuillez spécifier un prix");
       return;
     }
 

@@ -70,9 +70,9 @@ const CustomOption = ({ children, products, ...props }) => {
   return (
     <div>
       <components.Option {...props}>
-        <div className="flex">
-          <img className="w-10 h-10 object-contain" src={`${BACKEND_URL}/uploads/${product.photos?.[0]}`} alt="" />
-          <div>{product.name}</div>
+        <div className="flex items-center gap-2">
+          <img className="w-10 h-10 object-contain rounded-md" src={`${BACKEND_URL}/uploads/${product.photos?.[0]}`} alt="" />
+          <p className="line-clamp-4">{product.name}</p>
         </div>
       </components.Option>
       <div className="border-b border-gray-200"></div>

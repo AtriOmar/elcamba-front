@@ -73,6 +73,12 @@ body {
   border-radius: 20px;
 }
 
+@layer utilities {
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 /* custom classes */
 .line-clamp-1 {
   display: -webkit-box;

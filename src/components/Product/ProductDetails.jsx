@@ -61,7 +61,10 @@ function ProductDetails({ product, path }) {
                 <FontAwesomeIcon icon={faStarHalfStroke} className="text-yellow-500" />
               </p>
             </div>
-            <Link className="flex items-center gap-4 py-2 px-10 rounded-lg bg-sky-500 hover:bg-sky-600 text-white duration-300" to="/">
+            <Link
+              className="flex items-center gap-4 py-2 px-10 rounded-lg bg-sky-500 hover:bg-sky-600 text-white duration-300"
+              to={"/customer/chat/" + product.User.id}
+            >
               <FontAwesomeIcon icon={faMessage} className="text-white" />
               Contacter le vendeur
             </Link>

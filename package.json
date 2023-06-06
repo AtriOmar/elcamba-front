@@ -33,6 +33,7 @@
     "react-router-dom": "^6.10.0",
     "react-select": "^5.7.2",
     "react-string-replace": "^1.1.0",
+    "socket.io-client": "^4.6.2",
     "sweetalert2": "^11.7.3",
     "swiper": "^9.2.4",
     "use-debounce": "^9.0.4",

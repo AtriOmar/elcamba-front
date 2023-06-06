@@ -13,10 +13,10 @@ function MyProducts({ setPage, swiperRef, products }) {
 
   return (
     <div className="w-full">
-      <div className="flex justify-between items-center mb-5 pr-0.5">
-        <h3 className="font-medium text-lg">Mes produits</h3>
+      <div className="flex flex-col scr600:flex-row scr600:items-center justify-between gap-y-2 mb-8 pr-1.5">
+        <h2 className="self-start text-2xl font-bold capitalize text-sky-600">Mes produits:</h2>
         <button
-          className={`flex gap-2 items-center px-4 py-2 border border-slate-300 rounded bg-green-500 hover:bg-green-600 outline-0 text-white transition-all duration-150 focus:ring-1`}
+          className={`self-end flex gap-2 items-center px-4 py-2 border border-slate-300 rounded bg-green-500 hover:bg-green-600 outline-0 text-white transition-all duration-150 ring-green-700 ring-offset-2 focus:ring-2`}
           onClick={() => {
             swiperRef.current?.swiper.slideTo(1);
           }}

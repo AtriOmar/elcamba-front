@@ -15,10 +15,10 @@ export default function PrivateRoute({ component: Component, aId = 1 }) {
     async function getStatus() {
       try {
         const res = await axios.get("/login/status");
-        if (res.data.user.type == "visitor") {
-          navigate("/login");
-        }
-        if (res.data.user.accessId < aId) {
+        // if (res.data.user?.type == "visitor") {
+        //   navigate("/login");
+        // }
+        if (!(res.data.user?.accessId >= aId)) {
           navigate("/");
         }
         setUser(res.data.user);

@@ -8,6 +8,7 @@ import { UserCircleIcon } from "@heroicons/react/24/outline";
 import API from "../../utils/API";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserGear, faUserPen } from "@fortawesome/free-solid-svg-icons";
+import { faMessage } from "@fortawesome/free-regular-svg-icons";
 import { faRectangleList } from "@fortawesome/free-regular-svg-icons";
 import { IonIcon } from "@ionic/react";
 import { logOutOutline, megaphoneOutline } from "ionicons/icons";
@@ -75,6 +76,12 @@ function CustomerDropdown({ path = "" }) {
             <Link to="/customer/promote/manage" className="flex gap-2 items-center hover:bg-slate-100 p-2 rounded-lg">
               <IonIcon icon={megaphoneOutline} className="text-xl" aria-hidden="true" />
               Mes publicités
+            </Link>
+          </li>
+          <li className="">
+            <Link to="/customer/chat" className="flex gap-2 items-center hover:bg-slate-100 p-2 rounded-lg">
+              <FontAwesomeIcon icon={faMessage} className="" />
+              Mes discussions
             </Link>
           </li>
           <li className="">

@@ -11,6 +11,7 @@ import GoogleSvg from "../../assets/images/google.svg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
 import { useUIContext } from "../../contexts/UIProvider";
+import RingLoader from "../RingLoader";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -25,6 +26,7 @@ export default function SigninModal({ show, hide }) {
     email: "",
     password: "",
   });
+  const [sending, setSending] = useState(false);
 
   function handleInput(e) {
     setInput((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -41,14 +43,18 @@ export default function SigninModal({ show, hide }) {
   async function handleSubmit(e) {
     e.preventDefault();
 
+    if (sending) return;
+
     error && setError("");
 
     if (!input.email.trim().length || !input.password.trim().length) {
       setError("Veuillez remplir tous les champs");
+      return;
     }
 
     const user = { email: input.email, password: input.password };
 
+    setSending(true);
     try {
       const result = await axios.post("/login", user);
       console.log(result.data);
@@ -59,7 +65,9 @@ export default function SigninModal({ show, hide }) {
         lastFor: 4000,
       });
       hide();
+      setSending(false);
     } catch (err) {
+      setSending(false);
       const message = err.response?.data;
       if (message === "user not found") {
         setError("Cet email n'est pas associé à un compte");
@@ -153,11 +161,20 @@ export default function SigninModal({ show, hide }) {
                       {error}
                     </div>
                   )}
-                  <input
-                    type="submit"
-                    value="Se connecter"
-                    className="w-full p-3 mt-6 rounded-full bg-amber-400 hover:bg-amber-500 font-medium text-xl text-white cursor-pointer transition duration-300"
-                  />
+                  <div className="relative mt-6">
+                    <input
+                      type="submit"
+                      value="Se connecter"
+                      className="w-full p-3 rounded-full bg-amber-400 hover:bg-amber-500 font-medium text-xl text-white cursor-pointer transition duration-300"
+                    />
+                    {sending ? (
+                      <i className="absolute right-2 top-1/2 -translate-y-1/2">
+                        <RingLoader color="white" />
+                      </i>
+                    ) : (
+                      ""
+                    )}
+                  </div>
                   <div className="flex justify-between px-3">
                     <Link to="/reset-password" className="text-blue-500 hover:underline">
                       Mot de passe oublié ?

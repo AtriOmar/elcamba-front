@@ -53,9 +53,11 @@ function PromoteManager() {
 
   return (
     <div className="py-6 px-3 scr1000:px-6 pb-20 rounded-lg bg-white shadow-md">
-      <div className="flex items-center justify-between">
-        <h2 className="mb-8 text-2xl font-bold capitalize text-sky-600">Vos publicités:</h2>
-        <CreateDropdown />
+      <div className="flex flex-col scr600:flex-row scr600:items-center justify-between gap-y-2 mb-8">
+        <h2 className="self-start text-2xl font-bold capitalize text-sky-600">Mes publicités:</h2>
+        <div className="self-end">
+          <CreateDropdown />
+        </div>
       </div>
       <div className="flex flex-wrap gap-x-4 scr1000:gap-x-10 gap-2 mb-4">
         <div>

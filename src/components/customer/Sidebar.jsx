@@ -3,11 +3,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IonIcon } from "@ionic/react";
 import { megaphoneOutline } from "ionicons/icons";
 import React from "react";
-import { NavLink, Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useUIContext } from "../../contexts/UIProvider";
 
 function Sidebar() {
   const { mobileNavbarOpen, setMobileNavbarOpen } = useUIContext();
+  const location = useLocation();
 
   return (
     <div
@@ -20,108 +21,59 @@ function Sidebar() {
       </button>
       <ul className="flex flex-col gap-1 text-[17px] text-cyan-600">
         <li>
-          <NavLink
-            className={({ isActive }) =>
-              `grid grid-cols-[20px_1fr] gap-2 items-center py-3 px-2 rounded-lg duration-200 ${
-                isActive ? "bg-slate-200 shadow-xl bg-opacity-[.86]" : "hover:bg-slate-100 hover:shadow-md"
-              }`
-            }
+          <Link
+            className={`grid grid-cols-[20px_1fr] gap-2 items-center py-3 px-3 rounded-lg duration-200 ${
+              location?.pathname?.startsWith("/customer/products") ? "bg-slate-200 shadow-md bg-opacity-[.82]" : "hover:bg-slate-100 hover:shadow-md"
+            }`}
             to={"/customer/products"}
           >
             <FontAwesomeIcon icon={faBox} />
-            <span>Mes produits</span>
-          </NavLink>
+            <span>Produits</span>
+          </Link>
         </li>
         <li>
-          <NavLink
-            className={({ isActive }) =>
-              `grid grid-cols-[20px_1fr] gap-2 items-center py-3 px-2 rounded-lg duration-200 ${
-                isActive ? "bg-slate-200 shadow-xl bg-opacity-[.86]" : "hover:bg-slate-100 hover:shadow-md"
-              }`
-            }
+          <Link
+            className={`grid grid-cols-[20px_1fr] gap-2 items-center py-3 px-3 rounded-lg duration-200 ${
+              location?.pathname?.startsWith("/customer/promote") ? "bg-slate-200 shadow-md bg-opacity-[.82]" : "hover:bg-slate-100 hover:shadow-md"
+            }`}
             to={"/customer/promote/manage"}
           >
             <IonIcon icon={megaphoneOutline} className="text-xl" aria-hidden="true" />
             <span>Publicités</span>
-          </NavLink>
+          </Link>
         </li>
         <li>
-          <NavLink
+          <Link
             to="/"
-            className={({ isActive }) =>
-              `grid grid-cols-[20px_1fr] gap-2 items-center py-3 px-2 rounded-lg duration-200 ${
-                isActive ? "bg-slate-200 shadow-xl bg-opacity-[.86]" : "hover:bg-slate-100 hover:shadow-md"
-              }`
-            }
+            className={`grid grid-cols-[20px_1fr] gap-2 items-center py-3 px-3 rounded-lg duration-200 ${
+              location?.pathname?.startsWith("/customer/profile") ? "bg-slate-200 shadow-md bg-opacity-[.82]" : "hover:bg-slate-100 hover:shadow-md"
+            }`}
           >
             <FontAwesomeIcon icon={faBoxOpen} />
             <span>Mon compte</span>
-          </NavLink>
+          </Link>
         </li>
         <li>
-          <NavLink
+          <Link
             to="/"
-            className={({ isActive }) =>
-              `grid grid-cols-[20px_1fr] gap-2 items-center py-3 px-2 rounded-lg duration-200 ${
-                isActive ? "bg-slate-200 shadow-xl bg-opacity-[.86]" : "hover:bg-slate-100 hover:shadow-md"
-              }`
-            }
+            className={`grid grid-cols-[20px_1fr] gap-2 items-center py-3 px-3 rounded-lg duration-200 ${
+              location?.pathname?.startsWith("/customer/panier") ? "bg-slate-200 shadow-md bg-opacity-[.82]" : "hover:bg-slate-100 hover:shadow-md"
+            }`}
           >
             <FontAwesomeIcon icon={faBoxArchive} />
             <span>Mon panier</span>
-          </NavLink>
+          </Link>
         </li>
         <li>
-          <NavLink
-            to="/"
-            className={({ isActive }) =>
-              `grid grid-cols-[20px_1fr] gap-2 items-center py-3 px-2 rounded-lg duration-200 ${
-                isActive ? "bg-slate-200 shadow-xl bg-opacity-[.86]" : "hover:bg-slate-100 hover:shadow-md"
-              }`
-            }
+          <Link
+            to="/customer/chat"
+            className={`grid grid-cols-[20px_1fr] gap-2 items-center py-3 px-3 rounded-lg duration-200 ${
+              location?.pathname?.startsWith("/customer/chat") ? "bg-slate-200 shadow-md bg-opacity-[.82]" : "hover:bg-slate-100 hover:shadow-md"
+            }`}
           >
             <FontAwesomeIcon icon={faBox} />
-            <span>Mes discussions</span>
-          </NavLink>
-        </li>
-        <li>
-          <NavLink
-            to="/"
-            className={({ isActive }) =>
-              `grid grid-cols-[20px_1fr] gap-2 items-center py-3 px-2 rounded-lg duration-200 ${
-                isActive ? "bg-slate-200 shadow-xl bg-opacity-[.86]" : "hover:bg-slate-100 hover:shadow-md"
-              }`
-            }
-          >
-            <FontAwesomeIcon icon={faBox} />
-            <span>Mon </span>
-          </NavLink>
-        </li>
-        <li>
-          <NavLink
-            to="/"
-            className={({ isActive }) =>
-              `grid grid-cols-[20px_1fr] gap-2 items-center py-3 px-2 rounded-lg duration-200 ${
-                isActive ? "bg-slate-200 shadow-xl bg-opacity-[.86]" : "hover:bg-slate-100 hover:shadow-md"
-              }`
-            }
-          >
-            <FontAwesomeIcon icon={faBox} />
-            <span>Mes </span>
-          </NavLink>
-        </li>
-        <li>
-          <NavLink
-            to="/"
-            className={({ isActive }) =>
-              `grid grid-cols-[20px_1fr] gap-2 items-center py-3 px-2 rounded-lg duration-200 ${
-                isActive ? "bg-slate-200 shadow-xl bg-opacity-[.86]" : "hover:bg-slate-100 hover:shadow-md"
-              }`
-            }
-          >
-            <FontAwesomeIcon icon={faBox} />
-            <span>Mes </span>
-          </NavLink>
+            <span>Discussions</span>
+          </Link>
         </li>
       </ul>
     </div>

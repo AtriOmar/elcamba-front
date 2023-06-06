@@ -1,11 +1,18 @@
-import React from "react";
-import { Outlet } from "react-router";
+import React, { useEffect } from "react";
+import { Outlet, useLocation } from "react-router";
 import Popup from "../components/Popup";
 import { useUIContext } from "../contexts/UIProvider";
 import { ScrollRestoration } from "react-router-dom";
 
 function Layout() {
-  const { popups } = useUIContext();
+  const { popups, mobileNavbarOpen, setMobileNavbarOpen } = useUIContext();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (mobileNavbarOpen) {
+      setMobileNavbarOpen(false);
+    }
+  }, [location.pathname]);
 
   return (
     <>

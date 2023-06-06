@@ -28,11 +28,11 @@ function CreateDropdown() {
   return (
     <Popover className="relative w-fit">
       <Popover.Button
-        className={`flex gap-2 items-center h-9 rounded border border-slate-300 bg-green-500 px-2 outline-0 ring-inset text-white transition-all duration-150 hover:bg-green-600 focus:ring-1 [&[aria-expanded='true']]:bg-green-600 `}
+        className={`flex gap-2 items-center px-4 py-2 rounded bg-green-500 hover:bg-green-600 outline-0 text-white transition-all duration-150 hover:bg-green-600 ring-green-700 ring-offset-2 focus:ring-2 [&[aria-expanded='true']]:bg-green-600 `}
         ref={buttonRef}
       >
         <FontAwesomeIcon icon={faPlus} size="lg" />
-        Créer
+        Créer une publicité
       </Popover.Button>
 
       <Popover.Panel

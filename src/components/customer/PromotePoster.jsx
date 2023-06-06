@@ -7,7 +7,7 @@ import PosterSelect from "./PromotePoster/PosterSelect";
 import { IonIcon } from "@ionic/react";
 import { megaphoneOutline } from "ionicons/icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft, faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
 import RingLoader from "../RingLoader";
 
 const PRICES = {
@@ -22,14 +22,21 @@ function PromotePoster() {
     type: 1,
     photo: null,
   });
-  const amount = useMemo(() => input.duration * PRICES[input.type], [input.type, input.duration]);
+  const amount = useMemo(() => (input.photo ? input.duration * PRICES[input.type] : 0), [input.type, input.duration]);
   const navigate = useNavigate();
   const [sending, setSending] = useState(false);
+  const [error, setError] = useState("");
 
   async function createPayment() {
     if (sending) return;
 
+    if (!input?.photo) {
+      setError("Veuillez choisir une affiche");
+      return;
+    }
+
     setSending(true);
+
     try {
       const formData = new FormData();
       formData.append("photo", input.photo);
@@ -49,7 +56,7 @@ function PromotePoster() {
 
   return (
     <div className="py-6 px-3 scr1000:px-6 pb-20 rounded-lg bg-white shadow-md">
-      <div className="max-w-[700px]">
+      <div className="max-w-[800px]">
         <div className="flex items-center gap-4 mb-8">
           <Link to="/customer/promote/manage">
             <FontAwesomeIcon icon={faArrowLeft} size="lg" className="text-sky-600 hover:text-sky-900 duration-300" />
@@ -70,6 +77,12 @@ function PromotePoster() {
             <p>{amount} DT</p>
           </article>
         </section>
+        {error && (
+          <div className="flex w-full items-center gap-4 mt-4 px-4 py-3 border border-red-500 rounded-lg  bg-red-100  text-red-500">
+            <FontAwesomeIcon icon={faExclamationTriangle} size="lg" fill="red" />
+            {error}
+          </div>
+        )}
         <div className="relative w-fit">
           <button
             className="flex items-center gap-4 w-fit mt-4  py-2 px-10 rounded-lg bg-green-500 hover:bg-green-600 text-white duration-300"

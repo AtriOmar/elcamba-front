@@ -4,9 +4,9 @@ import React, { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import { v4 as uuidv4 } from "uuid";
 const RATIO = {
-  1: "600/300",
-  2: "220/260",
-  3: "455/260",
+  1: "2/1",
+  2: "1/1",
+  3: "2/1",
 };
 
 function PosterSelect({ input, setInput }) {

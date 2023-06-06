@@ -3,6 +3,7 @@ import { useNavigate } from "react-router";
 import API from "../../utils/API";
 import { Link } from "react-router-dom";
 import { useAuthContext } from "../../contexts/AuthProvider";
+import axios from "axios";
 
 export default function Login() {
   const { user, setUser } = useAuthContext();
@@ -22,7 +23,8 @@ export default function Login() {
   };
 
   useEffect(() => {
-    API.getLoginStatus()
+    axios
+      .get("/login/status")
       .then((res) => {
         if (res.data.user?.accessId) {
           navigate("/admin");

@@ -8,30 +8,29 @@ const BOX30 = SCALE * 30,
   BOX37 = SCALE * 37;
 
 const RATIO = {
-  1: "600/300",
-  2: "220/260",
-  3: "455/260",
+  1: "2/1",
+  2: "1/1",
+  3: "2/1",
 };
 
 function PosterCard({ order }) {
   return (
     <section>
       <p className="mt-4 font-medium text-sky-700">Cadre:</p>
-      <div className="flex gap-1 [&_*]:box-content box-content w-fit mx-auto mt-2">
-        <div className={`border rounded-lg bg-slate-500`} style={{ width: BOX30 + "px" }}></div>
-        <div className="flex flex-col gap-1">
-          <div
-            className={`grid place-items-center aspect-[2/1] ring-blue-500 border rounded-lg duration-150 ${order.type === 1 ? "ring-2" : ""}`}
-            style={{ width: BOX100 + "px" }}
-          >
-            600:300
+      <div className="flex gap-1 w-full">
+        <div className={`w-[15.38%] border rounded-lg bg-slate-500`}></div>
+        <div className="flex flex-col gap-1 w-[46.15%]">
+          <div className={`w-full grid place-items-center  aspect-[2/1] ring-blue-500 border rounded-lg duration-150 ${order.type === 1 ? "ring-2" : ""}`}>
+            2:1
           </div>
-          <div className={`aspect-[600/220] border rounded-lg bg-slate-500`} style={{ width: BOX100 + "px" }}></div>
+          <div className={`grow w-full border rounded-lg bg-slate-500`}></div>
         </div>
-        <div className={`grid gap-1`} style={{ gridTemplateColumns: `repeat(2,${BOX37}px)` }}>
-          <div className={`grid place-items-center ring-blue-500 border rounded-lg duration-150 ${order.type === 2 ? "ring-2" : ""}`}>220:260</div>
-          <div className={`grid place-items-center ring-blue-500 border rounded-lg duration-150 ${order.type === 2 ? "ring-2" : ""}`}>220:260</div>
-          <div className={`grid place-items-center col-span-2 ring-blue-500 border rounded-lg duration-150 ${order.type === 3 ? "ring-2" : ""}`}>455:260</div>
+        <div className={`grid gap-1 w-[38.46%]`}>
+          <div className={`aspect-square grid place-items-center ring-blue-500 border rounded-lg duration-150 ${order.type === 2 ? "ring-2" : ""}`}>1:1</div>
+          <div className={`aspect-square grid place-items-center ring-blue-500 border rounded-lg duration-150 ${order.type === 2 ? "ring-2" : ""}`}>1:1</div>
+          <div className={`aspect-[2/1] grid place-items-center col-span-2 ring-blue-500 border rounded-lg duration-150 ${order.type === 3 ? "ring-2" : ""}`}>
+            2:1
+          </div>
         </div>
       </div>
       <p className="mt-4 font-medium text-sky-700">Affiche:</p>
