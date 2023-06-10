@@ -13,7 +13,7 @@ export default function ChatDashboard() {
       </h2>
       <div className="flex flex-col gap-5 mt-5">
         {conversations?.map((conversation) => (
-          <ConversationCard key={conversation.id} conversation={conversation} />
+          <ConversationCard key={conversation?.id} conversation={conversation} />
         ))}
       </div>
     </div>

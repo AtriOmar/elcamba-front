@@ -10,6 +10,7 @@ import useLocalStorage from "../../../lib/useLocalStorage";
 import { useAuthContext } from "../../../contexts/AuthProvider";
 import RingLoader from "../../RingLoader";
 import { mdTransitionAnimation } from "@ionic/react";
+import CitySelect from "./CitySelect";
 
 const config = {
   onUploadProgress: (e) => {
@@ -23,12 +24,13 @@ function AddProduct({ setPage, swiperRef, updateProducts, category, setShowSelec
   const [input, setInput] = useLocalStorage("product-" + user.id, {
     name: "",
     category: null,
-    oldPrice: "",
+    salePrice: "",
     price: "",
     description: "",
     delivery: false,
     deliveryBody: "",
-    address: "",
+    address: user.address || "",
+    city: user.city || "sfax",
   });
   const [error, setError] = useState("");
   const [sending, setSending] = useState(false);
@@ -40,12 +42,13 @@ function AddProduct({ setPage, swiperRef, updateProducts, category, setShowSelec
     setInput({
       name: "",
       category: null,
-      oldPrice: "",
+      salePrice: "",
       price: "",
       description: "",
       delivery: false,
       deliveryBody: "",
-      address: "",
+      address: user.address || "",
+      city: user.city || "sfax",
     });
   }
 
@@ -67,8 +70,8 @@ function AddProduct({ setPage, swiperRef, updateProducts, category, setShowSelec
       return;
     }
 
-    if (input.name.length < 8) {
-      setError("La longueur du nom doit être supérieure à 8");
+    if (input.name.length < 4) {
+      setError("La longueur du nom doit être supérieure à 4");
       return;
     }
 
@@ -82,8 +85,8 @@ function AddProduct({ setPage, swiperRef, updateProducts, category, setShowSelec
       return;
     }
 
-    if (input.description.length < 20) {
-      setError("La longueur de la description doit être supérieure à 20");
+    if (input.description.length < 10) {
+      setError("La longueur de la description doit être supérieure à 10");
       return;
     }
 
@@ -100,11 +103,15 @@ function AddProduct({ setPage, swiperRef, updateProducts, category, setShowSelec
     });
     formData.append("name", input.name);
     formData.append("subCategoryId", input.category.id);
-    formData.append("oldPrice", input.oldPrice);
     formData.append("price", input.price);
+    formData.append("salePrice", input.salePrice);
     formData.append("description", input.description);
-    formData.append("delivery", input.delivery);
-    formData.append("deliveryBody", input.deliveryBody);
+    if (input.delivery) {
+      formData.append("delivery", input.deliveryBody);
+    } else {
+      formData.append("delivery", "");
+    }
+    formData.append("city", input.city);
     formData.append("address", input.address);
 
     setSending(true);
@@ -119,14 +126,15 @@ function AddProduct({ setPage, swiperRef, updateProducts, category, setShowSelec
       });
       resetInput();
       swiperRef.current?.swiper.slideTo(0);
+      setSending(false);
     } catch (err) {
+      setSending(false);
       console.log(err);
       addPopup({
         type: "danger",
         text: "Une erreur s'est produite",
       });
     }
-    setSending(false);
   }
 
   return (
@@ -144,10 +152,10 @@ function AddProduct({ setPage, swiperRef, updateProducts, category, setShowSelec
       <form action="" className="flex flex-col gap-2 scr1000:flex-row scr1000:gap-10" onSubmit={handleSubmit}>
         <article className="w-full scr1000:w-1/2 ">
           <div className="flex items-center gap-2">
-            <label className="relative text-base text-slate-700">Photo(s):</label>
+            <label className="relative text-base font-semibold text-sky-700">Photo(s):</label>
             <div className="h-[.5px] grow rounded-[50%] bg-slate-400"></div>
           </div>
-          <div className="relative h-[300px] w-[300px] rounded-lg border">
+          <div className="relative h-[300px] w-[300px] border rounded-lg">
             <label
               htmlFor="photos"
               className={`absolute z-10 ${
@@ -164,7 +172,6 @@ function AddProduct({ setPage, swiperRef, updateProducts, category, setShowSelec
               multiple
               onChange={(e) => {
                 const files = e.target.files;
-                console.log(files);
                 const photosArr = [];
                 for (let i = 0; i < files.length; i++) {
                   if (!files[i].type.startsWith("image")) continue;
@@ -178,21 +185,21 @@ function AddProduct({ setPage, swiperRef, updateProducts, category, setShowSelec
             {photos?.length ? (
               <>
                 {/* <img src={URL.createObjectURL(photos[0])} alt="" className="w-full h-full object-cover" /> */}
-                <swiper-container pagination="true" pagination-clickable="true" class="h-full w-full" no-swiping="false">
+                <swiper-container pagination="true" pagination-clickable="true" class="h-full w-full overflow-y-visible overflow-x-clip" no-swiping="false">
                   {photos.map((photo, index) => (
                     <swiper-slide key={photo.id} className="relative h-full w-full">
                       <button
                         type="button"
-                        className="absolute right-0 top-0"
+                        className="absolute right-0 -top-2"
                         onClick={() => {
                           setPhotos((prev) => prev.filter((currPhoto) => currPhoto.id !== photo.id));
                         }}
                       >
-                        <i className="flex h-5 w-5 items-center justify-center rounded-[50%] bg-slate-500 bg-opacity-10">
-                          <FontAwesomeIcon icon={faXmark} className="text-slate-700" />
+                        <i className="flex h-6 w-6 items-center justify-center rounded bg-blue-500 hover:bg-red-600 duration-150 ">
+                          <FontAwesomeIcon icon={faXmark} className="text-white" size="lg" />
                         </i>
                       </button>
-                      <img src={URL.createObjectURL(photo)} alt="" className="h-full w-full object-contain" />
+                      <img src={URL.createObjectURL(photo)} alt="" className="h-full w-full rounded-lg object-contain" />
                     </swiper-slide>
                   ))}
                 </swiper-container>
@@ -207,7 +214,7 @@ function AddProduct({ setPage, swiperRef, updateProducts, category, setShowSelec
           </div>
 
           <div className="flex items-center gap-2">
-            <h6 className="relative text-base font-semibold text-slate-900">Informations sur le produit:</h6>
+            <h6 className="relative text-base font-semibold text-sky-700">Informations sur le produit:</h6>
             <div className="h-[.5px] grow rounded-[50%] bg-slate-400"></div>
           </div>
           <label htmlFor="name" className="relative text-base text-slate-700">
@@ -238,21 +245,6 @@ function AddProduct({ setPage, swiperRef, updateProducts, category, setShowSelec
           >
             {input.category ? input.category.name : "Catégorie"}
           </button>
-          <label htmlFor="oldPrice" className="relative mt-2 block text-base text-slate-700">
-            Prix ancien (s'il y a un solde, sinon laissez vide):
-          </label>
-          <div className="flex max-w-[250px] rounded-lg duration-150">
-            <input
-              id="oldPrice"
-              name="oldPrice"
-              onChange={handleChange}
-              value={input.oldPrice}
-              type="number"
-              className="hidden-arrows w-full rounded-l-lg border border-slate-700 border-r-slate-300 px-2 py-1 outline-0 ring-inset ring-blue-500 transition-all duration-150 focus:ring-1"
-              placeholder="0000"
-            />
-            <span className="flex items-center rounded-r-lg border border-l-0 border-slate-700 px-3 py-[0.25rem]">DT</span>
-          </div>
           <label htmlFor="price" className="relative mt-2 block text-base text-slate-700">
             Prix:
           </label>
@@ -262,6 +254,21 @@ function AddProduct({ setPage, swiperRef, updateProducts, category, setShowSelec
               name="price"
               onChange={handleChange}
               value={input.price}
+              type="number"
+              className="hidden-arrows w-full rounded-l-lg border border-slate-700 border-r-slate-300 px-2 py-1 outline-0 ring-inset ring-blue-500 transition-all duration-150 focus:ring-1"
+              placeholder="0000"
+            />
+            <span className="flex items-center rounded-r-lg border border-l-0 border-slate-700 px-3 py-[0.25rem]">DT</span>
+          </div>
+          <label htmlFor="oldPrice" className="relative mt-2 block text-base text-slate-700">
+            Prix soldé (s'il y a un solde, sinon laissez vide):
+          </label>
+          <div className="flex max-w-[250px] rounded-lg duration-150">
+            <input
+              id="salePrice"
+              name="salePrice"
+              onChange={handleChange}
+              value={input.salePrice}
               type="number"
               className="hidden-arrows w-full rounded-l-lg border border-slate-700 border-r-slate-300 px-2 py-1 outline-0 ring-inset ring-blue-500 transition-all duration-150 focus:ring-1"
               placeholder="0000"
@@ -283,7 +290,7 @@ function AddProduct({ setPage, swiperRef, updateProducts, category, setShowSelec
             value={input.description}
           ></textarea>
           <div className="flex items-center gap-2">
-            <label className="relative text-base font-semibold text-slate-900">Livraison:</label>
+            <label className="relative text-base font-semibold text-sky-700">Livraison:</label>
             <div className="h-[.5px] grow rounded-[50%] bg-slate-400"></div>
           </div>
           <div>
@@ -310,44 +317,49 @@ function AddProduct({ setPage, swiperRef, updateProducts, category, setShowSelec
             value={input.deliveryBody}
           ></textarea>
           <div className="flex items-center gap-2">
-            <label htmlFor="adresse" className="relative text-base font-semibold text-slate-900">
+            <label htmlFor="adresse" className="relative text-base font-semibold text-sky-700">
               Adresse:
             </label>
             <div className="h-[.5px] grow rounded-[50%] bg-slate-400"></div>
           </div>
+          <label htmlFor="description" className="relative text-base text-slate-700">
+            Ville:
+          </label>
+          <CitySelect input={input} setInput={setInput} />
+          <label htmlFor="description" className="block relative mt-2 text-base text-slate-700">
+            Adresse exacte:
+          </label>
           <textarea
             name="address"
             id="address"
             rows="4"
             placeholder="Votre adresse"
-            className="w-full resize-none rounded-lg border border-slate-700 px-2 py-1 outline-0 ring-inset ring-blue-500 transition-all duration-150 focus:ring-1"
+            className="w-full resize-none rounded-lg border border-slate-700 px-2 py-1 outline-0 ring-inset ring-blue-500 transition-all duration-150 focus:ring-1 before:content-['hi']"
             onChange={handleChange}
             value={input.address}
           ></textarea>
           {/* <div className="flex items-center gap-2">
             <label className="relative font-semibold text-base text-slate-900">Critères:</label>
             <div className="grow h-[.5px] rounded-[50%] bg-slate-400"></div>
-        </div> */}
+          </div> */}
           {error && (
             <div className="flex w-full items-center gap-4 rounded-lg border border-red-500 bg-red-100 px-4 py-3 text-red-500">
               <FontAwesomeIcon icon={faExclamationTriangle} size="lg" fill="red" />
               {error}
             </div>
           )}
-          <div className="relative mt-2 mb-14">
-            <input
-              type="submit"
-              value="Ajouter"
-              className="w-full cursor-pointer rounded-full bg-blue-500 px-4 py-2 text-white transition duration-300 hover:bg-blue-600"
-            />
-            {sending ? (
-              <i className="absolute right-1 top-1/2 -translate-y-1/2">
-                <RingLoader color="white" />
-              </i>
-            ) : (
-              ""
-            )}
-          </div>
+          <input
+            type="submit"
+            value="Ajouter"
+            className="w-full px-4 py-2 mt-2 mb-20 rounded-full bg-blue-500 text-white transition duration-300 hover:bg-blue-600 cursor-pointer"
+          />
+          {sending ? (
+            <i className="absolute right-1 top-1/2 -translate-y-1/2">
+              <RingLoader color="white" />
+            </i>
+          ) : (
+            ""
+          )}
         </article>
       </form>
     </>

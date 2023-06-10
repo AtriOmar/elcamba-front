@@ -4,7 +4,7 @@ import { Popover } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/24/solid";
 import React, { useEffect, useRef, useState } from "react";
 
-function SortProducts({ input, setInput }) {
+function SortProducts({ filter, setFilter }) {
   const buttonRef = useRef(null);
   const [isOverflowing, setIsOverflowing] = useState(false);
 
@@ -26,15 +26,15 @@ function SortProducts({ input, setInput }) {
   }, []);
 
   return (
-    <div className={`relative flex w-fit`}>
+    <div className={`relative flex w-50`}>
       <Popover className="relative">
         <Popover.Button
-          className={`h-9 rounded-l border border-slate-300 border-r-slate-300 bg-sky-600 px-2 outline-0 ring-inset text-white transition-all duration-150 hover:bg-sky-700 focus:ring-1 [&[aria-expanded='true']]:bg-sky-700`}
+          className={`h-9 rounded-l border border-slate-300 border-r-slate-300 bg-sky-600 px-2 outline-0 text-white transition-all duration-150 hover:bg-sky-700 focus:ring-1 ring-sky-800 ring-offset-1 [&[aria-expanded='true']]:bg-sky-700`}
           ref={buttonRef}
         >
           <div>
             <p className="flex items-center gap-2">
-              {names[input.orderBy]}
+              {names[filter.orderBy]}
               <FontAwesomeIcon icon={faChevronDown} size="sm" />
             </p>
           </div>
@@ -46,27 +46,27 @@ function SortProducts({ input, setInput }) {
           }`}
         >
           {({ close }) => (
-            <ul className="divide-y">
+            <ul className="divide-y w-max">
               <li className="">
                 <button
                   className="font-cera my-px w-full rounded-lg px-2 py-1 text-slate-900 transition duration-150 hover:bg-slate-100"
                   onClick={() => {
-                    setInput((prev) => ({ ...prev, orderBy: "startsAt" }));
+                    setFilter((prev) => ({ ...prev, orderBy: "createdAt" }));
                     close();
                   }}
                 >
-                  Début
+                  Créé à:
                 </button>
               </li>
               <li className="">
                 <button
                   className="font-cera mt-px w-full rounded-lg px-2 py-1 text-slate-900 transition duration-150 hover:bg-slate-100"
                   onClick={() => {
-                    setInput((prev) => ({ ...prev, orderBy: "expiresAt" }));
+                    setFilter((prev) => ({ ...prev, orderBy: "name" }));
                     close();
                   }}
                 >
-                  Fin
+                  Nom
                 </button>
               </li>
             </ul>
@@ -74,10 +74,10 @@ function SortProducts({ input, setInput }) {
         </Popover.Panel>
       </Popover>
       <button
-        className="flex items-center rounded-r border border-l-0 border-slate-300 bg-sky-600 px-2 outline-0 ring-inset text-white transition-all duration-150 hover:bg-sky-700 focus:ring-1"
-        onClick={() => setInput((prev) => ({ ...prev, order: prev.order === "asc" ? "desc" : "asc" }))}
+        className="flex items-center rounded-r border border-l-0 border-slate-300 bg-sky-600 px-2 outline-0 text-white transition-all duration-150 hover:bg-sky-700 focus:ring-1 ring-sky-800 ring-offset-1"
+        onClick={() => setFilter((prev) => ({ ...prev, order: prev.order === "asc" ? "desc" : "asc" }))}
       >
-        {input.order === "asc" ? <FontAwesomeIcon icon={faArrowDownShortWide} size="sm" /> : <FontAwesomeIcon icon={faArrowDownWideShort} size="sm" />}
+        {filter.order === "asc" ? <FontAwesomeIcon icon={faArrowDownShortWide} size="sm" /> : <FontAwesomeIcon icon={faArrowDownWideShort} size="sm" />}
       </button>
     </div>
   );
@@ -86,6 +86,6 @@ function SortProducts({ input, setInput }) {
 export default SortProducts;
 
 const names = {
-  startsAt: "Début",
-  expiresAt: "Fin",
+  createdAt: "Créé à",
+  name: "Nom",
 };

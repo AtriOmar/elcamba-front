@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import Dashboard from "./components/admin/Dashboard";
 import PrivateRoute from "./components/auth/PrivateRoute";
-import Home from "./components/Home";
+import Home from "./components/Home/Home";
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import AdminLayout from "./components/admin/layout/AdminLayout";
@@ -14,26 +14,30 @@ import AuthProvider from "./contexts/AuthProvider";
 import SubCategories from "./components/admin/subCategory/SubCategory";
 import axios from "axios";
 import CustomerLayout from "./layouts/CustomerLayout";
-import CustomerProducts from "./components/customer/Products";
+import CustomerProducts from "./components/customer/Products/Products";
 import UIProvider from "./contexts/UIProvider";
 import Layout from "./layouts/Layout";
 import { register } from "swiper/element/bundle";
 import Ads from "./components/admin/ad/Ads";
 import ResetPasswordRequest from "./components/auth/ResetPasswordRequest";
 import ResetPassword from "./components/auth/ResetPassword";
-import Category from "./components/Category.jsx";
+import Category from "./components/Category/Category.jsx";
 import CategoryLayout from "./layouts/CategoryLayout";
-import Product from "./components/Product";
-import ViewProduct from "./components/customer/ViewProduct";
-import PromoteProduct from "./components/customer/PromoteProduct";
+import Product from "./components/product/Product";
+import ViewProduct from "./components/customer/ViewProduct/ViewProduct";
+import PromoteProduct from "./components/customer/PromoteProduct/PromoteProduct";
 import PromoteLayout from "./layouts/PromoteLayout";
-import PromoteManager from "./components/customer/PromoteManager";
-import PromotePoster from "./components/customer/PromotePoster";
-import Payment from "./components/Payment";
-import ViewAd from "./components/customer/ViewAd";
+import PromoteManager from "./components/customer/PromoteManager/PromoteManager";
+import PromotePoster from "./components/customer/PromotePoster/PromotePoster";
+import Payment from "./components/Payment/Payment";
+import ViewAd from "./components/customer/ViewAd/ViewAd";
 import Chat from "./components/customer/Chat/Chat";
 import ChatDashboard from "./components/customer/Chat/ChatDashboard";
 import ChatProvider from "./contexts/ChatProvider";
+import ClientLayout from "./layouts/ClientLayout";
+import ProfileLayout from "./layouts/ProfileLayout";
+import ProfileInfo from "./components/customer/Profile/ProfileInfo/ProfileInfo";
+import ProfileSecurity from "./components/customer/Profile/ProfileSecurity/ProfileSecurity";
 
 register();
 
@@ -77,7 +81,83 @@ const router = createBrowserRouter([
       },
       {
         path: "",
-        element: <Home />,
+        element: <ClientLayout />,
+        children: [
+          {
+            path: "",
+            element: <Home />,
+          },
+          {
+            path: "products",
+            element: <CategoryLayout />,
+            children: [
+              {
+                path: "",
+                element: <Category />,
+              },
+            ],
+          },
+          {
+            path: "products/:id",
+            element: <Product />,
+          },
+          {
+            path: "customer",
+            element: <PrivateRoute component={CustomerLayout} />,
+            children: [
+              {
+                path: "products",
+                element: <CustomerProducts />,
+              },
+              {
+                path: "products/:id",
+                element: <ViewProduct />,
+              },
+              {
+                path: "promote/manage",
+                element: <PromoteManager />,
+              },
+              {
+                path: "promote/product",
+                element: <PromoteProduct />,
+              },
+              {
+                path: "promote/poster",
+                element: <PromotePoster />,
+              },
+              {
+                path: "promote/:id",
+                element: <ViewAd />,
+              },
+              {
+                path: "chat/:id",
+                element: <Chat />,
+              },
+              {
+                path: "chat",
+                element: <ChatDashboard />,
+              },
+              {
+                path: "profile",
+                element: <ProfileLayout />,
+                children: [
+                  {
+                    path: "info",
+                    element: <ProfileInfo />,
+                  },
+                  {
+                    path: "security",
+                    element: <ProfileSecurity />,
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      {
+        path: "payment/:token",
+        element: <Payment />,
       },
       {
         path: "register",
@@ -90,62 +170,6 @@ const router = createBrowserRouter([
       {
         path: "reset-password/:token",
         element: <ResetPassword />,
-      },
-      {
-        path: "category",
-        element: <CategoryLayout />,
-        children: [
-          {
-            path: "",
-            element: <Category />,
-          },
-        ],
-      },
-      {
-        path: "customer",
-        element: <PrivateRoute component={CustomerLayout} />,
-        children: [
-          {
-            path: "products",
-            element: <CustomerProducts />,
-          },
-          {
-            path: "products/:id",
-            element: <ViewProduct />,
-          },
-          {
-            path: "promote/manage",
-            element: <PromoteManager />,
-          },
-          {
-            path: "promote/product",
-            element: <PromoteProduct />,
-          },
-          {
-            path: "promote/poster",
-            element: <PromotePoster />,
-          },
-          {
-            path: "promote/:id",
-            element: <ViewAd />,
-          },
-          {
-            path: "chat/:id",
-            element: <Chat />,
-          },
-          {
-            path: "chat",
-            element: <ChatDashboard />,
-          },
-        ],
-      },
-      {
-        path: "product/:id",
-        element: <Product />,
-      },
-      {
-        path: "payment/:token",
-        element: <Payment />,
       },
     ],
   },

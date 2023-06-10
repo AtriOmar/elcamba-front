@@ -10,10 +10,40 @@ function UIProvider({ children }) {
   const [priceRange, setPriceRange] = useState({ min: 0, max: 5000, inputMin: 0, inputMax: 5000 });
   const [filtering, setFiltering] = useState(false);
   const [mobileNavbarOpen, setMobileNavbarOpen] = useState(false);
+  const [categories, setCategories] = useState([]);
+  const [filterSidebarOpen, setFilterSidebarOpen] = useState(false);
+
+  useEffect(() => {
+    if (mobileNavbarOpen) {
+      document.querySelector("body").style.overflow = "hidden";
+    } else {
+      document.querySelector("body").style.overflow = "visible";
+    }
+  }, [mobileNavbarOpen]);
+
+  useEffect(() => {
+    console.log(filterSidebarOpen);
+  }, [filterSidebarOpen]);
+
+  useEffect(() => {
+    async function fetchCategories() {
+      try {
+        const res = await axios.get("/categories/getAll");
+        console.log(res.data);
+        setCategories(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    fetchCategories();
+  }, []);
 
   useEffect(() => {
     function handleResize(e) {
-      if (mobileNavbarOpen && window.innerWidth > 1000) {
+      if (
+        mobileNavbarOpen &&
+        ((window.location.pathname === "/" && window.innerWidth > 1350) || (window.location.pathname !== "/" && window.innderWidth > 1000))
+      ) {
         setMobileNavbarOpen(false);
       }
     }
@@ -42,7 +72,6 @@ function UIProvider({ children }) {
   }, [mobileNavbarOpen]);
 
   useEffect(() => {
-    console.log("price range", priceRange);
     if (priceRange.min !== priceRange.inputMin || priceRange.max !== priceRange.inputMax) {
       setPriceRange((prev) => ({ ...prev, inputMin: prev.min, inputMax: prev.max }));
     }
@@ -61,6 +90,9 @@ function UIProvider({ children }) {
     setFiltering,
     mobileNavbarOpen,
     setMobileNavbarOpen,
+    categories,
+    filterSidebarOpen,
+    setFilterSidebarOpen,
   };
 
   return <UIContext.Provider value={value}>{children}</UIContext.Provider>;

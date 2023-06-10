@@ -9,26 +9,20 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { useChatContext } from "../../../contexts/ChatProvider";
 import { useAuthContext } from "../../../contexts/AuthProvider";
+import { UserCircleIcon } from "@heroicons/react/24/outline";
+
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 export default function Chat() {
-  const [isConnected, setIsConnected] = useState(socket.connected);
   const { id } = useParams();
   const [receiver, setReceiver] = useState(null);
   const [conversation, setConversation] = useState(null);
   const [loading, setLoading] = useState(true);
-  const { setConversations } = useChatContext();
+  const { setConversations, isConnected } = useChatContext();
   const { user, setUser } = useAuthContext();
 
   useEffect(() => {
     if (!socket) return;
-
-    function onConnect() {
-      setIsConnected(true);
-    }
-
-    function onDisconnect() {
-      setIsConnected(false);
-    }
 
     function onMessages({ user: eventUser, conversation: eventConversation }) {
       console.log("-------------------- user --------------------");
@@ -42,8 +36,8 @@ export default function Chat() {
 
       if (loading) setLoading(false);
       console.log("seen");
-      console.log(eventConversation.seen);
-      if (!eventConversation?.seen?.includes?.(user.id)) {
+      console.log(eventConversation?.seen);
+      if (eventConversation && !eventConversation?.seen?.includes?.(user?.id)) {
         setConversations((prev) => prev.map((conv) => (conv.id !== eventConversation.id ? conv : { ...conv, seen: conv.seen ? "both" : "" + user.id })));
       }
     }
@@ -51,14 +45,11 @@ export default function Chat() {
     socket.emit("watchSingle", id);
 
     socket.on("messages", onMessages);
-    socket.on("connect", onConnect);
-    socket.on("disconnect", onDisconnect);
 
     return () => {
-      socket.off("connect", onConnect);
-      socket.off("disconnect", onDisconnect);
+      socket.off("messages");
     };
-  }, []);
+  }, [isConnected]);
 
   if (loading) {
     return (
@@ -83,9 +74,19 @@ export default function Chat() {
           <Link to="/customer/chat">
             <FontAwesomeIcon icon={faArrowLeft} size="lg" className="text-white hover:scale-125 duration-300" />
           </Link>
-          <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-bold  text-white text-lg text-center  capitalize">
-            {receiver?.username}
-          </span>
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center gap-2">
+            {receiver?.picture ? (
+              <img
+                src={`${BACKEND_URL}/uploads/profile-pictures/${receiver?.picture}`}
+                alt="Profile picture"
+                className="w-[30px] aspect-square rounded-[50%] border object-cover bg-white"
+              />
+            ) : (
+              <UserCircleIcon className="w-[35px] text-white" />
+            )}
+
+            <span className=" font-bold  text-white text-lg text-center  capitalize">{receiver?.username}</span>
+          </div>
         </div>
         <MessagesBox user={user} messages={conversation?.Messages} />
         <SendMessageInput socket={socket} user={receiver} />

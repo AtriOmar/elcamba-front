@@ -4,30 +4,9 @@ import ProductCard from "./ProductCard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
 
-function PremiumProducts({ setLoading }) {
-  const [ads, setAds] = useState([]);
-
-  useEffect(() => {
-    async function fetchProducts() {
-      try {
-        const res = await axios.get("/ads/getRandom", {
-          params: {
-            type: 0,
-            limit: 20,
-          },
-        });
-        console.log(res.data);
-        setAds(res.data);
-      } catch (err) {
-        console.log(err);
-      }
-      setLoading((prev) => prev + 1);
-    }
-    fetchProducts();
-  }, []);
-
+function PremiumProducts({ ads }) {
   return (
-    <div className="relative">
+    <div className="relative h-full">
       <button
         id="hero-premium-next"
         className="absolute right-0 top-1/2 z-10 -translate-y-1/2 flex items-center justify-center h-14 w-8 rounded-md bg-[rgb(0,0,0,.65)] hover:bg-[rgb(0,0,0,.8)] duration-150 disabled:opacity-25"

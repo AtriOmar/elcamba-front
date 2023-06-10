@@ -1,11 +1,11 @@
 import React, { useCallback, useEffect, useState } from "react";
 import axios from "axios";
-import { useUIContext } from "../../contexts/UIProvider";
-import { useAuthContext } from "../../contexts/AuthProvider";
+import { useUIContext } from "../../../contexts/UIProvider";
+import { useAuthContext } from "../../../contexts/AuthProvider";
 import { useNavigate, useParams } from "react-router";
-import Loader from "../Loader";
+import Loader from "../../Loader";
 // import EditProduct from "./ViewAd/EditProduct";
-import AdDetails from "./ViewAd/AdDetails";
+import AdDetails from "./AdDetails";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
@@ -50,10 +50,10 @@ function ViewAd() {
 
   return (
     <div className=" p-6 rounded-lg bg-white shadow-md">
-      <Link to="/customer/promote/manage" className="flex items-center gap-2 mb-4 text-black hover:text-slate-700 duration-300">
+      <button onClick={() => navigate(-1)} className="flex items-center gap-2 mb-4 text-black hover:text-slate-700 duration-300">
         <FontAwesomeIcon icon={faArrowLeft} size="sm" className="" />
-        <h2 className=" font-semibold capitalize">Gérer</h2>
-      </Link>
+        <h2 className=" font-semibold capitalize">retour</h2>
+      </button>
       <AdDetails ad={ad} fetchAd={fetchAd} />
       {/* <div className="w-full h-px my-20 bg-sky-500"></div> */}
       {/* <EditProduct ad={product} /> */}

@@ -1,22 +1,24 @@
 import React, { useEffect, useState } from "react";
 import Loader from "../Loader";
 import axios from "axios";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import formatPath from "../../lib/formatPath";
 import { UserIcon } from "@heroicons/react/24/solid";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft, faLocationDot, faMessage, faStar, faStarHalfStroke, faTruck } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft, faLocationDot, faMessage, faPhone, faStar, faStarHalfStroke, faTruck } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 function ProductDetails({ product, path }) {
+  const navigate = useNavigate();
+
   return (
     <div className="m-2 rounded-lg bg-white p-6 shadow-md">
-      <Link to={`/category?s=${product.SubCategory.id}`} className="flex items-center gap-2 mb-4 text-black hover:text-slate-700 duration-300">
+      <button onClick={() => navigate(-1)} className="flex items-center gap-2 mb-4 text-black hover:text-slate-700 duration-300">
         <FontAwesomeIcon icon={faArrowLeft} size="sm" className="" />
-        <h2 className=" font-semibold capitalize">Gérer</h2>
-      </Link>
+        <h2 className=" font-semibold capitalize">Retour</h2>
+      </button>
       <section className="flex flex-col scr800:flex-row gap-4 items-start">
         <article className="scr800:sticky top-[64px] shrink-0 w-full scr800:w-2/5 min-w-[300px] max-w-[500px] mx-auto">
           <swiper-container class="rounded-lg border-2 border-slate-200" no-swiping="false" thumbs-swiper=".product-thumbs">
@@ -50,24 +52,38 @@ function ProductDetails({ product, path }) {
             <div className="flex flex-col gap-2 grow">
               <p className="font-medium text-sky-700">Vendeur:</p>
               <p className="flex items-center gap-3">
-                <UserIcon className="h-6 text-sky-700" />
+                {product.User.picture ? (
+                  <img
+                    src={`${BACKEND_URL}/uploads/profile-pictures/${product.User.picture}`}
+                    alt="Profile picture"
+                    className="w-[40px] aspect-square rounded-[50%] border object-cover"
+                  />
+                ) : (
+                  <UserIcon className="h-6 text-sky-700" />
+                )}
                 {product.User.username}
               </p>
-              <p className="flex items-center gap-1">
-                <FontAwesomeIcon icon={faStar} className="text-yellow-500" />
-                <FontAwesomeIcon icon={faStar} className="text-yellow-500" />
-                <FontAwesomeIcon icon={faStar} className="text-yellow-500" />
-                <FontAwesomeIcon icon={faStar} className="text-yellow-500" />
-                <FontAwesomeIcon icon={faStarHalfStroke} className="text-yellow-500" />
-              </p>
             </div>
-            <Link
-              className="flex items-center gap-4 py-2 px-10 rounded-lg bg-sky-500 hover:bg-sky-600 text-white duration-300"
-              to={"/customer/chat/" + product.User.id}
-            >
-              <FontAwesomeIcon icon={faMessage} className="text-white" />
-              Contacter le vendeur
-            </Link>
+            <div className="flex flex-col gap-2">
+              <Link
+                className="grid grid-cols-[20px_1fr] items-center gap-4 py-2 px-10 rounded-lg bg-sky-500 hover:bg-sky-600 text-white duration-300"
+                to={"/customer/chat/" + product.User.id}
+              >
+                <FontAwesomeIcon icon={faMessage} className="text-white" />
+                Contacter le vendeur
+              </Link>
+              {product.User.phone ? (
+                <a
+                  className="grid grid-cols-[20px_1fr] items-center gap-4 py-2 px-10 rounded-lg bg-sky-500 hover:bg-sky-600 text-white duration-300"
+                  href={`tel:${product.User.phone}`}
+                >
+                  <FontAwesomeIcon icon={faPhone} className="text-white" />
+                  <span className="text-center">{product.User.phone}</span>
+                </a>
+              ) : (
+                ""
+              )}
+            </div>
           </div>
           <p className="mt-10 font-medium text-sky-700">Adresse:</p>
           <p className="flex items-center gap-2 max-w-[700px]">
@@ -77,7 +93,7 @@ function ProductDetails({ product, path }) {
           <p className="mt-2 font-medium text-sky-700">Livraison:</p>
           <p className="flex items-center gap-2 max-w-[700px]">
             <FontAwesomeIcon icon={faTruck} size="1x" className="text-sky-700" />
-            {product.deliveryBody || "Non"}
+            {product.delivery || "Non"}
           </p>
         </article>
       </section>

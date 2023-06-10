@@ -28,7 +28,8 @@ export default function EditCategoryCmp(props) {
     const data = {
       name: Input.name,
     };
-    API.updateCategory(props.toedit.id, data)
+    axios
+      .post("/categories/updateById", { category: data, id: props.toedit.id })
       .then((res) => {
         Swal.fire("Success", res.data.message, "success");
         setErrors([]);

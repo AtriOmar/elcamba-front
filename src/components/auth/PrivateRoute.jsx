@@ -4,10 +4,12 @@ import { useAuthContext } from "../../contexts/AuthProvider";
 import API from "../../utils/API";
 import axios from "axios";
 import Loader from "../Loader";
+import { useUIContext } from "../../contexts/UIProvider";
 
 export default function PrivateRoute({ component: Component, aId = 1 }) {
   const { user, setUser } = useAuthContext();
   const [loading, setLoading] = useState(true);
+  const { addPopup } = useUIContext();
 
   const navigate = useNavigate();
 
@@ -19,6 +21,11 @@ export default function PrivateRoute({ component: Component, aId = 1 }) {
         //   navigate("/login");
         // }
         if (!(res.data.user?.accessId >= aId)) {
+          addPopup({
+            type: "info",
+            text: "Connectez-vous pour accéder à cette page",
+            lastFor: 4000,
+          });
           navigate("/");
         }
         setUser(res.data.user);

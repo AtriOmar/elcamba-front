@@ -12,15 +12,15 @@ export default function AddSousCategoryCmp() {
   const [errors, setErrors] = useState([]);
 
   useEffect(() => {
-    async function main() {
+    async function fetchOptions() {
       try {
-        const res = await axios.get("/categories");
+        const res = await axios.get("/categories/getAll");
         setOptions(res.data.map((category) => ({ value: category.id, label: category.name })));
       } catch (err) {
         console.log(err);
       }
     }
-    main();
+    fetchOptions();
   }, []);
 
   function resetInput() {

@@ -2,7 +2,8 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import ProductCard from "./ProductCard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft, faArrowRight, faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
 
 function Products() {
   const [products, setProducts] = useState([]);
@@ -14,7 +15,7 @@ function Products() {
         console.log(res.data);
         const productsObj = {};
         res.data.forEach((product) => {
-          productsObj[product.SubCategory.Category.name]?.push(product) || (productsObj[product.SubCategory.Category.name] = [product]);
+          productsObj[product?.SubCategory?.Category?.name]?.push(product) || (productsObj[product?.SubCategory?.Category?.name] = [product]);
         });
         console.log(productsObj);
         setProducts(Object.values(productsObj));
@@ -29,14 +30,21 @@ function Products() {
   return (
     <div className="px-1 [&>div:nth-of-type(2n_+_1)>div:first-of-type]:bg-amber-500 [&>div:nth-of-type(2n)>div:first-of-type]:bg-blue-500">
       {products.map((group, index) => (
-        <div key={group[0].SubCategory.Category.name}>
+        <div key={group[0].SubCategory?.Category?.name}>
           <div className="relative max-w-[700px] mt-5 mx-auto py-1.5 rounded-xl">
             {/* <div className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 w-[400px] h-[1px] bg-white"></div> */}
             {/* <h3 className="relative z-10 w-fit mx-auto px-2 bg-inherit font-medium text-lg text-center text-white capitalize">
               {group[0].SubCategory.Category.name}
             </h3> */}
             <div className="relative mx-auto rounded-xl">
-              <h3 className="relative z-10 w-fit mx-auto px-2 font-medium text-lg text-center text-white capitalize">{group[0].SubCategory.Category.name}</h3>
+              <h3 className="z-10 w-fit mx-auto px-2 font-medium text-lg text-center text-white capitalize">{group[0].SubCategory?.Category?.name}</h3>
+              <Link
+                to={`/products?c=${group[0].SubCategory.categoryId}`}
+                className="absolute top-1/2 -translate-y-1/2 right-2 flex items-center gap-2 text-white text-xs hover:underline"
+              >
+                Voir tout
+                <FontAwesomeIcon icon={faArrowRight} />
+              </Link>
             </div>
           </div>
           <div className="relative">

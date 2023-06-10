@@ -5,6 +5,7 @@ import AddCategoryModal from "./AddCategoryModal";
 import EditCategoryModal from "./EditCategoryModal";
 import API from "../../../utils/API";
 import Loader from "../../Loader";
+import axios from "axios";
 
 export default function Categories() {
   function classNames(...classes) {
@@ -17,13 +18,14 @@ export default function Categories() {
   const [toEdit, setToEdit] = useState({});
 
   function getItems() {
-    API.getCategories()
+    axios
+      .get("/categories/getAll")
       .then((res) => {
         setItemsList(res.data);
         setLoading(false);
       })
       .catch((err) => {
-        Swal.fire("Error", err.response.data.message, "error");
+        Swal.fire("Error", err?.response?.data.message, "error");
       });
   }
   useEffect(() => {
@@ -44,16 +46,17 @@ export default function Categories() {
       denyButtonColor: "#d9e2ef",
     }).then((result) => {
       if (result.isConfirmed) {
-        API.deleteCategoryById(item.id)
+        axios
+          .delete("/categories/deleteById", { params: { id: item.id } })
           .then((res) => {
             Swal.fire("Success", res.data.message, "success");
             getItems();
           })
           .catch((err) => {
-            if (err.response.data.status === 404) {
-              Swal.fire("Erreur", err.response.data.message, "error");
+            if (err?.response?.data.status === 404) {
+              Swal.fire("Erreur", err?.response?.data.message, "error");
             } else if (err.response.status === 401) {
-              Swal.fire("Error", err.response.data.message, "error");
+              Swal.fire("Error", err?.response?.data.message, "error");
             }
           });
       } else if (result.isDenied) {

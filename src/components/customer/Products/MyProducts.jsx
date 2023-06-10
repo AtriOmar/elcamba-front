@@ -5,14 +5,30 @@ import jwtDecode from "jwt-decode";
 import { Link } from "react-router-dom";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import RingLoader from "../../RingLoader";
+import SortProducts from "./SortProducts";
+import formatDate from "../../../lib/formatDate";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import { useDebouncedCallback } from "use-debounce";
 
 const clientId = import.meta.env.VITE_CLIENT_ID;
 
-function MyProducts({ setPage, swiperRef, products }) {
+function MyProducts({ swiperRef, products, fetching, filter, setFilter }) {
   // console.log(swiper);
+  const [search, setSearch] = useState("");
+
+  function updateSearch() {
+    setFilter((prev) => ({ ...prev, search }));
+  }
+
+  const debouncedUpdateSearch = useDebouncedCallback(updateSearch, 1000);
+
+  useEffect(() => {
+    debouncedUpdateSearch();
+  }, [search]);
 
   return (
-    <div className="w-full">
+    <div className="w-full pb-40">
       <div className="flex flex-col scr600:flex-row scr600:items-center justify-between gap-y-2 mb-8 pr-1.5">
         <h2 className="self-start text-2xl font-bold capitalize text-sky-600">Mes produits:</h2>
         <button
@@ -25,33 +41,48 @@ function MyProducts({ setPage, swiperRef, products }) {
           Ajouter un produit
         </button>
       </div>
-      {/* <div id="signIn" className="w-[100px]"></div> */}
+      <div className="flex flex-wrap gap-x-4 scr1000:gap-x-10 px-0.5 gap-2 mb-4">
+        <div>
+          <p className="font-medium text-slate-900">Trier par:</p>
+          <SortProducts filter={filter} setFilter={setFilter} />
+        </div>
+        <div className="w-full scr500:w-[300px]">
+          <p className="font-medium text-slate-900">Recherche:</p>
+          <div className={`flex border border-sky-600 rounded-lg overflow-hidden`}>
+            <input
+              type="text"
+              className="grow py-1 px-4 outline-none"
+              placeholder="Rechercher des produits"
+              onChange={(e) => setSearch(e.target.value)}
+              value={search}
+            />
+            <button className="flex items-center p-1 bg-sky-600" onClick={() => {}}>
+              <MagnifyingGlassIcon className="h-7 w-7 text-white" />
+            </button>
+          </div>
+        </div>
+        {fetching ? (
+          <div className="self-center">
+            <RingLoader color="black" />
+          </div>
+        ) : (
+          ""
+        )}
+      </div>
       {products.length ? (
-        // products.map((group) => (
-        //   <div key={group[0].SubCategory.name}>
-        //     <h3 className="relative w-fit mx-auto mt-5 font-semibold text-2xl text-center text-sky-900 capitalize before:absolute before:top-1/2 before:right-[105%] before:-translate-y-1/2 before:w-[100px] before:h-[1.5px] before:rounded-l-[50%] before:bg-sky-900 after:absolute after:top-1/2 after:left-[105%] after:-translate-y-1/2 after:w-[100px] after:h-[1.5px] after:rounded-r-[50%] after:bg-sky-900 ">
-        //       {group[0].SubCategory.name}
-        //     </h3>
-        //     <div className="flex flex-wrap gap-3 mt-1 p-1">
-        //       {group.map((product) => (
-        //         <ProductCard product={product} key={product.id} />
-        //       ))}
-        //     </div>
-        //   </div>
-        // ))
         <>
           <div className="hidden scr800:grid grid-cols-[minmax(100px,110px)_minmax(120px,2fr)_minmax(160px,1fr)_160px_160px] bg-sky-600 font-medium text-white text-xs text-left uppercase">
             <div className="col-spa-1 px-6 py-3 tracking-wider">Photo</div>
             <div className="col-spa-3 px-6 py-3 tracking-wider">Nom</div>
-            <div className="col-spa-2 px-6 py-3 tracking-wider">Categorie</div>
-            <div className="col-spa-1 px-6 py-3 tracking-wider">Prix ancien</div>
+            <div className="col-spa-2 px-6 py-3 tracking-wider">Créé le</div>
             <div className="col-spa-1 px-6 py-3 tracking-wider">Prix</div>
+            <div className="col-spa-1 px-6 py-3 tracking-wider">Prix soldé</div>
           </div>
 
           {products.map((product) => (
             <Link
               to={`/customer/products/${product.id}`}
-              className="grid grid-cols-[90px_1fr] scr800:grid-cols-[minmax(100px,110px)_minmax(120px,2fr)_minmax(160px,1fr)_160px_160px] py-2 scr800:py-0 [&:nth-of-type(2n+1)]:bg-gray-50 hover:bg-slate-100 duration-150"
+              className="grid grid-cols-[90px_1fr] scr800:grid-cols-[minmax(100px,110px)_minmax(120px,2fr)_minmax(160px,1fr)_160px_160px] py-2 scr800:py-0 [&:nth-of-type(2n+1)]:bg-gray-50 hover:!bg-slate-200 duration-150"
               key={product.id}
             >
               <div className="px-1 scr800:px-3 py-1 scr800:py-2 row-span-4 scr800:row-span-1">
@@ -66,19 +97,27 @@ function MyProducts({ setPage, swiperRef, products }) {
                 <p className="text-sm font-medium text-gray-900">{product.name}</p>
               </div>
               <div className="grid grid-cols-[80px_1fr] scr800:grid-cols-1 px-2 scr800:px-6 py-1 scr800:py-4">
-                <p className="scr800:hidden font-bold text-sm text-sky-700 uppercase">catég:</p>
-                <p className="text-sm text-gray-500">{product.SubCategory.name}</p>
-              </div>
-              <div className="grid grid-cols-[80px_1fr] scr800:grid-cols-1 px-2 scr800:px-6 py-1 scr800:py-4">
-                <p className="scr800:hidden font-bold text-sm text-sky-700 uppercase">prix anc:</p>
-                <p className="text-sm text-gray-500">{product.oldPrice !== 0 ? product.oldPrice + " DT" : "-"}</p>
+                <p className="scr800:hidden font-bold text-sm text-sky-700 uppercase">Créé le:</p>
+                {/* <p className="text-sm text-gray-500">{product.SubCategory.name}</p> */}
+                <p className="font-semibold text-sm text-gray-500">{formatDate(product.createdAt)}</p>
               </div>
               <div className="grid grid-cols-[80px_1fr] scr800:grid-cols-1 px-2 scr800:px-6 py-1 scr800:py-4">
                 <p className="scr800:hidden font-bold text-sm text-sky-700 uppercase">prix:</p>
-                <p className="text-sm text-gray-500">{product.price} DT</p>
+                <p className="font-semibold text-sm text-gray-500">{product.price} DT</p>
+              </div>
+              <div className="grid grid-cols-[80px_1fr] scr800:grid-cols-1 px-2 scr800:px-6 py-1 scr800:py-4">
+                <p className="scr800:hidden font-bold text-sm text-sky-700 uppercase">solde:</p>
+                <p className="font-semibold text-sm text-gray-500">{product.salePrice !== 0 ? product.salePrice + " DT" : "-"}</p>
               </div>
             </Link>
           ))}
+          {fetching ? (
+            <div className="w-fit mx-auto py-8">
+              <RingLoader color="#444" width="40" height="40" />
+            </div>
+          ) : (
+            ""
+          )}
         </>
       ) : (
         <div className="py-20 px-6 font-bold text-gray-500 text-2xl text-center">Vous n'avez aucun produit à vendre</div>

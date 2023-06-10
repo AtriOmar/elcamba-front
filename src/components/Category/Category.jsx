@@ -1,17 +1,17 @@
 import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import ProductCard from "./Category/ProductCard";
-import sad from "../assets/images/sad.png";
-import { useUIContext } from "../contexts/UIProvider";
+import ProductCard from "./ProductCard";
+import sad from "../../assets/images/sad.png";
+import { useUIContext } from "../../contexts/UIProvider";
 import { useDebouncedCallback } from "use-debounce";
-import PageNavigation from "./Category/PageNavigation";
-import OrderBy from "./Category/OrderBy";
-import SortProducts from "./Category/SortProducts";
-import ProductsPerPage from "./Category/ProductsPerPage";
-import Loader from "./Loader";
-import formatPath from "../lib/formatPath";
-import parseQuery from "../lib/parseQuery";
+import PageNavigation from "./PageNavigation";
+import OrderBy from "./OrderBy";
+import SortProducts from "./SortProducts";
+import ProductsPerPage from "./ProductsPerPage";
+import Loader from "../Loader";
+import formatPath from "../../lib/formatPath";
+import parseQuery from "../../lib/parseQuery";
 
 function Products() {
   const { priceRange, setPriceRange, setFiltering } = useUIContext();
@@ -60,6 +60,8 @@ function Products() {
           limit: filter.productsPerPage,
           orderBy: filter.orderBy,
           order: filter.order,
+          delivery: queryObj.delivery,
+          cities: queryObj.cities || "all",
         },
       });
 
@@ -69,8 +71,8 @@ function Products() {
 
       setPath(() => {
         const newPath = [];
-        newPath[0] = { name: res.data.category.name, path: `/category?c=${res.data.category.id}` };
-        if (queryObj.s) newPath[1] = { name: res.data.subCategory.name, path: `/category?s=${res.data.subCategory.id}` };
+        newPath[0] = { name: res.data.category.name, path: `/products?c=${res.data.category.id}` };
+        if (queryObj.s) newPath[1] = { name: res.data?.subCategory?.name, path: `/products?s=${res.data.subCategory.id}` };
 
         return newPath;
       });
@@ -160,7 +162,7 @@ function Products() {
   );
 
   return (
-    <div className=" rounded-lg bg-white p-6 shadow-md">
+    <div className="min-h-full py-6 px-3 scr1000:px-6 rounded-lg bg-white shadow-md">
       <h2 className="text-2xl font-bold capitalize text-slate-900">{title}</h2>
       {formatPath(path)}
       {filters}

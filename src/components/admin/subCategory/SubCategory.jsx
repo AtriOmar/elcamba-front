@@ -43,16 +43,17 @@ export default function SubCategories() {
       denyButtonColor: "#d9e2ef",
     }).then((result) => {
       if (result.isConfirmed) {
-        API.deleteSubCategoryById(item.id)
+        axios
+          .delete("/sub-categories/deleteById", { params: { id: item.id } })
           .then((res) => {
             Swal.fire("Success", res.data.message, "success");
             getItems();
           })
           .catch((err) => {
-            if (err.response.data.status === 404) {
-              Swal.fire("Erreur", err.response.data.message, "error");
+            if (err?.response?.data.status === 404) {
+              Swal.fire("Erreur", err?.response?.data.message, "error");
             } else if (err.response.status === 401) {
-              Swal.fire("Error", err.response.data.message, "error");
+              Swal.fire("Error", err?.response?.data.message, "error");
             }
           });
       } else if (result.isDenied) {

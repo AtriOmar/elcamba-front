@@ -1,14 +1,14 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import axios from "axios";
-import TypeSelect from "./PromotePoster/TypeSelect";
-import DurationSelect from "./PromoteProduct/DurationSelect";
-import PosterSelect from "./PromotePoster/PosterSelect";
+import TypeSelect from "./TypeSelect";
+import DurationSelect from "../PromoteProduct/DurationSelect";
+import PosterSelect from "./PosterSelect";
 import { IonIcon } from "@ionic/react";
 import { megaphoneOutline } from "ionicons/icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
-import RingLoader from "../RingLoader";
+import RingLoader from "../../RingLoader";
 
 const PRICES = {
   1: 12,
@@ -16,7 +16,7 @@ const PRICES = {
   3: 8,
 };
 
-function PromotePoster() {
+export default function PromotePoster() {
   const [input, setInput] = useState({
     duration: 1,
     type: 1,
@@ -48,10 +48,11 @@ function PromotePoster() {
       // navigate(`/payment/${res.data}`);
       window.open(`/payment/${res.data}`, "_blank");
       // window.addEventListener("message", handlePayment);
+      setSending(false);
     } catch (err) {
+      setSending(false);
       console.log(err);
     }
-    setSending(false);
   }
 
   return (
@@ -103,5 +104,3 @@ function PromotePoster() {
     </div>
   );
 }
-
-export default PromotePoster;

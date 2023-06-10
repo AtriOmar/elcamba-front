@@ -2,16 +2,17 @@ import { Transition } from "@headlessui/react";
 import axios from "axios";
 import React, { Fragment, useEffect, useState } from "react";
 import { useAuthContext } from "../../../contexts/AuthProvider";
+import normalized from "../../../lib/normalized";
+import Modal from "../../Modal";
 
 function SelectCategory({ show, setShow, category, setCategory }) {
-  const [unmount, setUnmount] = useState(true);
-
+  const [filter, setFilter] = useState("");
   const [categories, setCategories] = useState([]);
   const [active, setActive] = useState();
 
   useEffect(() => {
     axios
-      .get("/categories")
+      .get("/categories/getAll")
       .then((res) => {
         console.log(res.data);
         setCategories(res.data);
@@ -22,76 +23,62 @@ function SelectCategory({ show, setShow, category, setCategory }) {
       });
   }, []);
 
-  useEffect(() => {
-    if (show) setUnmount(false);
-
-    function detectEscape(e) {
-      if (e.code === "Escape") {
-        setShow(false);
-      }
-    }
-
-    if (show) {
-      document.addEventListener("keydown", detectEscape);
-
-      return () => document.removeEventListener("keydown", detectEscape);
-    }
-  }, [show]);
-
-  if (unmount) return false;
-
   return (
-    <div className={`fixed inset-0 flex items-center justify-center overflow-hidden z-[1000] ${show ? "pointer-events-auto" : "pointer-events-none"}`}>
-      <div
-        className={`bg-black ${
-          show ? "opacity-50" : "opacity-0 "
-        } animate-[fade_300ms] w-full h-screen absolute top-0 right-0 cursor-pointer transition duration-300 `}
-        onClick={() => setShow(false)}
-      ></div>
-      <Transition
-        as={Fragment}
-        show={show}
-        appear={true}
-        enter="ease-out duration-300"
-        enterFrom="opacity-0 scale-75"
-        enterTo="opacity-100 scale-100"
-        leave="ease-in duration-200"
-        leaveFrom="opacity-100 scale-100"
-        leaveTo="opacity-0 scale-75"
-        afterLeave={() => {
-          setUnmount(true);
-        }}
-      >
-        <section className="flex w-[600px] rounded-2xl bg-white overflow-hidden ">
-          <article className="w-1/3">
-            <ul className="divide-y text-sm capitalize font-medium">
-              {categories.map((categ, index) => (
-                <li key={categ.name} className={`py-2 px-4 ${active === index ? "bg-slate-100" : "border-r"}`} onMouseEnter={() => setActive(index)}>
-                  {categ.name}
-                </li>
-              ))}
-            </ul>
-          </article>
-          <article className="grow py-2 px-2 bg-slate-100 text-sm overflow-x-scroll scrollbar1">
-            <ul className="flex flex-col flex-wrap h-[600px] font-medium">
+    <Modal show={show} hide={() => setShow(false)} dialogClassName="rounded-2xl">
+      <section className="flex w-[600px] h-[500px] rounded-2xl bg-white overflow-hidden ">
+        <article className="w-1/3 shrink-0">
+          <ul className="divide-y text-sm capitalize font-medium">
+            {categories.map((categ, index) => (
+              <li key={categ.name} className={`py-2 px-4 ${active === index ? "bg-sky-100" : "border-r"}`} onMouseEnter={() => setActive(index)}>
+                {categ.name}
+              </li>
+            ))}
+          </ul>
+        </article>
+        <article className="grow py-2 px-2 bg-sky-100 text-sm overflow-y-auto scrollbar1">
+          <div className="py-2 px-3">
+            <input
+              type="text"
+              className="block w-full max-w-[500px] mx-auto py-2 px-4 border border-slate-400 rounded-lg outline-none"
+              placeholder="Rechercher des catégories"
+              value={filter}
+              onChange={(e) => setFilter(e.target.value)}
+            />
+          </div>
+          <ul className="flex flex-wrap grow gap-y-3 gap-x-8 h-0 py-2 px-4">
+            {categories[active]?.SubCategories?.map((sub) => (
+              <li className={`first-letter:uppercase ${new RegExp(normalized(filter.trim()), "i").test(normalized(sub?.name)) ? "" : "hidden"}`} key={sub.name}>
+                <button
+                  onClick={() => {
+                    setCategory({ name: categories[active].name + " > " + sub.name, id: sub.id });
+                    setShow(false);
+                  }}
+                  className="py-2 px-3 rounded-lg bg-sky-600 text-white hover:bg-sky-700 transition duration-300"
+                >
+                  {/* {filter ? reactStringReplace(sub.name, filter.trim(), (match) => <span className="font-bold">{match}</span>) : sub.name} */}
+                  {sub.name}
+                </button>
+              </li>
+            ))}
+          </ul>
+          {/* <ul className="flex flex-col flex-wrap h-[600px] font-medium">
               {categories[active].SubCategories.map((sub) => (
                 <li key={sub.name} className="py-1 px-2 text-slate-700 hover:text-black transition duration-300">
-                  <button
-                    onClick={() => {
-                      setCategory({ name: categories[active].name + " > " + sub.name, id: sub.id });
-                      setShow(false);
-                    }}
-                    className="capitalize"
-                  >
-                    {sub.name}
-                  </button>
+                <button
+                onClick={() => {
+                  setCategory({ name: categories[active].name + " > " + sub.name, id: sub.id });
+                  setShow(false);
+                }}
+                className="capitalize"
+                >
+                {sub.name}
+                </button>
                 </li>
-              ))}
-            </ul>
-          </article>
-        </section>
-      </Transition>
-    </div>
+                ))}
+            </ul> */}
+        </article>
+      </section>
+    </Modal>
   );
 }
 

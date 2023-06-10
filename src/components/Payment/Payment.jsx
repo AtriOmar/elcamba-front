@@ -1,14 +1,15 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
-import Loader from "./Loader";
-import sad from "../assets/images/sad.png";
+import Loader from "../Loader";
+import sad from "../../assets/images/sad.png";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { ColorRing } from "react-loader-spinner";
-import ProductCard from "./Payment/ProductCard";
-import PosterCard from "./Payment/PosterCard";
+import ProductCard from "./ProductCard";
+import PosterCard from "./PosterCard";
+import formatDate from "../../lib/formatDate";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -97,30 +98,15 @@ function Payment() {
           <>
             <p className="flex gap-3 mt-2">
               <span className="font-medium text-sky-700">Payé le:</span>
-              <span>
-                {new Intl.DateTimeFormat("fr-FR", {
-                  dateStyle: "medium",
-                  timeStyle: "short",
-                }).format(new Date(order.paid))}
-              </span>
+              <span>{formatDate(order.paid)}</span>
             </p>
             <p className="flex gap-3 mt-2">
               <span className="font-medium text-sky-700">Début:</span>
-              <span>
-                {new Intl.DateTimeFormat("fr-FR", {
-                  dateStyle: "medium",
-                  timeStyle: "short",
-                }).format(new Date(order.startsAt))}
-              </span>
+              <span>{formatDate(order.startsAt)}</span>
             </p>
             <p className="flex gap-3 mt-2">
               <span className="font-medium text-sky-700">Fin:</span>
-              <span>
-                {new Intl.DateTimeFormat("fr-FR", {
-                  dateStyle: "medium",
-                  timeStyle: "short",
-                }).format(new Date(order.expiresAt))}
-              </span>
+              <span>{formatDate(order.expiresAt)}</span>
             </p>
           </>
         ) : status === undefined ? (

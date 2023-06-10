@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
-import Navbar from "./Navbar";
-import Loader from "./Loader";
+import Navbar from "../Navbar/Navbar";
+import Loader from "../Loader";
 import axios from "axios";
 import { useParams } from "react-router";
-import formatPath from "../lib/formatPath";
+import formatPath from "../../lib/formatPath";
 import { UserIcon } from "@heroicons/react/24/solid";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLocationDot, faMessage, faStar, faStarHalfStroke, faTruck } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
-import ProductDetails from "./Product/ProductDetails";
-import PremiumProducts from "./Product/PremiumProducts";
-import SimilarProducts from "./Product/SimilarProducts";
+import ProductDetails from "./ProductDetails";
+import PremiumProducts from "./PremiumProducts";
+import SimilarProducts from "./SimilarProducts";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -31,9 +31,9 @@ function Product() {
 
     setPath(() => {
       const newPath = [];
-      newPath[0] = { name: res.data.SubCategory.Category.name, path: `/category?c=${res.data.SubCategory.Category.id}` };
-      newPath[1] = { name: res.data.SubCategory.name, path: `/category?s=${res.data.SubCategory.id}` };
-      newPath[2] = { name: res.data.name, path: `/product/${res.data.id}` };
+      newPath[0] = { name: res.data?.SubCategory?.Category?.name, path: `/products?c=${res.data?.SubCategory?.Category?.id}` };
+      newPath[1] = { name: res.data?.SubCategory?.name, path: `/products?s=${res.data?.SubCategory?.id}` };
+      newPath[2] = { name: res.data?.name, path: `/products/${res.data?.id}` };
 
       return newPath;
     });
@@ -54,12 +54,11 @@ function Product() {
   }
 
   return (
-    <div className="">
-      <Navbar />
+    <div className="grow">
       <ProductDetails product={product} path={path} />
       <PremiumProducts />
-      <SimilarProducts categoryId={{ categoryId: product.SubCategory.Category.id }} categoryName={product.SubCategory.Category.name} />
-      <SimilarProducts categoryId={{ subCategoryId: product.SubCategory.id }} categoryName={product.SubCategory.name} />
+      <SimilarProducts categoryId={{ categoryId: product?.SubCategory?.Category?.id }} categoryName={product?.SubCategory?.Category?.name} />
+      <SimilarProducts categoryId={{ subCategoryId: product?.SubCategory?.id }} categoryName={product?.SubCategory?.name} />
     </div>
   );
 }

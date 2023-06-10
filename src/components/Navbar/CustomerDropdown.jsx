@@ -8,24 +8,40 @@ import { UserCircleIcon } from "@heroicons/react/24/outline";
 import API from "../../utils/API";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserGear, faUserPen } from "@fortawesome/free-solid-svg-icons";
-import { faMessage } from "@fortawesome/free-regular-svg-icons";
+import { faMessage, faUser } from "@fortawesome/free-regular-svg-icons";
 import { faRectangleList } from "@fortawesome/free-regular-svg-icons";
 import { IonIcon } from "@ionic/react";
 import { logOutOutline, megaphoneOutline } from "ionicons/icons";
+import { useUIContext } from "../../contexts/UIProvider";
+import axios from "axios";
+
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 function CustomerDropdown({ path = "" }) {
   const [isOpen, setIsOpen] = useState(false);
   const { user, setUser } = useAuthContext();
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
+  const { addPopup } = useUIContext();
 
   function handleLogout() {
-    API.getLoggedOut()
+    axios
+      .get("/logout")
       .then((res) => {
         setUser(res.data.user);
+        addPopup({
+          type: "success",
+          text: "Déconnecté avec succés",
+          lastFor: 4000,
+        });
         navigate("/");
       })
       .catch((err) => {
+        addPopup({
+          type: "danger",
+          text: "Une erreur s'est produite",
+          lastFor: 4000,
+        });
         console.log(err.response);
         console.log(err);
       });
@@ -47,7 +63,15 @@ function CustomerDropdown({ path = "" }) {
         }  text-slate-800`}
         ref={dropdownRef}
       >
-        <UserCircleIcon className="h-7" />
+        {user?.picture ? (
+          <img
+            src={`${BACKEND_URL}/uploads/profile-pictures/${user?.picture}`}
+            alt="Profile picture"
+            className="w-[32px] aspect-square rounded-[50%] border object-cover"
+          />
+        ) : (
+          <UserCircleIcon className="h-7" />
+        )}
         {user?.username}
         {/* <FontAwesomeIcon icon={faChevronDown} className={`ml-2 text-sm transition duration-300 ${isOpen ? "-rotate-180" : ""}`} /> */}
         <ChevronDownIcon className={` h-5 transition duration-300 ${isOpen ? "-rotate-180" : ""}`} />
@@ -62,7 +86,7 @@ function CustomerDropdown({ path = "" }) {
         leaveFrom="translate-y-0 opacity-100"
         leaveTo="translate-y-[30px] opacity-0"
       >
-        <ul className="absolute top-full left-[-20px] translate-y-[10px] w-max max-w-[200px] p-2 rounded shadow-card1 bg-white text-[15px] list-none">
+        <ul className="absolute top-full right-0 translate-y-[10px] w-max max-w-[200px] p-2 rounded shadow-card1 bg-white text-[15px] list-none">
           {/* <li>
             <Link to="/customer/products">Mes produits</Link>
           </li> */}
@@ -82,6 +106,12 @@ function CustomerDropdown({ path = "" }) {
             <Link to="/customer/chat" className="flex gap-2 items-center hover:bg-slate-100 p-2 rounded-lg">
               <FontAwesomeIcon icon={faMessage} className="" />
               Mes discussions
+            </Link>
+          </li>
+          <li className="">
+            <Link to="/customer/profile/info" className="flex gap-2 items-center hover:bg-slate-100 p-2 rounded-lg">
+              <FontAwesomeIcon icon={faUser} className="" />
+              Mes compte
             </Link>
           </li>
           <li className="">

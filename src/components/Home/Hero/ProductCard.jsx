@@ -8,7 +8,7 @@ const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 function ProductCard({ product }) {
   return (
     <Link
-      to={`/product/${product.id}`}
+      to={`/products/${product.id}`}
       className="block w-[125px] h-full rounded-lg bg-white shadow-card1 hover:shadow-card2 hover:scale-[1.02] duration-300 overflow-hidden"
     >
       <div className="h-[125px] w-full border-b">
@@ -17,8 +17,8 @@ function ProductCard({ product }) {
       <div className="py-0.5 px-3">
         <h5 className="font-normal font-rubik text-slate-900 text-[12px] capitalize line-clamp-2">{product.name}</h5>
         <h5 className="flex flex-wrap items-end w-fit ml-auto px-2 py-0.5 rounded-full bg-red-500 font-normal font-rubik text-white capitalize">
-          {product.oldPrice ? <span className="mr-1 text-[10px] line-through whitespace-nowrap">{product.oldPrice} DT</span> : ""}
-          <span className="ml-auto text-[12px] whitespace-nowrap">{product.price} DT</span>
+          {product.salePrice ? <span className="mr-1 text-[10px] line-through whitespace-nowrap">{product.price} DT</span> : ""}
+          <span className="ml-auto text-[12px] whitespace-nowrap">{product.salePrice || product.price} DT</span>
         </h5>
       </div>
     </Link>

@@ -27,7 +27,7 @@ function AdStatus({ input, setInput }) {
   return (
     <Popover className="relative w-fit">
       <Popover.Button
-        className={`h-9 rounded border border-slate-300 bg-sky-600 px-2 outline-0 ring-inset text-white transition-all duration-150 hover:bg-sky-700 focus:ring-1 [&[aria-expanded='true']]:bg-sky-700 `}
+        className={`h-9 rounded border border-slate-300 bg-sky-600 px-2 outline-0 text-white transition-all duration-150 hover:bg-sky-700 focus:ring-1 ring-sky-800 ring-offset-1 [&[aria-expanded='true']]:bg-sky-700`}
         ref={buttonRef}
       >
         <p className="flex items-center gap-2">

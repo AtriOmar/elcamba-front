@@ -1,11 +1,18 @@
-import React, { useLayoutEffect, useMemo } from "react";
+import React, { useEffect, useLayoutEffect, useMemo } from "react";
 import MessageCard from "./MessageCard";
 import RingLoader from "../../RingLoader";
 import { useAuthContext } from "../../../contexts/AuthProvider";
+import { useChatContext } from "../../../contexts/ChatProvider";
+import formatDate from "../../../lib/formatDate";
 
 export default function MessagesBox({ user: receiver, messages }) {
   const { user } = useAuthContext();
   var firstRender = useMemo(() => true, [receiver]);
+  const { isConnected } = useChatContext();
+
+  useEffect(() => {
+    console.log("isconnected", isConnected);
+  }, [isConnected]);
 
   // scrolling to bottom when a new message arrives
   useLayoutEffect(() => {
@@ -43,18 +50,14 @@ export default function MessagesBox({ user: receiver, messages }) {
             ) {
               return (
                 <div key={message.id} className="thoughtContainer">
-                  <p className="w-full text-center text-slate-600 text-sm font-medium mb-2">
-                    {new Intl.DateTimeFormat("en-UK", { dateStyle: "medium", timeStyle: "short" }).format(new Date(message.createdAt))}
-                  </p>
+                  <p className="w-full text-center text-slate-600 text-sm font-medium mb-2">{formatDate(message.createdAt)}</p>
                   <MessageCard message={message} user={user} />
                 </div>
               );
             } else if (index === 0 || message?.createdAt - messages[index - 1]?.createdAt > 600000) {
               return (
                 <div key={message.id} className="thoughtContainer">
-                  <p className="w-full text-center text-slate-600 text-sm font-medium mb-2">
-                    {new Intl.DateTimeFormat("en-UK", { timeStyle: "short" }).format(new Date(message.createdAt))}
-                  </p>
+                  <p className="w-full text-center text-slate-600 text-sm font-medium mb-2">{formatDate(message.createdAt)}</p>
                   <MessageCard message={message} user={user} />
                 </div>
               );

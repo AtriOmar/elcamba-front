@@ -22,7 +22,7 @@ function AuthProvider({ children }) {
     getUserStatus();
   }, []);
 
-  return <AuthContext.Provider value={{ user, setUser }}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={{ user, setUser, getUserStatus }}>{children}</AuthContext.Provider>;
 }
 
 export default AuthProvider;

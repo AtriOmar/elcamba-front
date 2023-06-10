@@ -9,6 +9,7 @@ import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 import axios from "axios";
 import { useUIContext } from "../../../contexts/UIProvider";
 import RingLoader from "../../RingLoader";
+import formatDate from "../../../lib/formatDate";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -24,10 +25,12 @@ function AdDetails({ ad, fetchAd }) {
       await axios.post("/ads/toggleStatus", { id: ad.id });
       addPopup({
         type: "success",
-        text: "Publicité modifiée avec success",
+        text: "Publicité modifiée avec succés",
         lastFor: 2000,
       });
+      setSending(false);
     } catch (err) {
+      setSending(false);
       console.log(err);
       addPopup({
         type: "danger",
@@ -36,7 +39,6 @@ function AdDetails({ ad, fetchAd }) {
       });
     }
     fetchAd();
-    setSending(false);
   }
 
   return (
@@ -118,19 +120,9 @@ function AdDetails({ ad, fetchAd }) {
           <p className="mt-2 font-medium text-sky-700">Référence de paiement:</p>
           <p className="max-w-[700px] whitespace-pre-wrap">{ad.token}</p>
           <p className="mt-2 font-medium text-sky-700">Date de création:</p>
-          <p className="max-w-[700px] whitespace-pre-wrap">
-            {new Intl.DateTimeFormat("fr-FR", {
-              dateStyle: "medium",
-              timeStyle: "short",
-            }).format(new Date(ad.createdAt))}
-          </p>
+          <p className="max-w-[700px] whitespace-pre-wrap">{formatDate(ad.createdAt)}</p>
           <p className="mt-2 font-medium text-sky-700">Dernière modification:</p>
-          <p className="max-w-[700px] whitespace-pre-wrap">
-            {new Intl.DateTimeFormat("fr-FR", {
-              dateStyle: "medium",
-              timeStyle: "short",
-            }).format(new Date(ad.updatedAt))}
-          </p>
+          <p className="max-w-[700px] whitespace-pre-wrap">{formatDate(ad.updatedAt)}</p>
           <p className="mt-2 font-medium text-sky-700">Active:</p>
           <Switch checked={ad.active && new Date(ad.expiresAt) > new Date()} disabled={true} />
           <p className="mt-2 font-medium text-sky-700">Payé:</p>
@@ -138,26 +130,11 @@ function AdDetails({ ad, fetchAd }) {
           {ad.paid ? (
             <>
               <p className="mt-2 font-medium text-sky-700">Payé le:</p>
-              <p className="max-w-[700px] whitespace-pre-wrap">
-                {new Intl.DateTimeFormat("fr-FR", {
-                  dateStyle: "medium",
-                  timeStyle: "short",
-                }).format(new Date(ad.paid))}
-              </p>
+              <p className="max-w-[700px] whitespace-pre-wrap">{formatDate(ad.paid)}</p>
               <p className="mt-2 font-medium text-sky-700">Début:</p>
-              <p className="max-w-[700px] whitespace-pre-wrap">
-                {new Intl.DateTimeFormat("fr-FR", {
-                  dateStyle: "medium",
-                  timeStyle: "short",
-                }).format(new Date(ad.startsAt))}
-              </p>
+              <p className="max-w-[700px] whitespace-pre-wrap">{formatDate(ad.startsAt)}</p>
               <p className="mt-2 font-medium text-sky-700">Fin:</p>
-              <p className="max-w-[700px] whitespace-pre-wrap">
-                {new Intl.DateTimeFormat("fr-FR", {
-                  dateStyle: "medium",
-                  timeStyle: "short",
-                }).format(new Date(ad.expiresAt))}
-              </p>
+              <p className="max-w-[700px] whitespace-pre-wrap">{formatDate(ad.expiresAt)}</p>
             </>
           ) : (
             ""

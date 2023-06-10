@@ -13,16 +13,18 @@ function ProductCard({ product }) {
       <div className="py-2 px-3">
         <h5 className="font-normal font-rubik text-slate-900 capitalize ">{product.name}</h5>
         <h5 className="w-fit ml-auto py-1 px-2 rounded-full bg-yellow-500 font-normal font-rubik text-white capitalize">
-          {product.oldPrice ? <span className="mr-2 text-[11px] line-through">{product.oldPrice} DT</span> : ""}
-          {product.price} DT
+          {product.salePrice ? <span className="mr-2 text-[11px] line-through">{product.price} DT</span> : ""}
+          {product.salePrice || product.price} DT
         </h5>
         <div className="flex items-center gap-1 mt-2 text-sky-800">
           <FontAwesomeIcon icon={faTruck} size="xs" />
-          <p className="text-[11px]">{product.deliveryBody || "Non"}</p>
+          <p className="text-[11px]">{product.delivery || "Non"}</p>
         </div>
         <div className="flex items-center gap-1 text-sky-800">
           <FontAwesomeIcon icon={faLocationDot} size="xs" />
-          <p className="text-[11px]">{product.address || ""}</p>
+          <p className="text-[11px]">
+            <span className="capitliaze">{product.city}</span>, {product.address || ""}
+          </p>
         </div>
       </div>
     </div>

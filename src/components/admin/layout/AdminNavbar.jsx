@@ -15,7 +15,8 @@ export default function AdminNavbar() {
   const { user, setUser } = useAuthContext();
 
   function handleLogout() {
-    API.getLoggedOut()
+    axios
+      .get("/logout")
       .then((res) => {
         setUser(res.data.user);
         Swal.fire("Success", "Successfully Logged out", "success");

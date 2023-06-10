@@ -1,16 +1,16 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import ProductSelect from "./PromoteProduct/ProductSelect";
-import ProductCard from "./PromoteProduct/ProductCard";
+import ProductSelect from "./ProductSelect";
+import ProductCard from "./ProductCard";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import DurationSelect from "./PromoteProduct/DurationSelect";
+import DurationSelect from "./DurationSelect";
 import { IonIcon } from "@ionic/react";
 import { megaphoneOutline } from "ionicons/icons";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
-import RingLoader from "../RingLoader";
-import Loader from "../Loader";
-import { useUIContext } from "../../contexts/UIProvider";
+import RingLoader from "../../RingLoader";
+import Loader from "../../Loader";
+import { useUIContext } from "../../../contexts/UIProvider";
 
 function PromoteProduct() {
   const [product, setProduct] = useState(null);
@@ -55,7 +55,9 @@ function PromoteProduct() {
       window.open(`/payment/${res.data}`, "_blank");
       // setPaymentUrl(`https://sandbox.paymee.tn/gateway/${res.data.data.token}`);
       // window.addEventListener("message", handlePayment);
+      setSending(false);
     } catch (err) {
+      setSending(false);
       console.log(err);
       addPopup({
         type: "danger",
@@ -63,7 +65,6 @@ function PromoteProduct() {
         lastFor: 2000,
       });
     }
-    setSending(false);
   }
 
   return (

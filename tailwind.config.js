@@ -9,6 +9,7 @@ export default {
         roboto: "Roboto",
       },
       screens: {
+        scr500: "500px",
         scr600: "600px",
         scr700: "700px",
         scr800: "800px",

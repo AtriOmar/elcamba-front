@@ -25,7 +25,7 @@ export default function Ads() {
         setLoading(false);
       })
       .catch((err) => {
-        Swal.fire("Error", err.response.data, "error");
+        Swal.fire("Error", err?.response?.data, "error");
       });
   }
   useEffect(() => {
@@ -57,10 +57,10 @@ export default function Ads() {
             getItems();
           })
           .catch((err) => {
-            if (err.response.data.status === 404) {
-              Swal.fire("Erreur", err.response.data.message, "error");
+            if (err?.response?.data.status === 404) {
+              Swal.fire("Erreur", err?.response?.data.message, "error");
             } else if (err.response.status === 401) {
-              Swal.fire("Error", err.response.data.message, "error");
+              Swal.fire("Error", err?.response?.data.message, "error");
             }
           });
       } else if (result.isDenied) {

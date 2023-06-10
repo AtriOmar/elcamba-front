@@ -34,8 +34,9 @@ function PosterCard({ order }) {
         </div>
       </div>
       <p className="mt-4 font-medium text-sky-700">Affiche:</p>
+
       <img
-        className="mt-2 w-full max-w-[500px] max-h-[400px] border rounded-md object-cover"
+        className="mt-2 mx-auto max-w-[500px] max-h-[400px] border rounded-md object-cover"
         src={`${BACKEND_URL}/uploads/ads/${order.photo}`}
         alt=""
         style={{ aspectRatio: RATIO[order.type] }}

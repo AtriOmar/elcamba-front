@@ -7,9 +7,6 @@ export default {
   postUserLogin: (user) => {
     return axios.post("/login", user);
   },
-  getLoggedOut: () => {
-    return axios.get("/logout");
-  },
   postNewUser: (user) => {
     return axios.post("/users", user);
   },
@@ -27,9 +24,6 @@ export default {
   },
   postNewProduct: (product) => {
     return axios.post("/products", product);
-  },
-  getCategories: () => {
-    return axios.get("/categories");
   },
   deleteCategoryById: (id) => {
     return axios.delete(`/categories/${id}`);

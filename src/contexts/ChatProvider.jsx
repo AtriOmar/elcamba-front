@@ -22,7 +22,7 @@ function ChatProvider({ children }) {
 
     socket.connect();
 
-    socket.on("conncect", () => {
+    socket.on("connect", () => {
       setIsConnected(true);
     });
     socket.on("disconnect", () => {

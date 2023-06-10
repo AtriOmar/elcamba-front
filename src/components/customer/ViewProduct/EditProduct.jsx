@@ -9,24 +9,29 @@ import { useAuthContext } from "../../../contexts/AuthProvider";
 import { useNavigate, useParams } from "react-router";
 import { Link } from "react-router-dom";
 import Switch from "../../Switch";
+import RingLoader from "../../RingLoader";
+import CitySelect from "./CitySelect";
+import deepEqual from "deep-equal";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
-function EditProduct({ product, category, setShowSelectCategory }) {
+function EditProduct({ product, category, setShowSelectCategory, fetchProduct }) {
   const [photos, setPhotos] = useState([...product.photos]);
   const [input, setInput] = useState({
     name: product.name,
     category: { name: product.SubCategory.Category.name + " > " + product.SubCategory.name, id: product.SubCategory.id },
-    oldPrice: product.oldPrice,
+    salePrice: product.salePrice,
     price: product.price,
     description: product.description,
-    delivery: product.delivery,
-    deliveryBody: product.deliveryBody,
+    delivery: !!product.delivery,
+    deliveryBody: product.delivery,
+    city: product.city,
     address: product.address,
     visible: product.visible,
     sold: product.sold,
   });
   const [error, setError] = useState("");
+  const [sending, setSending] = useState(false);
 
   const { addPopup } = useUIContext();
   const navigate = useNavigate();
@@ -42,13 +47,15 @@ function EditProduct({ product, category, setShowSelectCategory }) {
   async function handleSubmit(e) {
     e.preventDefault();
 
+    if (sending) return;
+
     if (!photos?.length) {
       setError("Vous devez choisir au moins une photo");
       return;
     }
 
-    if (input.name.length < 8) {
-      setError("La longueur du nom doit être supérieure à 8");
+    if (input.name.length < 4) {
+      setError("La longueur du nom doit être supérieure à 4");
       return;
     }
 
@@ -62,8 +69,8 @@ function EditProduct({ product, category, setShowSelectCategory }) {
       return;
     }
 
-    if (input.description.length < 20) {
-      setError("La longueur de la description doit être supérieure à 20");
+    if (input.description.length < 10) {
+      setError("La longueur de la description doit être supérieure à 10");
       return;
     }
 
@@ -85,25 +92,34 @@ function EditProduct({ product, category, setShowSelectCategory }) {
     formData.append("photos", JSON.stringify(photosArr));
     formData.append("name", input.name);
     formData.append("subCategoryId", input.category.id);
-    formData.append("oldPrice", input.oldPrice);
+    formData.append("salePrice", input.salePrice);
     formData.append("price", input.price);
     formData.append("description", input.description);
-    formData.append("delivery", input.delivery);
-    formData.append("deliveryBody", input.deliveryBody);
+    if (input.delivery) {
+      formData.append("delivery", input.deliveryBody);
+    } else {
+      formData.append("delivery", "");
+    }
+    formData.append("city", input.city);
     formData.append("address", input.address);
     formData.append("visible", input.visible);
     formData.append("sold", input.sold);
 
+    setSending(true);
+
     try {
-      const result = await axios.post("/products/update", formData);
-      console.log(result);
+      const res = await axios.post("/products/update", formData);
+
+      fetchProduct();
       addPopup({
         type: "success",
-        text: "Produit modifié avec success",
+        text: "Produit modifié avec succés",
         lastFor: 2000,
       });
       // navigate("/products");
+      setSending(false);
     } catch (err) {
+      setSending(false);
       console.log(err);
       addPopup({
         type: "danger",
@@ -111,12 +127,6 @@ function EditProduct({ product, category, setShowSelectCategory }) {
       });
     }
   }
-
-  // useEffect(() => {
-  //   console.log(photos);
-  // }, [photos]);
-
-  console.log(photos);
 
   const photosSwiper = useMemo(
     () =>
@@ -152,6 +162,8 @@ function EditProduct({ product, category, setShowSelectCategory }) {
       ),
     [photos]
   );
+
+  if (!product) return;
 
   return (
     <>
@@ -236,21 +248,6 @@ function EditProduct({ product, category, setShowSelectCategory }) {
           >
             {input.category ? input.category.name : "Catégorie"}
           </button>
-          <label htmlFor="oldPrice" className="relative mt-2 block text-base text-slate-700">
-            Prix ancien (s'il y a un solde, sinon laissez vide):
-          </label>
-          <div className="flex max-w-[250px] rounded-lg duration-150">
-            <input
-              id="oldPrice"
-              name="oldPrice"
-              onChange={handleChange}
-              value={input.oldPrice}
-              type="number"
-              className="hidden-arrows w-full rounded-l-lg border border-slate-700 border-r-slate-300 px-2 py-1 outline-0 ring-inset ring-blue-500 transition-all duration-150 focus:ring-1"
-              placeholder="0000"
-            />
-            <span className="flex items-center rounded-r-lg border border-l-0 border-slate-700 px-3 py-[0.25rem]">DT</span>
-          </div>
           <label htmlFor="price" className="relative mt-2 block text-base text-slate-700">
             Prix:
           </label>
@@ -260,6 +257,21 @@ function EditProduct({ product, category, setShowSelectCategory }) {
               name="price"
               onChange={handleChange}
               value={input.price}
+              type="number"
+              className="hidden-arrows w-full rounded-l-lg border border-slate-700 border-r-slate-300 px-2 py-1 outline-0 ring-inset ring-blue-500 transition-all duration-150 focus:ring-1"
+              placeholder="0000"
+            />
+            <span className="flex items-center rounded-r-lg border border-l-0 border-slate-700 px-3 py-[0.25rem]">DT</span>
+          </div>
+          <label htmlFor="salePrice" className="relative mt-2 block text-base text-slate-700">
+            Prix soldé (s'il y a un solde, sinon laissez vide):
+          </label>
+          <div className="flex max-w-[250px] rounded-lg duration-150">
+            <input
+              id="salePrice"
+              name="salePrice"
+              onChange={handleChange}
+              value={input.salePrice}
               type="number"
               className="hidden-arrows w-full rounded-l-lg border border-slate-700 border-r-slate-300 px-2 py-1 outline-0 ring-inset ring-blue-500 transition-all duration-150 focus:ring-1"
               placeholder="0000"
@@ -319,6 +331,13 @@ function EditProduct({ product, category, setShowSelectCategory }) {
             </label>
             <div className="h-[.5px] grow rounded-[50%] bg-slate-400"></div>
           </div>
+          <label htmlFor="description" className="relative text-base text-slate-700">
+            Ville:
+          </label>
+          <CitySelect input={input} setInput={setInput} />
+          <label htmlFor="description" className="block relative mt-2 text-base text-slate-700">
+            Adresse exacte:
+          </label>
           <textarea
             name="address"
             id="address"
@@ -338,15 +357,41 @@ function EditProduct({ product, category, setShowSelectCategory }) {
               {error}
             </div>
           )}
-          <div className="flex flex-col scr800:flex-row gap-1">
-            <input
-              type="submit"
-              value="Enregister"
-              className=" w-full scr800:w-1/2 mt-2 cursor-pointer rounded-full bg-blue-500 px-4 py-2 text-white transition duration-300 hover:bg-blue-600"
-            />
+          <div className="flex flex-col scr800:flex-row gap-1 mt-2">
+            <div className="relative w-full scr800:w-1/2">
+              <input
+                type="submit"
+                value="Enregister"
+                className={`w-full   cursor-pointer rounded-full bg-blue-500 px-4 py-2 text-white transition duration-300 hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed`}
+                disabled={(() => {
+                  if (!product) return true;
+                  const obj = {
+                    name: product.name,
+                    category: { name: product.SubCategory.Category.name + " > " + product.SubCategory.name, id: product.SubCategory.id },
+                    salePrice: product.salePrice,
+                    price: product.price,
+                    description: product.description,
+                    delivery: !!product.delivery,
+                    deliveryBody: product.delivery,
+                    city: product.city,
+                    address: product.address,
+                    visible: product.visible,
+                    sold: product.sold,
+                  };
+                  return deepEqual(obj, input);
+                })()}
+              />
+              {sending ? (
+                <i className="absolute right-1 top-1/2 -translate-y-1/2">
+                  <RingLoader color="white" />
+                </i>
+              ) : (
+                ""
+              )}
+            </div>
             <Link
               to={"/customer/products"}
-              className="block w-full scr800:w-1/2 mt-2 px-4 py-2 cursor-pointer rounded-full bg-red-600 hover:bg-red-700 text-white text-center transition duration-300 "
+              className="block w-full scr800:w-1/2 px-4 py-2 cursor-pointer rounded-full bg-red-600 hover:bg-red-700 text-white text-center transition duration-300 "
             >
               Annuler
             </Link>

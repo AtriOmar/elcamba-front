@@ -1,37 +1,14 @@
-import { faFilter } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useEffect, useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
-import PriceSlider from "../PriceSlider";
-import { useUIContext } from "../../contexts/UIProvider";
-import RingLoader from "../RingLoader";
+import React from "react";
+import { useUIContext } from "../../../contexts/UIProvider";
+import { useSearchParams } from "react-router-dom";
+import PriceSlider from "../../PriceSlider";
 
-function Sidebar() {
+export default function PriceFilter() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const { priceRange, setPriceRange, filtering } = useUIContext();
-
-  // useEffect(() => {
-  //   if (
-  //     (searchParams.get("min") !== priceRange.min || searchParams.get("max") !== priceRange.max) &&
-  //     Number(searchParams.get("min")) < Number(searchParams.get("max"))
-  //   ) {
-  //     setPriceRange({
-  //       min: Number(searchParams.get("min")) || 0,
-  //       max: Number(searchParams.get("max")) || 5000,
-  //       inputMin: Number(searchParams.get("min")) || 0,
-  //       inputMax: Number(searchParams.get("max")) || 5000,
-  //     });
-  //   }
-  // }, [searchParams]);
+  const { priceRange, setPriceRange } = useUIContext();
 
   return (
-    <div className="hidden scr900:block h-full w-[250px] py-10 px-4 bg-white font-medium text-lg shadow-md">
-      <h3 className="flex items-center gap-2 font-semibold text-xl text-slate-900">
-        <FontAwesomeIcon icon={faFilter} />
-        Filtrer
-        {filtering ? <RingLoader /> : ""}
-      </h3>
-      <h4 className="mt-2 text-slate-700">Prix</h4>
+    <>
       <div className="px-2">
         <PriceSlider />
       </div>
@@ -69,8 +46,6 @@ function Sidebar() {
           <span className="flex items-center px-1 border border-l-0 border-slate-700 rounded-r text-xs">DT</span>
         </div>
       </section>
-    </div>
+    </>
   );
 }
-
-export default Sidebar;

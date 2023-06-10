@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import API from "../../../utils/API";
+import axios from "axios";
 
 export default function AddProductCmp() {
   const [picture, setPicture] = useState([]);
@@ -46,7 +47,7 @@ export default function AddProductCmp() {
   const [categoryList, setCategoryList] = useState([]);
 
   useEffect(() => {
-    API.getCategories().then((res) => {
+    axios.get("/categories/getAll").then((res) => {
       setCategoryList(res.data);
     });
   }, []);
