@@ -26,7 +26,7 @@ export default function PrivateRoute({ component: Component, aId = 1 }) {
             text: "Connectez-vous pour accéder à cette page",
             lastFor: 4000,
           });
-          navigate("/");
+          navigate(-1);
         }
         setUser(res.data.user);
         setLoading(false);

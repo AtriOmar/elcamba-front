@@ -13,6 +13,7 @@ import { faArrowLeft, faExclamationTriangle } from "@fortawesome/free-solid-svg-
 import { useUIContext } from "../../contexts/UIProvider";
 import { IonIcon } from "@ionic/react";
 import { eyeOffOutline, eyeOutline, shieldCheckmark } from "ionicons/icons";
+import RingLoader from "../RingLoader";
 
 const clientId = import.meta.env.VITE_CLIENT_ID;
 
@@ -28,9 +29,12 @@ export default function ResetPassword() {
   });
   const [success, setSuccess] = useState(false);
   const { token } = useParams();
+  const [sending, setSending] = useState(false);
 
   async function handleSubmit(e) {
     e.preventDefault();
+
+    if (sending) return;
 
     if (success) navigate("/");
 
@@ -46,11 +50,13 @@ export default function ResetPassword() {
       return;
     }
 
+    setSending(true);
     try {
       const result = await axios.post("/users/resetPassword", { token, password: input.password });
       console.log(result.data);
       setSuccess(true);
     } catch (err) {
+      setSending(false);
       const message = err.response?.data;
       if (message === "invalid or expired token") {
         setError("Votre lien est invalide ou expiré, veuillez obtenir un autre");
@@ -61,6 +67,7 @@ export default function ResetPassword() {
 
       console.log(err);
     }
+    setSending(false);
   }
 
   return (
@@ -106,11 +113,20 @@ export default function ResetPassword() {
                   {error}
                 </div>
               )}
-              <input
-                type="submit"
-                value="Réintialiser"
-                className="w-full p-3 mt-6 rounded-full bg-amber-400 hover:bg-amber-500 font-medium text-xl text-white cursor-pointer transition duration-300"
-              />
+              <div className="relative mt-6">
+                <input
+                  type="submit"
+                  value="Réintialiser"
+                  className="w-full p-3 rounded-full bg-amber-400 hover:bg-amber-500 font-medium text-xl text-white cursor-pointer transition duration-300"
+                />
+                {sending ? (
+                  <i className="absolute right-2 top-1/2 -translate-y-1/2">
+                    <RingLoader color="white" />
+                  </i>
+                ) : (
+                  ""
+                )}
+              </div>
               <div className="flex justify-between px-3">
                 <Link to="/register" className="text-blue-500 hover:underline">
                   Créer un nouveau compte ?

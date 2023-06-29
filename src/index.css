@@ -7,7 +7,6 @@
   margin: 0;
   padding: 0;
 }
-
 body {
   font-family: rubik;
   background: #f1f5f9;
@@ -115,4 +114,11 @@ body {
 .hidden-arrows::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+
+.bg-agriculture {
+  background-image: url(./assets/images/agriculture.jpg);
+  background-attachment: fixed;
+  background-size: cover;
+  background-position: center;
 }

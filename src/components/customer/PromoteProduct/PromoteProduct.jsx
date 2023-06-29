@@ -11,6 +11,9 @@ import { faArrowLeft, faExclamationTriangle } from "@fortawesome/free-solid-svg-
 import RingLoader from "../../RingLoader";
 import Loader from "../../Loader";
 import { useUIContext } from "../../../contexts/UIProvider";
+import Select from "./Select";
+import ProductSelector from "./ProductSelector";
+import { useAuthContext } from "../../../contexts/AuthProvider";
 
 function PromoteProduct() {
   const [product, setProduct] = useState(null);
@@ -23,9 +26,32 @@ function PromoteProduct() {
   const [error, setError] = useState("");
   const [sending, setSending] = useState(false);
   const { addPopup } = useUIContext();
+  const [products, setProducts] = useState([]);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [loading, setLoading] = useState();
+  const { user } = useAuthContext();
 
   useEffect(() => {
-    console.log(product);
+    async function fetchProducts() {
+      try {
+        const res = await axios.get("/products/getAll", {
+          params: {
+            userId: user.id,
+          },
+        });
+        setProducts(res.data);
+        const id = searchParams.get("p");
+
+        if (id) {
+          setProduct(res.data.find((product) => product.id === Number(id)));
+        }
+      } catch (err) {
+        console.log(err);
+      }
+      setLoading(false);
+    }
+
+    fetchProducts();
   }, []);
 
   function handlePayment(event) {
@@ -53,22 +79,27 @@ function PromoteProduct() {
       console.log(res.data);
       // navigate(`/payment/${res.data}`);
       window.open(`/payment/${res.data}`, "_blank");
+      navigate("/customer/promote/manage");
       // setPaymentUrl(`https://sandbox.paymee.tn/gateway/${res.data.data.token}`);
       // window.addEventListener("message", handlePayment);
       setSending(false);
     } catch (err) {
       setSending(false);
       console.log(err);
-      addPopup({
-        type: "danger",
-        text: "Une erreur s'est produite",
-        lastFor: 2000,
-      });
+      setError("Une erreur s'est produite");
     }
   }
 
+  if (loading) {
+    return (
+      <div className="grid place-items-center">
+        <Loader />
+      </div>
+    );
+  }
+
   return (
-    <div className="py-6 px-3 scr1000:px-6 pb-40 rounded-lg bg-white shadow-md">
+    <div className="my-2 scr1000:mx-2 py-6 px-3 scr1000:px-6 pb-40 rounded-lg bg-white shadow-md">
       <div className="max-w-[800px]">
         <div className="flex items-center gap-4 mb-8">
           <Link to="/customer/promote/manage">
@@ -79,10 +110,19 @@ function PromoteProduct() {
         <section className="flex flex-col scr600:flex-row gap-x-10 mt-10">
           <article className="grow">
             <p className=" mb-1 font-medium text-lg text-sky-900">Selectionner un produit:</p>
-            <ProductSelect product={product} setProduct={setProduct} />
+            {/* <ProductSelect product={product} setProduct={setProduct} /> */}
+            <ProductSelector options={products} value={product} onChange={(option) => setProduct(option)} />
             {product && <ProductCard product={product} />}
             <p className="mt-3 mb-1 font-medium text-lg text-sky-900">Durée:</p>
-            <DurationSelect input={input} setInput={setInput} />
+            {/* <DurationSelect input={input} setInput={setInput} /> */}
+            <Select
+              options={Array(DAYS)
+                .fill(0)
+                .map((el, index) => ({ value: index + 1, label: index + 1 + " jour(s)" }))}
+              onChange={(option) => setInput((prev) => ({ ...prev, duration: option.value }))}
+              value={input.duration}
+              position="center"
+            />
           </article>
           <article className="flex items-center justify-center flex-col w-full max-w-[200px] h-auto mt-8 py-6 border-2 border-slate-300 rounded-lg font-bold text-gray-800">
             <p>Prix:</p>
@@ -117,3 +157,5 @@ function PromoteProduct() {
 }
 
 export default PromoteProduct;
+
+const DAYS = 14;

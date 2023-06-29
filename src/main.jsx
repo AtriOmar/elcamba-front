@@ -4,7 +4,7 @@ import Dashboard from "./components/admin/Dashboard";
 import PrivateRoute from "./components/auth/PrivateRoute";
 import Home from "./components/Home/Home";
 import "./index.css";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 import AdminLayout from "./components/admin/layout/AdminLayout";
 import Register from "./components/auth/Register";
 import Products from "./components/admin/product/Products";
@@ -21,9 +21,9 @@ import { register } from "swiper/element/bundle";
 import Ads from "./components/admin/ad/Ads";
 import ResetPasswordRequest from "./components/auth/ResetPasswordRequest";
 import ResetPassword from "./components/auth/ResetPassword";
-import Category from "./components/Category/Category.jsx";
+import Category from "./components/Category/Category";
 import CategoryLayout from "./layouts/CategoryLayout";
-import Product from "./components/product/Product";
+import Product from "./components/Product/Product";
 import ViewProduct from "./components/customer/ViewProduct/ViewProduct";
 import PromoteProduct from "./components/customer/PromoteProduct/PromoteProduct";
 import PromoteLayout from "./layouts/PromoteLayout";
@@ -38,6 +38,13 @@ import ClientLayout from "./layouts/ClientLayout";
 import ProfileLayout from "./layouts/ProfileLayout";
 import ProfileInfo from "./components/customer/Profile/ProfileInfo/ProfileInfo";
 import ProfileSecurity from "./components/customer/Profile/ProfileSecurity/ProfileSecurity";
+import ManageCategories from "./components/admin/category/ManageCategories";
+import User from "./components/admin/users/User";
+import AdminProduct from "./components/admin/product/Product";
+import AdminAd from "./components/admin/ad/Ad";
+import Settings from "./components/admin/Settings/Settings";
+import { Helmet, HelmetProvider } from "react-helmet-async";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 register();
 
@@ -62,20 +69,36 @@ const router = createBrowserRouter([
             element: <Products />,
           },
           {
+            path: "products/:id",
+            element: <AdminProduct />,
+          },
+          {
             path: "categories",
-            element: <Categories />,
+            element: <ManageCategories />,
           },
           {
             path: "users",
             element: <Users />,
           },
           {
-            path: "sub-categories",
-            element: <SubCategories />,
+            path: "users/:id",
+            element: <User />,
           },
+          // {
+          //   path: "sub-categories",
+          //   element: <SubCategories />,
+          // },
           {
             path: "ads",
             element: <Ads />,
+          },
+          {
+            path: "ads/:id",
+            element: <AdminAd />,
+          },
+          {
+            path: "settings",
+            element: <Settings />,
           },
         ],
       },
@@ -84,26 +107,26 @@ const router = createBrowserRouter([
         element: <ClientLayout />,
         children: [
           {
-            path: "",
+            index: true,
             element: <Home />,
           },
           {
             path: "products",
-            element: <CategoryLayout />,
-            children: [
-              {
-                path: "",
-                element: <Category />,
-              },
-            ],
+            element: <Category />,
           },
+          // {
+          //   path: "products",
+          //   element: <CategoryLayout />,
+          //   children: [
+          //   ],
+          // },
           {
             path: "products/:id",
             element: <Product />,
           },
           {
             path: "customer",
-            element: <PrivateRoute component={CustomerLayout} />,
+            element: <PrivateRoute component={Outlet} />,
             children: [
               {
                 path: "products",
@@ -175,12 +198,21 @@ const router = createBrowserRouter([
   },
 ]);
 
+const queryClient = new QueryClient();
+
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <AuthProvider>
-    <ChatProvider>
-      <UIProvider>
-        <RouterProvider router={router} />
-      </UIProvider>
-    </ChatProvider>
-  </AuthProvider>
+  <QueryClientProvider client={queryClient}>
+    <HelmetProvider>
+      <Helmet>
+        <title>CHARYOUL</title>
+      </Helmet>
+      <AuthProvider>
+        <ChatProvider>
+          <UIProvider>
+            <RouterProvider router={router} />
+          </UIProvider>
+        </ChatProvider>
+      </AuthProvider>
+    </HelmetProvider>
+  </QueryClientProvider>
 );

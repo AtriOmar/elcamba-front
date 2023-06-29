@@ -13,8 +13,8 @@ function ProductCard({ product }) {
       <div className="py-2 px-3">
         <h5 className="font-normal font-rubik text-slate-900 capitalize ">{product.name}</h5>
         <h5 className="w-fit ml-auto py-1 px-2 rounded-full bg-yellow-500 font-normal font-rubik text-white capitalize">
-          {product.salePrice ? <span className="mr-2 text-[11px] line-through">{product.price} DT</span> : ""}
-          {product.salePrice || product.price} DT
+          {product.salePrice ? <span className="mr-2 text-[11px] line-through">{Number(product?.price)} DT</span> : ""}
+          {Number(product?.salePrice) || Number(product?.price)} DT
         </h5>
         <div className="flex items-center gap-1 mt-2 text-sky-800">
           <FontAwesomeIcon icon={faTruck} size="xs" />

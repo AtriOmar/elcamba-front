@@ -1,3 +1,4 @@
+import { PaperAirplaneIcon } from "@heroicons/react/24/outline";
 import React, { useEffect, useRef, useState } from "react";
 
 export default function SendMessageInput({ socket, user }) {
@@ -6,7 +7,7 @@ export default function SendMessageInput({ socket, user }) {
 
   useEffect(() => {
     textRef.current.focus();
-  }, [user.id]);
+  }, [user?.id]);
 
   useEffect(() => {
     function handleClick(e) {
@@ -46,8 +47,11 @@ export default function SendMessageInput({ socket, user }) {
   }
 
   return (
-    <>
-      <div className="shrink-0 rounded-2xl px-3 py-2 overflow-y-auto max-h-[100px] bg-slate-100 notesList ring-2 ring-slate-300 focus-within:ring-blue-500 focus-within:ring-opacity-50">
+    <div className="flex gap-2 pr-2">
+      <div
+        className="grow rounded-2xl px-3 py-2 overflow-y-auto max-h-[100px] bg-slate-100  ring-2 ring-slate-300 focus-within:ring-blue-500 focus-within:ring-opacity-50"
+        style={{ overflowWrap: "anywhere" }}
+      >
         <p
           contentEditable
           className="sendThoughtInput outline-none whitespace-pre-line break-anywhere"
@@ -67,8 +71,10 @@ export default function SendMessageInput({ socket, user }) {
           spellCheck={false}
         ></p>
       </div>
-      <button onClick={handleSubmit}>{SEND_SVG}</button>
-    </>
+      <button onClick={handleSubmit}>
+        <PaperAirplaneIcon className="h-7 w-7" />
+      </button>
+    </div>
   );
 }
 

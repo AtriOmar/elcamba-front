@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { socket } from "../../../lib/socket";
 import { useParams } from "react-router";
 import Loader from "../../Loader";
@@ -13,6 +13,8 @@ import { UserCircleIcon } from "@heroicons/react/24/outline";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
+let currentBoxHeight;
+
 export default function Chat() {
   const { id } = useParams();
   const [receiver, setReceiver] = useState(null);
@@ -20,57 +22,107 @@ export default function Chat() {
   const [loading, setLoading] = useState(true);
   const { setConversations, isConnected } = useChatContext();
   const { user, setUser } = useAuthContext();
+  const [limit, setLimit] = useState(30);
+  const [newLimit, setNewLimit] = useState(true);
+  const observing = useRef(-1);
+  const resizeObserver = useRef(
+    new ResizeObserver((entries, obs) => {
+      const el = document.querySelector(".messagesBox");
+
+      if (el?.scrollTop === 0) {
+        el.scrollTo(0, el.scrollHeight - currentBoxHeight);
+      }
+
+      currentBoxHeight = el?.scrollHeight;
+    })
+  );
+  const observer = useRef(
+    new IntersectionObserver((entries, obs) => {
+      const entry = entries[0];
+
+      if (entry.isIntersecting) {
+        setLimit((prev) => prev + 30);
+        setNewLimit(true);
+        obs.unobserve(entry.target);
+      }
+    })
+  );
 
   useEffect(() => {
+    const box2 = document.querySelector(".messagesContainer");
+    if (box2) resizeObserver.current.observe(box2);
+
+    console.log(conversation?.Messages);
+    if (!conversation?.Messages?.length || conversation?.Messages.length < 5) return;
+
+    const elements = document.querySelectorAll(".message-container");
+
+    const el = elements[elements.length - 4];
+
+    const msg = conversation?.Messages[conversation?.Messages?.length - 4];
+
+    if (observing.current === msg?.id || !msg?.id) {
+      console.log("yes");
+      return;
+    }
+
+    observing.current = msg?.id;
+
+    if (el) observer.current.observe(el);
+  }, [conversation?.Messages]);
+
+  useEffect(() => {
+    setNewLimit(false);
     if (!socket) return;
 
     function onMessages({ user: eventUser, conversation: eventConversation }) {
-      console.log("-------------------- user --------------------");
-      console.log(receiver);
-
-      console.log("-------------------- conversation --------------------");
-      console.log(eventConversation);
-
       if (eventUser) setReceiver(eventUser);
       setConversation(eventConversation);
 
+      console.log("event conversation", eventConversation);
+
       if (loading) setLoading(false);
-      console.log("seen");
-      console.log(eventConversation?.seen);
-      if (eventConversation && !eventConversation?.seen?.includes?.(user?.id)) {
-        setConversations((prev) => prev.map((conv) => (conv.id !== eventConversation.id ? conv : { ...conv, seen: conv.seen ? "both" : "" + user.id })));
-      }
+      if (eventConversation) socket.off("messages", onMessages);
     }
 
-    socket.emit("watchSingle", id);
+    async function onMessage(message) {
+      console.log("new message");
+
+      setLimit((prev) => prev + 1);
+      setConversation((prev) => {
+        const newConv = JSON.parse(JSON.stringify(prev));
+        if (newConv) newConv.Messages = [message, ...(newConv?.Messages || [])];
+        return newConv;
+      });
+    }
+
+    socket.emit("watchSingle", id, limit);
 
     socket.on("messages", onMessages);
 
+    socket.on("message", onMessage);
+
     return () => {
+      socket.emit("unwatchSingle", id);
       socket.off("messages");
+      socket.off("message");
     };
-  }, [isConnected]);
+  }, [isConnected, id, newLimit]);
 
   if (loading) {
     return (
-      <div className="flex h-[calc(100vh_-_64px)] w-full items-center justify-center">
+      <div className="grid place-items-center">
         <Loader />
       </div>
     );
   }
 
+  if (!receiver) return;
+
   return (
-    <div className="h-full py-2 px-3 scr1000:px-6 rounded-lg bg-white shadow-md">
-      <div className="relative w-full max-w-[100%] h-full flex flex-col">
+    <div className="h-full scr1000:mx-2 py-2 px-3 scr1000:px-6 rounded-lg bg-white shadow-md">
+      <div className="relative w-full h-full flex flex-col">
         <div className="relative flex justify-between items-center w-full py-2 px-4 rounded-lg bg-sky-600  shadow-lg break-anywhere">
-          {/* <div>
-            <button
-              onClick={() => setNotesLeftSidebarIsOpen(true)}
-              className={`${notesLeftSidebarIsOpen ? "hidden" : ""} scr1100:hidden `}
-            >
-              <SidebarIcon className="h-[25px] fill-white rotate-180" />
-            </button>
-          </div> */}
           <Link to="/customer/chat">
             <FontAwesomeIcon icon={faArrowLeft} size="lg" className="text-white hover:scale-125 duration-300" />
           </Link>
@@ -88,7 +140,7 @@ export default function Chat() {
             <span className=" font-bold  text-white text-lg text-center  capitalize">{receiver?.username}</span>
           </div>
         </div>
-        <MessagesBox user={user} messages={conversation?.Messages} />
+        <MessagesBox user={receiver} messages={conversation?.Messages} limit={limit} />
         <SendMessageInput socket={socket} user={receiver} />
       </div>
     </div>

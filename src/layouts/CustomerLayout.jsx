@@ -6,10 +6,10 @@ import Sidebar from "../components/customer/Sidebar";
 function CustomerLayout() {
   return (
     <section className="flex grow overflow-auto">
-      <article className="">
+      {/* <article className="">
         <Sidebar />
-      </article>
-      <article className="grow overflow-auto py-2 scr1000:px-2 scroll-smooth customer-page-container">
+      </article> */}
+      <article className="grow overflow-auto py-2 scr1000:px-2 scr1000:ml-[250px] scroll-smooth customer-page-container">
         <Outlet />
       </article>
     </section>

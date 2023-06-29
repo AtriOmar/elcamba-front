@@ -12,14 +12,16 @@ import Switch from "../../Switch";
 import RingLoader from "../../RingLoader";
 import CitySelect from "./CitySelect";
 import deepEqual from "deep-equal";
+import Select from "./Select";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
-function EditProduct({ product, category, setShowSelectCategory, fetchProduct }) {
-  const [photos, setPhotos] = useState([...product.photos]);
+function EditProduct({ product, fetchProduct }) {
+  const [photos, setPhotos] = useState([...(product.photos || [])]);
   const [input, setInput] = useState({
     name: product.name,
-    category: { name: product.SubCategory.Category.name + " > " + product.SubCategory.name, id: product.SubCategory.id },
+    category: product.SubCategory.Category.id,
+    subCategory: product.SubCategory.id,
     salePrice: product.salePrice,
     price: product.price,
     description: product.description,
@@ -27,22 +29,18 @@ function EditProduct({ product, category, setShowSelectCategory, fetchProduct })
     deliveryBody: product.delivery,
     city: product.city,
     address: product.address,
-    visible: product.visible,
-    sold: product.sold,
+    // visible: product.visible,
+    // sold: product.sold,
   });
   const [error, setError] = useState("");
   const [sending, setSending] = useState(false);
 
-  const { addPopup } = useUIContext();
+  const { addPopup, categories } = useUIContext();
   const navigate = useNavigate();
 
   function handleChange(e) {
     setInput((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   }
-
-  useEffect(() => {
-    if (category) setInput((prev) => ({ ...prev, category }));
-  }, [category]);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -59,8 +57,8 @@ function EditProduct({ product, category, setShowSelectCategory, fetchProduct })
       return;
     }
 
-    if (!input.category) {
-      setError("Vous devez choisir une catégorie");
+    if (input.subCategory === -1) {
+      setError("Vous devez choisir une catégorie et une sous-catégorie");
       return;
     }
 
@@ -69,13 +67,13 @@ function EditProduct({ product, category, setShowSelectCategory, fetchProduct })
       return;
     }
 
-    if (input.description.length < 10) {
-      setError("La longueur de la description doit être supérieure à 10");
+    if (input.description.length < 6) {
+      setError("La longueur de la description doit être supérieure à 6");
       return;
     }
 
-    if (input.address.length < 5) {
-      setError("La longueur d'adresse doit être comprise entre 5 et 100");
+    if (input.address.length < 3) {
+      setError("La longueur d'adresse doit être comprise entre 3 et 100");
       return;
     }
 
@@ -91,7 +89,7 @@ function EditProduct({ product, category, setShowSelectCategory, fetchProduct })
     formData.append("id", product.id);
     formData.append("photos", JSON.stringify(photosArr));
     formData.append("name", input.name);
-    formData.append("subCategoryId", input.category.id);
+    formData.append("subCategoryId", input.subCategory);
     formData.append("salePrice", input.salePrice);
     formData.append("price", input.price);
     formData.append("description", input.description);
@@ -102,8 +100,8 @@ function EditProduct({ product, category, setShowSelectCategory, fetchProduct })
     }
     formData.append("city", input.city);
     formData.append("address", input.address);
-    formData.append("visible", input.visible);
-    formData.append("sold", input.sold);
+    // formData.append("visible", input.visible);
+    // formData.append("sold", input.sold);
 
     setSending(true);
 
@@ -133,7 +131,7 @@ function EditProduct({ product, category, setShowSelectCategory, fetchProduct })
       photos?.length ? (
         <swiper-container pagination="true" pagination-clickable="true" class="h-full w-full">
           {photos.map((photo, index) => (
-            <swiper-slide key={Math.random()} class="relative h-full w-full rounded-lg overflow-hidden">
+            <swiper-slide key={Math.random()} class="relative h-full w-full rounded overflow-hidden">
               <button
                 type="button"
                 className="absolute right-0 top-0"
@@ -172,7 +170,8 @@ function EditProduct({ product, category, setShowSelectCategory, fetchProduct })
       </div>
       <form action="" className="flex flex-col gap-2 scr1000:flex-row scr1000:gap-10 mt-2" onSubmit={handleSubmit}>
         <article className="w-full scr1000:w-1/2 ">
-          <div className="flex mt-2">
+          {/*  ---------------------------- toggle visible and sold buttons ---------------------------- */}
+          {/* <div className="flex mt-2">
             <div>
               <p className=" font-medium text-sky-700">Visible:</p>
               <Switch checked={input.visible} setChecked={(value) => setInput((prev) => ({ ...prev, visible: value }))} />
@@ -181,17 +180,17 @@ function EditProduct({ product, category, setShowSelectCategory, fetchProduct })
               <p className=" font-medium text-sky-700">Vendu:</p>
               <Switch checked={input.sold} setChecked={(value) => setInput((prev) => ({ ...prev, sold: value }))} />
             </div>
-          </div>
+          </div> */}
           <div className="flex items-center gap-2">
             <label className="relative font-medium text-sky-700">Photo(s):</label>
             <div className="h-[.5px] grow rounded-[50%] bg-slate-400"></div>
           </div>
-          <div className="relative h-[300px] w-[300px] rounded-lg border">
+          <div className="relative h-[300px] w-[300px] rounded border">
             <label
               htmlFor="photos"
               className={`absolute z-10 ${
                 photos?.length ? "right-0 translate-x-[110%]" : "right-1/2 translate-x-1/2"
-              } top-1/2 flex  h-10 w-10 -translate-y-1/2 cursor-pointer items-center justify-center rounded-lg bg-blue-500  shadow-md transition-all duration-300 hover:bg-blue-600`}
+              } top-1/2 flex  h-10 w-10 -translate-y-1/2 cursor-pointer items-center justify-center rounded bg-blue-500  shadow-md transition-all duration-300 hover:bg-blue-600`}
             >
               <FontAwesomeIcon icon={faPlus} className="text-white" size="2xl" />
             </label>
@@ -223,63 +222,86 @@ function EditProduct({ product, category, setShowSelectCategory, fetchProduct })
           <label htmlFor="name" className="relative text-base text-slate-700">
             Nom:
           </label>
-          {/* <input type="text" className="w-full py-1 px-2 border border-slate-700 rounded-lg outline-0" placeholder="MSI Gaming GF63 Thin/ i7-11800H/ 16GO" /> */}
+          {/* <input type="text" className="w-full py-1 px-2 border border-slate-400 rounded outline-0" placeholder="MSI Gaming GF63 Thin/ i7-11800H/ 16GO" /> */}
 
           <textarea
             name="name"
             id="name"
             // rows="2"
             placeholder="Nom du produit"
-            className="w-full resize-none rounded-lg border border-slate-700 px-2 py-1 outline-0 ring-inset ring-blue-500 transition-all duration-150 focus:ring-1"
+            className="w-full resize-none rounded border border-slate-400 px-2 py-1 outline-0 ring-blue-500 transition-all duration-150 focus:ring-1"
             onChange={handleChange}
             value={input.name}
           ></textarea>
-          <label htmlFor="categorie" className="relative mt-2 block text-base text-slate-700">
+          {/* <label htmlFor="categorie" className="relative mt-2 block text-base text-slate-700">
             Catégorie:
           </label>
           <button
             type="button"
             name="category"
             id="category"
-            className={`w-full rounded-lg border border-slate-700 px-2 py-1 text-left outline-0 ${
+            className={`w-full rounded border border-slate-400 px-2 py-1 text-left outline-0 ${
               input.category ? "text-black" : "text-[#8e8e8e]"
-            } capitalize ring-inset ring-blue-500 transition-all duration-150 focus:ring-1`}
+            } capitalize ring-blue-500 transition-all duration-150 focus:ring-1`}
             onClick={() => setShowSelectCategory(true)}
           >
             {input.category ? input.category.name : "Catégorie"}
-          </button>
+          </button> */}
+          <label htmlFor="category" className="relative mt-2 block text-base text-slate-700">
+            Catégorie:
+          </label>
+          <Select
+            options={[{ value: -1, label: "Selectionnez une catégorie" }, ...categories?.map((cat) => ({ value: cat.id, label: cat.name }))]}
+            onChange={(option) => setInput((prev) => ({ ...prev, category: option.value }))}
+            value={input.category}
+            position="center"
+          />
+          {/*  ---------------------------- SubCategories ---------------------------- */}
+          <label htmlFor="subCategory" className="relative mt-2 block text-base text-slate-700">
+            Sous-catégorie
+          </label>
+          <Select
+            options={[
+              { value: -1, label: "Selectionnez une sous-catégorie" },
+              ...(categories.find((cat) => cat.id === input.category)?.SubCategories?.map((sub) => ({ value: sub.id, label: sub.name })) || []),
+            ]}
+            onChange={(option) => setInput((prev) => ({ ...prev, subCategory: option.value }))}
+            value={input.subCategory}
+            position="center"
+          />
           <label htmlFor="price" className="relative mt-2 block text-base text-slate-700">
             Prix:
           </label>
-          <div className="flex max-w-[250px] rounded-lg duration-150">
+          <div className="flex max-w-[250px] rounded duration-150">
             <input
               id="price"
               name="price"
               onChange={handleChange}
               value={input.price}
               type="number"
-              className="hidden-arrows w-full rounded-l-lg border border-slate-700 border-r-slate-300 px-2 py-1 outline-0 ring-inset ring-blue-500 transition-all duration-150 focus:ring-1"
+              className="hidden-arrows w-full rounded-l-lg border border-slate-400 border-r-slate-300 px-2 py-1 outline-0 ring-blue-500 transition-all duration-150 focus:ring-1"
               placeholder="0000"
             />
-            <span className="flex items-center rounded-r-lg border border-l-0 border-slate-700 px-3 py-[0.25rem]">DT</span>
+            <span className="flex items-center rounded-r-lg border border-l-0 border-slate-400 px-3 py-[0.25rem]">DT</span>
           </div>
           <label htmlFor="salePrice" className="relative mt-2 block text-base text-slate-700">
             Prix soldé (s'il y a un solde, sinon laissez vide):
           </label>
-          <div className="flex max-w-[250px] rounded-lg duration-150">
+          <div className="flex max-w-[250px] rounded duration-150">
             <input
               id="salePrice"
               name="salePrice"
               onChange={handleChange}
               value={input.salePrice}
               type="number"
-              className="hidden-arrows w-full rounded-l-lg border border-slate-700 border-r-slate-300 px-2 py-1 outline-0 ring-inset ring-blue-500 transition-all duration-150 focus:ring-1"
+              className="hidden-arrows w-full rounded-l-lg border border-slate-400 border-r-slate-300 px-2 py-1 outline-0 ring-blue-500 transition-all duration-150 focus:ring-1"
               placeholder="0000"
             />
-            <span className="flex items-center rounded-r-lg border border-l-0 border-slate-700 px-3 py-[0.25rem]">DT</span>
+            <span className="flex items-center rounded-r-lg border border-l-0 border-slate-400 px-3 py-[0.25rem]">DT</span>
           </div>
         </article>
         <article className="w-full scr1000:w-1/2">
+          {/*  ---------------------------- description ---------------------------- */}
           <label htmlFor="description" className="relative text-base text-slate-700">
             Description:
           </label>
@@ -288,10 +310,11 @@ function EditProduct({ product, category, setShowSelectCategory, fetchProduct })
             id="description"
             rows="6"
             placeholder="Description du produit"
-            className="w-full resize-none rounded-lg border border-slate-700 px-2 py-1 outline-0 ring-inset ring-blue-500 transition-all duration-150 focus:ring-1"
+            className="w-full resize-none rounded border border-slate-400 px-2 py-1 outline-0 ring-blue-500 transition-all duration-150 focus:ring-1"
             onChange={handleChange}
             value={input.description}
           ></textarea>
+          {/*  ---------------------------- delivery ---------------------------- */}
           <div className="flex items-center gap-2">
             <label className="relative text-base font-semibold text-sky-700">Livraison:</label>
             <div className="h-[.5px] grow rounded-[50%] bg-slate-400"></div>
@@ -319,12 +342,13 @@ function EditProduct({ product, category, setShowSelectCategory, fetchProduct })
             id="deliveryBody"
             rows="6"
             placeholder="Prix et zone (de livraision)"
-            className={`w-full resize-none rounded-lg border border-slate-700 px-2 py-1 outline-0 ring-inset ring-blue-500 transition-all duration-150 focus:ring-1 ${
+            className={`w-full resize-none rounded border border-slate-400 px-2 py-1 outline-0 ring-blue-500 transition-all duration-150 focus:ring-1 ${
               input.delivery ? "" : "opacity-50"
             }`}
             onChange={handleChange}
             value={input.deliveryBody}
           ></textarea>
+          {/*  ---------------------------- address ---------------------------- */}
           <div className="flex items-center gap-2">
             <label htmlFor="adresse" className="relative text-base font-semibold text-sky-700">
               Adresse:
@@ -334,7 +358,8 @@ function EditProduct({ product, category, setShowSelectCategory, fetchProduct })
           <label htmlFor="description" className="relative text-base text-slate-700">
             Ville:
           </label>
-          <CitySelect input={input} setInput={setInput} />
+          {/* <CitySelect input={input} setInput={setInput} /> */}
+          <Select options={CITY_OPTIONS} onChange={(option) => setInput((prev) => ({ ...prev, city: option.value }))} value={input.city} position="center" />
           <label htmlFor="description" className="block relative mt-2 text-base text-slate-700">
             Adresse exacte:
           </label>
@@ -343,7 +368,7 @@ function EditProduct({ product, category, setShowSelectCategory, fetchProduct })
             id="address"
             rows="4"
             placeholder="Votre adresse"
-            className="w-full resize-none rounded-lg border border-slate-700 px-2 py-1 outline-0 ring-inset ring-blue-500 transition-all duration-150 focus:ring-1"
+            className="w-full resize-none rounded border border-slate-400 px-2 py-1 outline-0 ring-blue-500 transition-all duration-150 focus:ring-1"
             onChange={handleChange}
             value={input.address}
           ></textarea>
@@ -352,7 +377,7 @@ function EditProduct({ product, category, setShowSelectCategory, fetchProduct })
         <div className="grow h-[.5px] rounded-[50%] bg-slate-400"></div>
     </div> */}
           {error && (
-            <div className="flex w-full items-center gap-4 rounded-lg border border-red-500 bg-red-100 px-4 py-3 text-red-500">
+            <div className="flex w-full items-center gap-4 rounded border border-red-500 bg-red-100 px-4 py-3 text-red-500">
               <FontAwesomeIcon icon={faExclamationTriangle} size="lg" fill="red" />
               {error}
             </div>
@@ -361,7 +386,7 @@ function EditProduct({ product, category, setShowSelectCategory, fetchProduct })
             <div className="relative w-full scr800:w-1/2">
               <input
                 type="submit"
-                value="Enregister"
+                value="Enregistrer"
                 className={`w-full   cursor-pointer rounded-full bg-blue-500 px-4 py-2 text-white transition duration-300 hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed`}
                 disabled={(() => {
                   if (!product) return true;
@@ -403,3 +428,30 @@ function EditProduct({ product, category, setShowSelectCategory, fetchProduct })
 }
 
 export default EditProduct;
+
+const CITY_OPTIONS = [
+  { label: "ariana", value: "ariana" },
+  { label: "béja", value: "béja" },
+  { label: "ben arous", value: "ben arous" },
+  { label: "bizerte", value: "bizerte" },
+  { label: "gabes", value: "gabes" },
+  { label: "gafsa", value: "gafsa" },
+  { label: "jendouba", value: "jendouba" },
+  { label: "kairouan", value: "kairouan" },
+  { label: "kasserine", value: "kasserine" },
+  { label: "kebili", value: "kebili" },
+  { label: "la manouba", value: "la manouba" },
+  { label: "le kef", value: "le kef" },
+  { label: "mahdia", value: "mahdia" },
+  { label: "médenine", value: "médenine" },
+  { label: "monastir", value: "monastir" },
+  { label: "nabeul", value: "nabeul" },
+  { label: "sfax", value: "sfax" },
+  { label: "sidi bouzid", value: "sidi bouzid" },
+  { label: "siliana", value: "siliana" },
+  { label: "sousse", value: "sousse" },
+  { label: "tataouine", value: "tataouine" },
+  { label: "tozeur", value: "tozeur" },
+  { label: "tunis", value: "tunis" },
+  { label: "zaghouan", value: "zaghouan" },
+];

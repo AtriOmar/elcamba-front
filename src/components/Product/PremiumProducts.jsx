@@ -11,15 +11,14 @@ const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 function PremiumProducts() {
   const [ads, setAds] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [path, setPath] = useState([]);
-  const { id } = useParams();
 
   async function fetchProduct() {
     try {
-      const res = await axios.get("/ads/getRandom", {
+      const res = await axios.get("/ads/getByType", {
         params: {
-          // limit: 20,
-          type: "product",
+          limit: 10,
+          type: 0,
+          active: true,
         },
       });
 
@@ -35,13 +34,16 @@ function PremiumProducts() {
     fetchProduct();
   }, []);
 
-  if (loading) {
-    return (
-      <div className="flex h-[calc(100vh_-_64px)] w-full items-center justify-center">
-        <Loader />
-      </div>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <div className="flex h-[calc(100vh_-_64px)] w-full items-center justify-center">
+  //       <Loader />
+  //     </div>
+  //   );
+  // }
+
+  if (loading) return;
+
   return (
     <div className="scr800:mx-2 my-10 py-6 px-3 scr800:px-6 rounded-lg bg-white shadow-md">
       <div className="relative max-w-[700px] mx-auto mb-6 py-1.5 rounded-xl bg-red-500">
@@ -65,7 +67,7 @@ function PremiumProducts() {
           slides-per-group="3"
           space-between="10"
           navigation="true"
-          class="w-full h-full py-1"
+          class="w-full h-full min-h-[150px] py-1"
           autoplay-delay="5000"
           autoplay-disable-on-interaction="false"
           navigation-next-el="#premium-next"

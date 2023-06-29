@@ -2,16 +2,59 @@ import React, { useState, useContext, useEffect } from "react";
 import API from "../utils/API";
 import axios from "axios";
 import { useLocation } from "react-router";
+import { useQuery } from "@tanstack/react-query";
 
 const UIContext = React.createContext();
+
+async function fetchSettings() {
+  const res = await axios.get("/settings/getAll");
+
+  return res.data;
+}
+
+async function fetchCategories() {
+  const res = await axios.get("/categories/getAll");
+
+  return res.data;
+}
 
 function UIProvider({ children }) {
   const [popups, setPopups] = useState([]);
   const [priceRange, setPriceRange] = useState({ min: 0, max: 5000, inputMin: 0, inputMax: 5000 });
   const [filtering, setFiltering] = useState(false);
   const [mobileNavbarOpen, setMobileNavbarOpen] = useState(false);
-  const [categories, setCategories] = useState([]);
   const [filterSidebarOpen, setFilterSidebarOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [adminNavbarOpen, setAdminNavbarOpen] = useState(false);
+  const { data: categories = [], refetch: refetchCategories } = useQuery({
+    queryKey: ["categories"],
+    queryFn: fetchCategories,
+    enabled: false,
+    networkMode: "always",
+  });
+  const { data: settings, refetch } = useQuery({
+    queryKey: ["settings"],
+    queryFn: fetchSettings,
+    enabled: false,
+    networkMode: "always",
+  });
+
+  useEffect(() => {
+    if (!settings) {
+      refetch();
+    }
+    if (!categories?.length) {
+      refetchCategories();
+    }
+  }, []);
+
+  useEffect(() => {
+    if (mobileNavbarOpen || filterSidebarOpen) {
+      document.querySelector("body").style.overflow = "hidden";
+    } else {
+      document.querySelector("body").style.overflow = "visible";
+    }
+  }, [mobileNavbarOpen, filterSidebarOpen]);
 
   useEffect(() => {
     if (mobileNavbarOpen) {
@@ -24,36 +67,6 @@ function UIProvider({ children }) {
   useEffect(() => {
     console.log(filterSidebarOpen);
   }, [filterSidebarOpen]);
-
-  useEffect(() => {
-    async function fetchCategories() {
-      try {
-        const res = await axios.get("/categories/getAll");
-        console.log(res.data);
-        setCategories(res.data);
-      } catch (err) {
-        console.log(err);
-      }
-    }
-    fetchCategories();
-  }, []);
-
-  useEffect(() => {
-    function handleResize(e) {
-      if (
-        mobileNavbarOpen &&
-        ((window.location.pathname === "/" && window.innerWidth > 1350) || (window.location.pathname !== "/" && window.innderWidth > 1000))
-      ) {
-        setMobileNavbarOpen(false);
-      }
-    }
-
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, [mobileNavbarOpen]);
 
   useEffect(() => {
     function handleKeydown(e) {
@@ -93,6 +106,11 @@ function UIProvider({ children }) {
     categories,
     filterSidebarOpen,
     setFilterSidebarOpen,
+    searchOpen,
+    setSearchOpen,
+    adminNavbarOpen,
+    setAdminNavbarOpen,
+    settings,
   };
 
   return <UIContext.Provider value={value}>{children}</UIContext.Provider>;

@@ -93,6 +93,16 @@ function Payment() {
           <span className="font-medium text-sky-700">Montant:</span>
           <span>{order.amount} DT</span>
         </p>
+        {order.url ? (
+          <p className="flex gap-3 mt-2">
+            <span className="font-medium text-sky-700">Lien:</span>
+            <a href={order.url} target="_blank" className="text-blue-500 underline">
+              {order.url}
+            </a>
+          </p>
+        ) : (
+          ""
+        )}
         <div className="w-full my-10  h-px bg-sky-700"></div>
         {order.paid ? (
           <>

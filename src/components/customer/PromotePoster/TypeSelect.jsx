@@ -5,6 +5,19 @@ const BOX30 = SCALE * 30,
   BOX37 = SCALE * 37;
 
 function TypeSelect({ input, setInput }) {
+  if (input.type === 4) {
+    return (
+      <div className={`w-full max-w-[500px] grid place-items-center mx-auto aspect-[2/1] ring-blue-500 border rounded-lg hover:bg-slate-100 ring-2`}>
+        <div className="">
+          <p>Page d'acceuil</p>
+          <p>Page de détails produit</p>
+          <p>Page des produits</p>
+          <p className="mt-2 text-center font-medium">2:1</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex gap-1 w-full">
       <div className={`w-[15.38%] border rounded-lg bg-slate-500`}></div>

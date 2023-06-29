@@ -4,81 +4,131 @@ import ProductCard from "./ProductCard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faArrowRight, faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
+import { useUIContext } from "../../contexts/UIProvider";
+import { useQuery } from "@tanstack/react-query";
+
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
+async function fetchProducts() {
+  const res = await axios.get("/products/getByEachCategory", {
+    params: {
+      limit: 15,
+    },
+  });
+  return res.data;
+}
+
+async function fetchAds() {
+  const res = await axios.get("/ads/getByType", { params: { type: 4, limit: 10, active: true } });
+
+  return res.data;
+}
 
 function Products() {
-  const [products, setProducts] = useState([]);
-
-  function updateProducts() {
-    axios
-      .get("/products/getAll")
-      .then((res) => {
-        console.log(res.data);
-        const productsObj = {};
-        res.data.forEach((product) => {
-          productsObj[product?.SubCategory?.Category?.name]?.push(product) || (productsObj[product?.SubCategory?.Category?.name] = [product]);
-        });
-        console.log(productsObj);
-        setProducts(Object.values(productsObj));
-      })
-      .catch(console.log);
-  }
+  const {
+    data: products = [],
+    isLoading: productsLoading,
+    refetch: refetchProducts,
+  } = useQuery({
+    queryKey: ["home-products"],
+    queryFn: fetchProducts,
+    enabled: false,
+    networkMode: "always",
+  });
+  const {
+    data: ads = [],
+    isLoading: adsLoading,
+    refetch: refetchAds,
+  } = useQuery({
+    queryKey: ["ads", { type: 4, limit: 10, active: true }],
+    queryFn: fetchAds,
+    enabled: false,
+    networkMode: "always",
+  });
 
   useEffect(() => {
-    updateProducts();
+    if (!products?.length) {
+      refetchProducts();
+    }
+    if (!ads?.length) {
+      refetchAds();
+    }
   }, []);
 
   return (
-    <div className="px-1 [&>div:nth-of-type(2n_+_1)>div:first-of-type]:bg-amber-500 [&>div:nth-of-type(2n)>div:first-of-type]:bg-blue-500">
+    <div className="px-1">
       {products.map((group, index) => (
-        <div key={group[0].SubCategory?.Category?.name}>
-          <div className="relative max-w-[700px] mt-5 mx-auto py-1.5 rounded-xl">
-            {/* <div className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 w-[400px] h-[1px] bg-white"></div> */}
-            {/* <h3 className="relative z-10 w-fit mx-auto px-2 bg-inherit font-medium text-lg text-center text-white capitalize">
-              {group[0].SubCategory.Category.name}
-            </h3> */}
-            <div className="relative mx-auto rounded-xl">
-              <h3 className="z-10 w-fit mx-auto px-2 font-medium text-lg text-center text-white capitalize">{group[0].SubCategory?.Category?.name}</h3>
-              <Link
-                to={`/products?c=${group[0].SubCategory.categoryId}`}
-                className="absolute top-1/2 -translate-y-1/2 right-2 flex items-center gap-2 text-white text-xs hover:underline"
-              >
-                Voir tout
-                <FontAwesomeIcon icon={faArrowRight} />
+        <React.Fragment key={group.category.name}>
+          {index % 3 === 0 && index !== 0 && ads?.length > 0 ? (
+            <div className="grid scr1000:grid-cols-2 gap-1">
+              <Link className="w-full" to={ads[(index / 3) % ads.length].url} target="_blank">
+                <img
+                  src={`${BACKEND_URL}/uploads/ads/${ads[(index / 3) % ads.length].photo}`}
+                  className="max-w-[800px] mx-auto w-full rounded-lg aspect-[2/1] object-cover"
+                  alt=""
+                />
+              </Link>
+              <Link className="hidden scr1000:block w-full" to={ads[((index / 3) % ads.length) + 1].url} target="_blank">
+                <img
+                  src={`${BACKEND_URL}/uploads/ads/${ads[((index / 3) % ads.length) + 1].photo}`}
+                  className="max-w-[800px] mx-auto w-full rounded-lg aspect-[2/1] object-cover"
+                  alt=""
+                />
               </Link>
             </div>
+          ) : (
+            ""
+          )}
+          <div>
+            <div className="relative max-w-[700px] mt-5 mx-auto py-1.5 rounded-xl" style={{ backgroundColor: group.category.color }}>
+              {/* <div className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 w-[400px] h-[1px] bg-white"></div> */}
+              {/* <h3 className="relative z-10 w-fit mx-auto px-2 bg-inherit font-medium text-lg text-center text-white capitalize">
+              {group[0].SubCategory.Category.name}
+            </h3> */}
+              <div className="relative mx-auto rounded-xl">
+                <h3 className="z-10 w-fit mx-auto px-2 font-medium text-lg text-center text-white capitalize">{group.category.name}</h3>
+                <Link
+                  to={`/products?c=${group.category.id}`}
+                  className="absolute top-1/2 -translate-y-1/2 right-2 flex items-center gap-2 text-white text-xs hover:underline"
+                >
+                  Voir tout
+                  <FontAwesomeIcon icon={faArrowRight} />
+                </Link>
+              </div>
+            </div>
+            <div className="relative">
+              <button
+                id={`home-next-` + index}
+                className="absolute right-0 top-1/2 z-10 -translate-y-1/2 flex items-center justify-center h-14 w-8 rounded-md bg-[rgb(0,0,0,.65)] hover:bg-[rgb(0,0,0,.8)] duration-150 disabled:opacity-25"
+              >
+                <FontAwesomeIcon icon={faChevronRight} className="text-white" />
+              </button>
+              <button
+                id={`home-prev-` + index}
+                className="absolute left-0 top-1/2 z-10 -translate-y-1/2 flex items-center justify-center h-14 w-8 rounded-md bg-[rgb(0,0,0,.65)] hover:bg-[rgb(0,0,0,.8)] duration-150 disabled:opacity-25"
+              >
+                <FontAwesomeIcon icon={faChevronLeft} className="text-white" />
+              </button>
+              <swiper-container
+                slides-per-view="auto"
+                slides-per-group="3"
+                space-between="10"
+                navigation="true"
+                autoplay-delay="5000"
+                autoplay-disable-on-interaction="false"
+                class="mt-2 py-2 px-"
+                navigation-next-el={`#home-next-` + index}
+                navigation-prev-el={`#home-prev-` + index}
+              >
+                {group.products.map((product) => (
+                  <swiper-slide key={product.id} class="w-fit h-auto" lazy="true">
+                    <ProductCard product={product} />
+                  </swiper-slide>
+                ))}
+              </swiper-container>
+            </div>
           </div>
-          <div className="relative">
-            <button
-              id={`home-next-` + index}
-              className="absolute right-0 top-1/2 z-10 -translate-y-1/2 flex items-center justify-center h-14 w-8 rounded-md bg-[rgb(0,0,0,.65)] hover:bg-[rgb(0,0,0,.8)] duration-150 disabled:opacity-25"
-            >
-              <FontAwesomeIcon icon={faChevronRight} className="text-white" />
-            </button>
-            <button
-              id={`home-prev-` + index}
-              className="absolute left-0 top-1/2 z-10 -translate-y-1/2 flex items-center justify-center h-14 w-8 rounded-md bg-[rgb(0,0,0,.65)] hover:bg-[rgb(0,0,0,.8)] duration-150 disabled:opacity-25"
-            >
-              <FontAwesomeIcon icon={faChevronLeft} className="text-white" />
-            </button>
-            <swiper-container
-              slides-per-view="auto"
-              slides-per-group="3"
-              space-between="10"
-              navigation="true"
-              autoplay-delay="5000"
-              autoplay-disable-on-interaction="false"
-              class="mt-2 py-2 px-"
-              navigation-next-el={`#home-next-` + index}
-              navigation-prev-el={`#home-prev-` + index}
-            >
-              {group.map((product) => (
-                <swiper-slide key={product.id} class="w-fit h-auto">
-                  <ProductCard product={product} />
-                </swiper-slide>
-              ))}
-            </swiper-container>
-          </div>
-        </div>
+        </React.Fragment>
       ))}
     </div>
   );

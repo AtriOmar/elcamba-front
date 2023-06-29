@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Popover } from "@headlessui/react";
 import React, { useEffect, useRef, useState } from "react";
 
-function ProductsPerPage({ input, setInput }) {
+function AdStatus({ input, setInput }) {
   const buttonRef = useRef(null);
   const [isOverflowing, setIsOverflowing] = useState(false);
 
@@ -16,24 +16,24 @@ function ProductsPerPage({ input, setInput }) {
       }
     }
 
-    const element = document.querySelector(".category-layout");
-    element.addEventListener("scroll", handleScroll);
+    // const element = document.querySelector(".category-layout");
+    // element.addEventListener("scroll", handleScroll);
 
-    return () => {
-      element.removeEventListener("scroll", handleScroll);
-    };
+    // return () => {
+    //   element.removeEventListener("scroll", handleScroll);
+    // };
   }, []);
 
   return (
-    <Popover className="relative">
+    <Popover className="relative w-fit">
       <Popover.Button
-        className={`h-9 rounded border border-slate-300 bg-sky-600 px-2 outline-0 text-white transition-all duration-150 hover:bg-sky-700 focus:ring-1 [&[aria-expanded='true']]:bg-sky-700 ring-sky-800 ring-offset-1`}
+        className={`h-9 rounded border border-slate-300 bg-sky-600 px-2 outline-0 text-white transition-all duration-150 hover:bg-sky-700 focus:ring-1 ring-sky-800 ring-offset-1 [&[aria-expanded='true']]:bg-sky-700`}
         ref={buttonRef}
       >
-        <div className="flex items-center gap-2">
-          {input.productsPerPage} Produits
+        <p className="flex items-center gap-2">
+          {names[input.status]}
           <FontAwesomeIcon icon={faChevronDown} size="sm" />
-        </div>
+        </p>
       </Popover.Button>
 
       <Popover.Panel
@@ -45,35 +45,35 @@ function ProductsPerPage({ input, setInput }) {
           <ul className="divide-y">
             <li className="">
               <button
-                className="font-cera mb-px w-full rounded-lg px-4 py-1 text-slate-900 transition duration-150 hover:bg-slate-100"
+                className="font-cera my-px w-full rounded-lg px-2 py-1 text-slate-900 transition duration-150 hover:bg-slate-100"
                 onClick={() => {
-                  setInput((prev) => ({ ...prev, productsPerPage: 10 }));
+                  setInput((prev) => ({ ...prev, status: "all" }));
                   close();
                 }}
               >
-                10
+                Tous
               </button>
             </li>
             <li className="">
               <button
-                className="font-cera my-px w-full rounded-lg px-4 py-1 text-slate-900 transition duration-150 hover:bg-slate-100"
+                className="font-cera mt-px w-full rounded-lg px-2 py-1 text-slate-900 transition duration-150 hover:bg-slate-100"
                 onClick={() => {
-                  setInput((prev) => ({ ...prev, productsPerPage: 25 }));
+                  setInput((prev) => ({ ...prev, status: "active" }));
                   close();
                 }}
               >
-                25
+                Active
               </button>
             </li>
             <li className="">
               <button
-                className="font-cera mt-px w-full rounded-lg px-4 py-1 text-slate-900 transition duration-150 hover:bg-slate-100"
+                className="font-cera mt-px w-full rounded-lg px-2 py-1 text-slate-900 transition duration-150 hover:bg-slate-100"
                 onClick={() => {
-                  setInput((prev) => ({ ...prev, productsPerPage: 50 }));
+                  setInput((prev) => ({ ...prev, status: "inactive" }));
                   close();
                 }}
               >
-                50
+                Inactive
               </button>
             </li>
           </ul>
@@ -83,4 +83,10 @@ function ProductsPerPage({ input, setInput }) {
   );
 }
 
-export default ProductsPerPage;
+export default AdStatus;
+
+const names = {
+  all: "Tous",
+  active: "Active",
+  inactive: "Inactive",
+};

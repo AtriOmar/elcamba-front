@@ -8,46 +8,54 @@ import { useDebouncedCallback } from "use-debounce";
 import PageNavigation from "./PageNavigation";
 import OrderBy from "./OrderBy";
 import SortProducts from "./SortProducts";
-import ProductsPerPage from "./ProductsPerPage";
 import Loader from "../Loader";
 import formatPath from "../../lib/formatPath";
 import parseQuery from "../../lib/parseQuery";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
+import Sidebar from "./Sidebar/Sidebar";
+import PremiumProductCard from "./PremiumProductCard";
+import { Helmet } from "react-helmet-async";
+import { useQuery } from "@tanstack/react-query";
+import Select from "./Select";
+
+let prevPage = null;
+
+async function fetchAds() {
+  const res = await axios.get("/ads/getByType", {
+    params: {
+      limit: 5,
+      type: 0,
+      active: true,
+    },
+  });
+  return res?.data;
+}
 
 function Products() {
   const { priceRange, setPriceRange, setFiltering } = useUIContext();
   const firstRender = useRef(true);
   const [searchParams, setSearchParams] = useSearchParams();
-  const [query, setQuery] = useState(null);
   const [products, setProducts] = useState([]);
   const [path, setPath] = useState([]);
   const [title, setTitle] = useState(null);
   const [count, setCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState({
-    productsPerPage: 10,
+    productsPerPage: 25,
     orderBy: "name",
     order: "asc",
   });
-
-  useEffect(() => {
-    console.log(filter);
-  }, [filter]);
+  const [search, setSearch] = useState("");
+  const { data: ads = [] } = useQuery({
+    queryKey: ["category-ads", 5, 0],
+    queryFn: fetchAds,
+    networkMode: "always",
+  });
 
   async function fetchProducts() {
     setFiltering(true);
     console.log("fetching");
     const queryObj = parseQuery(searchParams);
-
-    if (JSON.stringify(queryObj) !== JSON.stringify(query)) {
-      setQuery(queryObj);
-    }
-
-    if ((!queryObj.c && !queryObj.s) || (isNaN(queryObj.c) && isNaN(queryObj.s))) {
-      setTitle("error");
-      setLoading(false);
-      setFiltering(false);
-      return;
-    }
 
     try {
       const res = await axios.get("/products/getByCategoryId", {
@@ -57,25 +65,27 @@ function Products() {
           min: queryObj.min,
           max: queryObj.max,
           page: queryObj.page,
-          limit: filter.productsPerPage,
+          limit: queryObj.ppp,
           orderBy: filter.orderBy,
           order: filter.order,
           delivery: queryObj.delivery,
           cities: queryObj.cities || "all",
+          search: queryObj.search?.trim(),
         },
       });
 
       setProducts(res.data.products);
 
-      setTitle(res.data.subCategory?.name || res.data.category?.name || "categorie");
+      setTitle(res.data.subCategory?.name || res.data.category?.name || "Tous les produits");
 
-      setPath(() => {
-        const newPath = [];
-        newPath[0] = { name: res.data.category.name, path: `/products?c=${res.data.category.id}` };
-        if (queryObj.s) newPath[1] = { name: res.data?.subCategory?.name, path: `/products?s=${res.data.subCategory.id}` };
+      if (res.data.category)
+        setPath(() => {
+          const newPath = [];
+          if (queryObj.c) newPath[0] = { name: res.data.category?.name, path: `/products?c=${res.data.category?.id}` };
+          if (queryObj.s) newPath[1] = { name: res.data?.subCategory?.name, path: `/products?s=${res.data.subCategory?.id}` };
 
-        return newPath;
-      });
+          return newPath;
+        });
 
       setCount(res.data.count);
     } catch (err) {
@@ -91,6 +101,24 @@ function Products() {
     fetchProducts();
   }, [searchParams, filter]);
 
+  function updateSearch() {
+    if (search) {
+      if (typeof searchParams.get("search") !== search) {
+        searchParams.set("search", search);
+        setSearchParams(searchParams);
+      }
+    } else if (typeof searchParams.get("search") !== "undefined") {
+      searchParams.delete("search");
+      setSearchParams(searchParams);
+    }
+  }
+
+  const debouncedUpdateSearch = useDebouncedCallback(updateSearch, 1000);
+
+  useEffect(() => {
+    debouncedUpdateSearch();
+  }, [search]);
+
   function updatePrice() {
     if (priceRange.min >= priceRange.max) return;
 
@@ -103,6 +131,8 @@ function Products() {
     if (firstRender.current) {
       firstRender.current = false;
       const params = parseQuery(searchParams);
+
+      if (params.search) setSearch(params.search);
 
       if (params.min || params.max) {
         if ((params.min || 0) <= (params.max || 5000)) {
@@ -120,9 +150,16 @@ function Products() {
     updatePriceDebounced();
   }, [priceRange]);
 
-  useEffect(() => {
-    console.log(query);
-  }, [query]);
+  // useEffect(() => {
+  //   if (prevPage === null || prevPage === searchParams.get("page")) return;
+
+  //   setSearchParams((prev) => {
+  //     prev.set("page", 1);
+  //     return prev;
+  //   });
+
+  //   prevPage = searchParams.get("page");
+  // }, [searchParams]);
 
   if (loading) {
     return (
@@ -134,12 +171,15 @@ function Products() {
 
   if (title === "error") {
     return (
-      <div className=" rounded-lg bg-white p-20 shadow-md">
-        <img src={sad} alt="" className="mx-auto w-48 py-10" />
-        <h2 className="text-center text-3xl font-bold text-slate-900">La catégorie demandée n'est pas trouvée.</h2>
+      <>
+        <Sidebar />
+        <div className="my-2 scr900:mx-2 py-6 px-3 scr900:px-6 flex flex-col items-center justify-center rounded-lg bg-white shadow-md">
+          <img src={sad} alt="" className="mx-auto w-48 py-10" />
+          <h2 className="text-center text-3xl font-bold text-slate-900">La catégorie demandée n'est pas trouvée.</h2>
 
-        {formatPath(path, "justify-center mt-8 font-bold text-2xl")}
-      </div>
+          {formatPath(path, "justify-center mt-8 font-bold text-2xl")}
+        </div>
+      </>
     );
   }
 
@@ -152,32 +192,82 @@ function Products() {
       {/* <OrderBy /> */}
       <div>
         <p className="font-medium text-slate-900">Produits/page:</p>
-        <ProductsPerPage input={filter} setInput={setFilter} />
+        <Select
+          position="center"
+          options={PPP_OPTIONS}
+          value={{ label: searchParams.get("ppp") || "25", value: searchParams.get("ppp") || "25" }}
+          onChange={(value) =>
+            setSearchParams((prev) => {
+              prev.set("ppp", value.value);
+              return prev;
+            })
+          }
+          formatSelectedOption={(option) => <>{option.label} Produits</>}
+        />
       </div>
       <div>
         <p className="font-medium text-slate-900">Trier par:</p>
         <SortProducts input={filter} setInput={setFilter} />
       </div>
+      <div className="w-full scr500:w-[300px]">
+        <p className="font-medium text-slate-900">Recherche:</p>
+        <div className={`flex border border-sky-600 rounded-lg overflow-hidden`}>
+          <input
+            type="text"
+            className="grow py-1 px-4 outline-none"
+            placeholder="Rechercher des produits"
+            onChange={(e) => setSearch(e.target.value)}
+            value={search}
+          />
+          <button className="flex items-center p-1 bg-sky-600" onClick={() => {}}>
+            <MagnifyingGlassIcon className="h-7 w-7 text-white" />
+          </button>
+        </div>
+      </div>
     </div>
   );
 
   return (
-    <div className="min-h-full py-6 px-3 scr1000:px-6 rounded-lg bg-white shadow-md">
-      <h2 className="text-2xl font-bold capitalize text-slate-900">{title}</h2>
-      {formatPath(path)}
-      {filters}
-      {products.length ? (
-        <div className="mt-2 flex flex-wrap gap-3 p-1">
-          {products.map((product) => (
-            <ProductCard product={product} key={product.id} />
-          ))}
-        </div>
-      ) : (
-        <div className="px-6 py-20 text-center text-2xl font-bold text-gray-500">Aucun produit avec ces critères</div>
-      )}
-      {filters}
-    </div>
+    <>
+      <Sidebar />
+      <Helmet>
+        <title>{title} | CHARYOUL</title>
+      </Helmet>
+      <div className="min-h-full flex flex-col my-2 scr900:mx-2 py-6 px-3 scr900:px-6 rounded-lg bg-white shadow-md">
+        <h2 className="text-2xl font-bold capitalize text-slate-900">{title}</h2>
+        {formatPath(path)}
+        {filters}
+        {products.length ? (
+          <div className="mt-2 flex flex-wrap gap-3 p-1">
+            {products.map((product, index) => (
+              <React.Fragment key={product.id}>
+                {index % 10 === 0 ? <PremiumProductCard product={ads[Math.floor(index / 10) % ads.length]?.Product} /> : ""}
+                <ProductCard product={product} />
+              </React.Fragment>
+            ))}
+          </div>
+        ) : (
+          <div className="grow grid place-items-center px-6 py-20 text-center text-2xl font-bold text-gray-500">Aucun produit avec ces critères</div>
+        )}
+        {filters}
+      </div>
+    </>
   );
 }
 
 export default Products;
+
+const PPP_OPTIONS = [
+  {
+    value: "10",
+    label: "10",
+  },
+  {
+    value: "25",
+    label: "25",
+  },
+  {
+    value: "50",
+    label: "50",
+  },
+];

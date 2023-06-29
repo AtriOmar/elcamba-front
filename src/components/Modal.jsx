@@ -12,7 +12,7 @@ export default function Modal({
 }) {
   return (
     <Transition.Root show={show} as={Fragment} afterEnter={afterEnter} afterLeave={afterLeave}>
-      <Dialog as="div" className="relative z-20" initialFocus={initialFocusRef} onClose={hide}>
+      <Dialog as="div" className="relative z-50" initialFocus={initialFocusRef} onClose={hide}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -36,9 +36,7 @@ export default function Modal({
               leaveFrom="opacity-100 translate-y-0 scr600:scale-100"
               leaveTo="opacity-0 translate-y-4 scr600:translate-y-0 scr600:scale-95"
             >
-              <Dialog.Panel className={`${dialogClassName} relative bg-white text-left transform overflow-hidden shadow-xl transition-all cursor-auto`}>
-                {children}
-              </Dialog.Panel>
+              <Dialog.Panel className={`${dialogClassName} relative bg-white text-left shadow-xl transition-all cursor-auto`}>{children}</Dialog.Panel>
             </Transition.Child>
           </div>
         </div>

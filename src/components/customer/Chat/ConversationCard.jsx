@@ -10,6 +10,9 @@ export default function ConversationCard({ conversation }) {
   const { user } = useAuthContext();
   const otherUser = useMemo(() => (conversation?.User1?.id === user?.id ? conversation?.User2 : conversation?.User1), [conversation]);
 
+  console.log("conversation", conversation);
+  console.log(conversation.seen === user.id + "");
+
   if (!conversation) return;
 
   return (
@@ -17,7 +20,7 @@ export default function ConversationCard({ conversation }) {
       to={"/customer/chat/" + otherUser?.id}
       className="relative block grow max-w-[400px] py-3 px-4 rounded-lg bg-slate-200 hover:bg-slate-300 hover:shadow-card2 duration-300"
     >
-      <p className={`absolute top-1 right-2 font-bold text-xs ${conversation.seen === "both" || conversation.seen?.includes(user.id) ? "hidden" : ""}`}>Nouv</p>
+      <p className={`absolute top-1 right-2 font-bold text-xs ${conversation.seen === "both" || conversation.seen === user.id + "" ? "hidden" : ""}`}>Nouv</p>
       <div className="flex items-center gap-3">
         {otherUser?.picture ? (
           <img

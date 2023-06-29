@@ -1,166 +1,152 @@
-import { InboxIcon, PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
 import React, { useEffect, useState } from "react";
+import { useUIContext } from "../../../contexts/UIProvider";
+import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import RingLoader from "../../RingLoader";
 import Swal from "sweetalert2";
-import AddCategoryModal from "./AddCategoryModal";
-import EditCategoryModal from "./EditCategoryModal";
-import API from "../../../utils/API";
-import Loader from "../../Loader";
 import axios from "axios";
+import AddCategory from "./AddCategory";
+import { PencilSquareIcon, TrashIcon, InboxIcon } from "@heroicons/react/24/outline";
+import EditCategory from "./EditCategory";
+import Loader from "../../Loader";
 
-export default function Categories() {
-  function classNames(...classes) {
-    return classes.filter(Boolean).join(" ");
-  }
+export default function Categories({ setActiveCategory }) {
+  const [categories, setCategories] = useState([]);
+  const [fetching, setFetching] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [itemsList, setItemsList] = useState([]);
-  const [modalShow, setModalShow] = useState(false);
-  const [editModalShow, setEditModalShow] = useState(false);
-  const [toEdit, setToEdit] = useState({});
+  const [addCategoryOpen, setAddCategoryOpen] = useState(false);
+  const [toEdit, setToEdit] = useState(null);
 
-  function getItems() {
-    axios
-      .get("/categories/getAll")
-      .then((res) => {
-        setItemsList(res.data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        Swal.fire("Error", err?.response?.data.message, "error");
+  async function deleteCategory(category) {
+    try {
+      const swalResult = await Swal.fire({
+        title: "Supprimer catégorie",
+        text: `Voulez vous supprimer la catégorie "${category.name}" ?`,
+        showDenyButton: true,
+        confirmButtonText: "Supprimer",
+        denyButtonText: `Annuler`,
+        confirmButtonColor: "#df4759",
+        denyButtonColor: "#d9e2ef",
       });
+      if (swalResult.isConfirmed) {
+        const res = await axios.delete("/categories/deleteById", {
+          params: {
+            id: category.id,
+          },
+        });
+        Swal.fire("Success", "Catégorie supprimé avec succés", "success");
+        fetchCategories();
+      }
+    } catch (err) {
+      console.log(err);
+      Swal.fire("Error", "Une erreur s'est produite", "error");
+    }
+  }
+
+  async function fetchCategories() {
+    setFetching(true);
+    try {
+      const res = await axios.get("/categories/getAll");
+
+      setCategories(res.data);
+    } catch (err) {
+      Swal.fire("Error", err?.response?.data.message, "error");
+
+      console.log(err);
+    }
+    setFetching(false);
+    if (loading) setLoading(false);
   }
   useEffect(() => {
-    getItems();
-    return;
+    fetchCategories();
   }, []);
 
-  const deleteItem = (e, item) => {
-    e.preventDefault();
-
-    Swal.fire({
-      title: "Delete Category",
-      text: `Are you sure to delete ${item.name} ?`,
-      showDenyButton: true,
-      confirmButtonText: "Delete",
-      denyButtonText: `Cancel`,
-      confirmButtonColor: "#df4759",
-      denyButtonColor: "#d9e2ef",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        axios
-          .delete("/categories/deleteById", { params: { id: item.id } })
-          .then((res) => {
-            Swal.fire("Success", res.data.message, "success");
-            getItems();
-          })
-          .catch((err) => {
-            if (err?.response?.data.status === 404) {
-              Swal.fire("Erreur", err?.response?.data.message, "error");
-            } else if (err.response.status === 401) {
-              Swal.fire("Error", err?.response?.data.message, "error");
-            }
-          });
-      } else if (result.isDenied) {
-      }
-    });
-  };
   if (loading) {
     return (
-      <div className="flex h-[calc(100vh_-_64px)] w-full items-center justify-center">
+      <div className="flex items-center justify-center h-full w-full">
         <Loader />
       </div>
     );
   }
 
-  var items_HTMLTABLE = [];
-  if (itemsList.length > 0) {
-    items_HTMLTABLE = (
-      <>
-        <div className="mx-0 grid grid-cols-12 break-all text-center">
-          <div className="col-span-3 hidden pb-3 text-start md:block">ID</div>
-          <div className="col-span-9 pb-3 text-start md:col-span-6">Name</div>
-          <div className="col-span-3 pb-3 text-end sm:text-center">Actions</div>
-        </div>
-        <div className="divide-y">
-          {itemsList.map((item) => {
-            return (
-              <div key={item.id} className="mx-0 grid grid-cols-12 break-all text-center">
-                <div className="col-span-3 hidden pt-3 text-start md:block">{item.id}</div>
-                <div className="col-span-9 pt-3 text-start md:col-span-6">{item.name}</div>
-                <div className="col-span-3 pt-3 text-end sm:text-center">
-                  <div className="grid grid-cols-12">
-                    <div className="col-span-12 text-end sm:col-span-6 sm:text-center">
-                      <button
-                        type="button"
-                        className="btn p-0"
-                        onClick={(e) => {
-                          setToEdit(item);
-                          setEditModalShow(true);
-                        }}
-                      >
-                        <PencilSquareIcon className={"block h-8 w-8 text-blue-600"} aria-hidden="true" />
-                      </button>
-                    </div>
-                    <div className="col-span-12 text-end sm:col-span-6 sm:text-center">
-                      <button
-                        type="button"
-                        className="btn p-0"
-                        onClick={(e) => {
-                          deleteItem(e, item);
-                        }}
-                      >
-                        <TrashIcon className={"block h-8 w-8 text-red-600"} aria-hidden="true" />
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </>
-    );
-  } else {
-    items_HTMLTABLE = (
-      <div className="flex h-[25vh] flex-col items-center justify-center gap-4 text-center">
-        <InboxIcon className="block h-20 w-20" aria-hidden="true" />
-        <h3 className="text-2xl font-bold">There are no Categories</h3>
-      </div>
-    );
-  }
   return (
-    <>
-      <div className="mx-auto max-w-[80rem] p-5">
-        <div className="rounded-lg shadow-lg">
-          <div className="flex items-center justify-between rounded-t-lg bg-gray-100 p-3">
-            <h5 className="mb-0 mb-3">Categories ( {itemsList.length} )</h5>
-            <button
-              type="button"
-              className="rounded bg-blue-600 p-2 text-white"
-              onClick={() => {
-                setModalShow(true);
-              }}
-            >
-              Add Category
-            </button>
-          </div>
-          <div className="p-5">{items_HTMLTABLE}</div>
-        </div>
+    <div className="flex flex-col min-h-full rounded-lg pt-3 bg-white shadow-card1">
+      <AddCategory show={addCategoryOpen} hide={() => setAddCategoryOpen(false)} afterLeave={fetchCategories} />
+      <EditCategory show={toEdit !== null} hide={() => setToEdit(null)} category={toEdit} afterLeave={fetchCategories} />
+      <div className="flex scr500:items-center justify-between flex-col scr500:flex-row rounded-t-lg p-3">
+        <h5 className="mb-0 mb-3">Catégories ( {categories.length} )</h5>
+        <button
+          type="button"
+          className="self-end w-fit px-4 py-2 border border-slate-300 rounded bg-blue-500 hover:bg-blue-600 outline-0 text-white transition-all duration-150 ring-blue-700 ring-offset-2 focus:ring-2"
+          onClick={() => {
+            setAddCategoryOpen(true);
+          }}
+        >
+          Ajouter une catégorie
+        </button>
       </div>
-      <AddCategoryModal
-        show={modalShow}
-        hide={() => {
-          setModalShow(false);
-          getItems();
-        }}
-      />
-      <EditCategoryModal
-        show={editModalShow}
-        hide={() => {
-          setEditModalShow(false);
-          getItems();
-        }}
-        toedit={toEdit}
-      />
-    </>
+      {categories?.length ? (
+        <>
+          <div className="hidden scr800:grid grid-cols-[50px_1fr_330px] border-b border-slate-400 font-medium uppercase">
+            <div className="px-6 py-3 tracking-wider">ID</div>
+            <div className="px-6 py-3 tracking-wider">Nom</div>
+            <div className="text-center px-6 py-3 tracking-wider">Actions</div>
+          </div>
+
+          {categories?.map((category) => (
+            <div className="grid scr800:grid-cols-[50px_1fr_330px] items-center border-b  hover:bg-slate-100 duration-150" key={category.id}>
+              <div className="grid grid-cols-[80px_1fr] scr800:grid-cols-1 px-2 scr800:px-6 py-1 scr800:py-4">
+                <p className="scr800:hidden font-bold text-sm text-sky-700 uppercase">ID:</p>
+                <p className="text-gray-900">{category.id}</p>
+              </div>
+              <div className="grid grid-cols-[80px_1fr] scr800:grid-cols-1 px-2 scr800:px-6 py-1 scr800:py-4">
+                <p className="scr800:hidden font-bold text-sm text-sky-700 uppercase">Nom:</p>
+                <p className="text-gray-900">{category.name}</p>
+              </div>
+              <div className="flex gap-2 px-2 scr800:px-6 py-1">
+                <button
+                  onClick={() => setActiveCategory(category)}
+                  className={` w-fit flex gap-2 items-center px-4 py-2 border border-slate-300 rounded bg-blue-500 hover:bg-blue-600 outline-0 text-white transition-all duration-150 ring-blue-700 ring-offset-2 focus:ring-2`}
+                >
+                  Sous-Catégories
+                  <FontAwesomeIcon icon={faArrowRight} size="lg" />
+                </button>
+                <button
+                  type="button"
+                  className="btn p-0"
+                  onClick={() => {
+                    deleteCategory(category);
+                  }}
+                >
+                  <TrashIcon className={"block h-8 w-8 text-red-600"} aria-hidden="true" />
+                </button>
+                <button
+                  type="button"
+                  className="btn p-0"
+                  onClick={() => {
+                    setToEdit(category);
+                  }}
+                >
+                  <PencilSquareIcon className={"block h-8 w-8 text-blue-600"} aria-hidden="true" />
+                </button>
+              </div>
+            </div>
+          ))}
+          {fetching ? (
+            <div className="w-fit mx-auto py-8">
+              <RingLoader color="#444" width="40" height="40" />
+            </div>
+          ) : (
+            ""
+          )}
+        </>
+      ) : (
+        <div className="grow flex items-center flex-col justify-center py-20 px-6 font-bold text-gray-500 text-2xl text-center">
+          <InboxIcon className="block h-20 w-20" aria-hidden="true" />
+          Aucune catégorie
+        </div>
+      )}
+    </div>
   );
 }

@@ -9,25 +9,58 @@ import MyProducts from "./MyProducts";
 import { useAuthContext } from "../../../contexts/AuthProvider";
 import SelectCategory from "./SelectCategory";
 import Loader from "../../Loader";
+import { useQuery } from "@tanstack/react-query";
+
+async function fetchProducts(filter, user) {
+  const res = await axios.get("/products/getAll", {
+    params: {
+      userId: user.id,
+      limit: filter.limit,
+      orderBy: filter.orderBy,
+      order: filter.order,
+      search: filter.search,
+      active: filter.active,
+    },
+  });
+
+  return res.data;
+}
 
 function Products() {
-  const [products, setProducts] = useState([]);
+  // const [products, setProducts] = useState([]);
   const { user, setUser } = useAuthContext();
   const swiperElRef = useRef(null);
-  const [showSelectCategory, setShowSelectCategory] = useState(false);
-  const [category, setCategory] = useState(null);
-  const [loading, setLoading] = useState(true);
+  // const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState({
     limit: 20,
     orderBy: "createdAt",
     order: "desc",
     search: "",
+    active: "all",
   });
-  const [fetching, setFetching] = useState(false);
+  const {
+    data: products,
+    isLoading: loading,
+    isRefetching: fetching,
+    refetch: updateProducts,
+  } = useQuery({
+    queryKey: ["my-products", filter],
+    queryFn: () => fetchProducts(filter, user),
+    keepPreviousData: true,
+    networkMode: "always",
+  });
+  // const [fetching, setFetching] = useState(false);
+  const observer = useRef(
+    new IntersectionObserver((entries, obs) => {
+      const entry = entries[0];
 
-  // useEffect(() => {
-  //   swiperElRef.current.swiper.slideTo(page);
-  // }, [page]);
+      if (entry.isIntersecting) {
+        setFilter((prev) => ({ ...prev, limit: prev.limit + 20 }));
+        obs.unobserve(entry.target);
+      }
+    })
+  );
+  const observing = useRef(0);
 
   useEffect(() => {
     function handleSlideChange(e, swiper) {
@@ -36,10 +69,10 @@ function Products() {
       const blurElements = document.querySelectorAll(activeIndex === 0 ? ".add-product-container *" : ".my-products-container *");
 
       activeElements.forEach((element) => {
-        element.removeAttribute("disabled");
+        if (!element.getAttribute("data-disabled")) element.removeAttribute("disabled");
       });
       blurElements.forEach((element) => {
-        element.setAttribute("disabled", true);
+        if (!element.getAttribute("data-disabled")) element.setAttribute("disabled", true);
       });
     }
 
@@ -52,61 +85,29 @@ function Products() {
     };
   }, [loading]);
 
-  async function updateProducts() {
-    setFetching(true);
-    try {
-      const res = await axios.get("/products/getByUserId", {
-        params: {
-          id: user.id,
-          limit: filter.limit,
-          orderBy: filter.orderBy,
-          order: filter.order,
-          search: filter.search,
-        },
-      });
-
-      console.log(res.data);
-      setProducts(res.data);
-    } catch (err) {
-      console.log(err);
-    }
-    setLoading(false);
-    setFetching(false);
-  }
-
   useEffect(() => {
-    updateProducts();
-  }, [filter]);
+    if (filter.limit === observing.current) return;
 
-  useEffect(() => {
-    function handleScroll(e) {
-      if (fetching || products.length < filter.limit) return;
-      if (e.target.scrollHeight - e.target.scrollTop - e.target.clientHeight < 500) {
-        console.log("it is");
+    if (products?.length !== filter.limit) return;
 
-        setFilter((prev) => ({ ...prev, limit: prev.limit + 20 }));
-      }
-    }
+    observing.current = filter.limit;
 
-    const container = document.querySelector(".customer-page-container");
-    container.addEventListener("scroll", handleScroll);
+    const elements = document.querySelectorAll(".product-container");
 
-    return () => {
-      container.removeEventListener("scroll", handleScroll);
-    };
-  }, [fetching, products, filter]);
+    const el = elements[elements.length - 5];
+    if (el) observer.current.observe(el);
+  }, [products]);
 
   if (loading) {
     return (
-      <div className="flex h-[calc(100vh_-_64px)] w-full items-center justify-center">
+      <div className="grid place-items-center">
         <Loader />
       </div>
     );
   }
 
   return (
-    <div className=" py-6 px-3 scr1000:px-6 rounded-lg bg-white shadow-md">
-      <SelectCategory show={showSelectCategory} setShow={setShowSelectCategory} setCategory={setCategory} />
+    <div className="my-2 scr1200:mx-2 py-6 px-3 scr1200:px-6 rounded-lg bg-white shadow-md">
       <div className="w-full overflow-hidden">
         <swiper-container ref={swiperElRef} auto-height="true">
           <swiper-slide class="swiper-no-swiping ">
@@ -116,7 +117,7 @@ function Products() {
           </swiper-slide>
           <swiper-slide class="swiper-no-swiping ">
             <div className="add-product-container">
-              <AddProduct swiperRef={swiperElRef} updateProducts={updateProducts} category={category} setShowSelectCategory={setShowSelectCategory} />
+              <AddProduct swiperRef={swiperElRef} updateProducts={updateProducts} />
             </div>
           </swiper-slide>
         </swiper-container>

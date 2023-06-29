@@ -17,8 +17,11 @@ function CategoriesList({}) {
   }, [categories]);
 
   return (
-    <div className="shrink-0 hidden min-[1350px]:flex flex-col w-[190px] rounded-lg border-4 border-sky-600 overflow-hidden" onMouseLeave={() => setActive(-1)}>
-      <h4 className="py-1 bg-sky-600 font-semibold text-lg text-center text-white">Catégories</h4>
+    <div
+      className="shrink-0 hidden min-[1350px]:flex flex-col w-[190px] rounded-lg border-4 border-teal-500 bg-white overflow-hidden"
+      onMouseLeave={() => setActive(-1)}
+    >
+      <h4 className="py-1 bg-teal-500 font-semibold text-lg text-center text-white">Catégories</h4>
       <ul className="peer flex flex-col grow justify- text-[15px]">
         {categories.map((category, index) => (
           <li
@@ -37,9 +40,10 @@ function CategoriesList({}) {
         ))}
       </ul>
       <section
-        className={`absolute top-0 left-[208px] z-20 hidden ${
-          subCategories.length ? "peer-hover:flex hover:flex flex-col" : ""
-        }  h-full w-[calc(100%_-_208px)] rounded-lg bg-white shadow-card2`}
+        className={`absolute top-0 left-[208px] z-20 ${
+          subCategories.length ? "peer-hover:visible hover:visible hover:delay-300 peer-hover:delay-300 " : ""
+        } invisible flex flex-col h-full w-[calc(100%_-_208px)] rounded-lg bg-white shadow-card2 delay-0`}
+        // style={{ transition: "display 0s 1s" }}
       >
         <div className="absolute left-0 -translate-x-full w-2 h-full bg-transparent"></div>
         <div className="py-2 px-3">
@@ -55,10 +59,12 @@ function CategoriesList({}) {
         <ul className="flex flex-col flex-wrap content-start grow gap-y-3 gap-x-8 h-0 py-2 px-4">
           {subCategories.map((sub) => (
             <li
-              className={`first-letter:uppercase duration-300 ${new RegExp(normalized(filter.trim()), "i").test(normalized(sub?.name)) ? "" : "scale-[0]"}`}
+              className={`first-letter:uppercase transition duration-300 ${
+                new RegExp(normalized(filter.trim()), "i").test(normalized(sub?.name)) ? "" : "scale-[0]"
+              }`}
               key={sub.name}
             >
-              <Link className="py-2 px-3 rounded-lg bg-sky-600 text-white hover:bg-sky-700 transition duration-300" to={`/products?s=${sub.id}`}>
+              <Link className="py-2 px-3 rounded-lg bg-teal-500 text-white hover:bg-teal-600 transition duration-300" to={`/products?s=${sub.id}`}>
                 {/* {filter ? reactStringReplace(sub.name, filter.trim(), (match) => <span className="font-bold">{match}</span>) : sub.name} */}
                 {sub.name}
               </Link>

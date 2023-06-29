@@ -84,6 +84,11 @@ export default function SigninModal({ show, hide }) {
         return;
       }
 
+      if (message === "suspended") {
+        setError("Compte suspendu, contactez nous pour plus d'informations");
+        return;
+      }
+
       setError("Une erreur s'est produite");
 
       console.log(err);

@@ -17,7 +17,7 @@ function Sidebar() {
         onClick={() => setMobileNavbarOpen(false)}
       ></div>
       <div
-        className={`fixed top-0 left-0 scr1000:relative z-30 scr1000:z-0 h-full w-full scr500:w-[300px] py-10 px-3 bg-white shadow-md duration-300 ${
+        className={`fixed top-0 scr1000:top-[55px] z-30 scr1000:z-10 left-0 h-full w-full scr500:w-[250px] py-10 px-3 bg-white shadow-md transition duration-300 ${
           mobileNavbarOpen ? "" : "-translate-x-full scr1000:translate-x-0"
         }`}
       >

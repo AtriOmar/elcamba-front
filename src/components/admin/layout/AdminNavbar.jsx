@@ -5,6 +5,9 @@ import Swal from "sweetalert2";
 import { useAuthContext } from "../../../contexts/AuthProvider";
 import API from "../../../utils/API";
 import { useNavigate } from "react-router";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBars } from "@fortawesome/free-solid-svg-icons";
+import { useUIContext } from "../../../contexts/UIProvider";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -13,6 +16,7 @@ function classNames(...classes) {
 export default function AdminNavbar() {
   const navigate = useNavigate();
   const { user, setUser } = useAuthContext();
+  const { setAdminNavbarOpen } = useUIContext();
 
   function handleLogout() {
     axios
@@ -28,12 +32,20 @@ export default function AdminNavbar() {
   }
 
   return (
-    <Disclosure as="nav" className="bg-gray-800 fixed z-10 w-full">
+    <Disclosure as="nav" className="bg-gray-800 fixed z-20 w-full">
       {({ open }) => (
         <>
           <div className="mx-auto px-2 sm:px-6 lg:px-8 navbar">
             <div className="relative flex h-16 items-center justify-between">
               <div className="absolute inset-y-0 left-0 flex items-center sm:hidden"></div>
+              <button
+                className="lg:hidden mr-4"
+                onClick={() => {
+                  setAdminNavbarOpen(true);
+                }}
+              >
+                <FontAwesomeIcon icon={faBars} className="text-white" />
+              </button>
               <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                 <div className="flex flex-shrink-0 items-center">
                   <strong className="text-white">Admin Interface</strong>

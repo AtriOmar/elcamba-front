@@ -16,11 +16,11 @@ function SortProducts({ input, setInput }) {
       }
     }
 
-    const element = document.querySelector(".category-layout");
-    element.addEventListener("scroll", handleScroll);
+    // const element = document.querySelector(".category-layout");
+    window.addEventListener("scroll", handleScroll);
 
     return () => {
-      element.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 

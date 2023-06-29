@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Swal from "sweetalert2";
-import API from "../../../utils/API";
+import API from "../../../../utils/API";
 
 export default function AddUserCmp() {
   function resetInput() {

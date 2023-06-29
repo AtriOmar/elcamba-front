@@ -7,6 +7,7 @@ const RATIO = {
   1: "2/1",
   2: "1/1",
   3: "2/1",
+  4: "2/1",
 };
 
 function PosterSelect({ input, setInput }) {
@@ -22,8 +23,8 @@ function PosterSelect({ input, setInput }) {
 
   return (
     <div
-      className={`relative w-full rounded-lg border ${input.photo ? "" : "cursor-pointer"}`}
-      style={{ aspectRatio: RATIO[input.type] }}
+      className={`relative w-full rounded-lg border border-slate-300 ${input.photo ? "" : "cursor-pointer"}`}
+      style={{ aspectRatio: RATIO[input.type] || "2/1" }}
       {...(input.photo ? {} : getRootProps())}
     >
       <div
@@ -41,7 +42,7 @@ function PosterSelect({ input, setInput }) {
             className={`absolute z-10 right-1/2 translate-x-1/2 top-1/2 flex  w-8 scr800:w-10 aspect-square -translate-y-1/2 cursor-pointer items-center justify-center rounded-lg bg-blue-500  shadow-md transition-all duration-300 hover:bg-blue-600`}
           >
             <FontAwesomeIcon icon={faPlus} className="text-white w-3/4 h-3/4" />
-            <p className="absolute top-[120%] font-medium text-sm scr800:text-lg">{RATIO[input.type].replace("/", ":")}</p>
+            <p className="absolute top-[120%] font-medium text-sm scr800:text-lg">{RATIO[input.type]?.replace("/", ":") || "2:1"}</p>
           </span>
         </>
       )}
