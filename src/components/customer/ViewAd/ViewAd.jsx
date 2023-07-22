@@ -43,7 +43,7 @@ function ViewAd() {
 
   console.log("error", error);
 
-  if (error.message === "not found") {
+  if (error?.message === "not found") {
     addPopup({
       type: "danger",
       text: "Produit non trouvé",
