@@ -18,7 +18,7 @@ export default function Ads() {
 
   function getItems() {
     axios
-      .get("/ads/getAll")
+      .get("/abc/getAll")
       .then((res) => {
         setItemsList(res.data);
         console.log(res.data);
@@ -47,7 +47,7 @@ export default function Ads() {
     }).then((result) => {
       if (result.isConfirmed) {
         axios
-          .delete("/ads/deleteById", {
+          .delete("/abc/deleteById", {
             data: {
               id: item.id,
             },
@@ -96,7 +96,7 @@ export default function Ads() {
               <div key={item.id} className="mx-0 grid grid-cols-12 break-all text-center">
                 <div className="col-span-1 hidden items-center pt-3 text-start md:flex">{item.id}</div>
                 <div className="col-span-3 flex items-center pt-3 text-start md:col-span-3">
-                  <img className="h-20 w-20 rounded-lg object-cover" src={`${BACKEND_URL}/uploads/ads/${item.photo}`} alt={`Photo of ${item.name}`} />
+                  <img className="h-20 w-20 rounded-lg object-cover" src={`${BACKEND_URL}/uploads/abc/${item.photo}`} alt={`Photo of ${item.name}`} />
                 </div>
                 <div className="col-span-4 flex items-center pt-3 text-start md:col-span-4">{item.name}</div>
                 <div className="col-span-2 flex items-center pt-3 text-start md:col-span-1">{item.type}</div>

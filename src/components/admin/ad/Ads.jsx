@@ -59,7 +59,7 @@ export default function Ads() {
   async function updateAds() {
     setFetching(true);
     try {
-      const res = await axios.get("/ads/getAll", {
+      const res = await axios.get("/abc/getAll", {
         params: {
           id: user.id,
           limit: filter.limit,
@@ -191,7 +191,7 @@ export default function Ads() {
 
           {ads.map((ad) => (
             <div
-              to={`/customer/ads/${ad.id}`}
+              to={`/customer/abc/${ad.id}`}
               className="ad-container grid items-center grid-cols-[90px_1fr] scr800:grid-cols-[50px_minmax(70px,90px)_80px_1fr_170px_100px_120px] border-b  hover:bg-slate-100 duration-150"
               key={ad.id}
             >
@@ -230,7 +230,7 @@ export default function Ads() {
                 </div>
               </div>
               <div className="flex gap-2 px-2 scr800:px-6 py-1">
-                <Link className="btn p-0" to={`/admin/ads/${ad.id}`}>
+                <Link className="btn p-0" to={`/admin/abc/${ad.id}`}>
                   <Cog6ToothIcon className={"block h-8 w-8 text-slate-600"} aria-hidden="true" />
                 </Link>
               </div>

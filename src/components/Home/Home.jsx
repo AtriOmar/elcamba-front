@@ -14,7 +14,7 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
 async function fetchAds() {
-  const res = await axios.get("/ads/getByEachType", {
+  const res = await axios.get("/abc/getByEachType", {
     params: {
       limit: 5,
     },

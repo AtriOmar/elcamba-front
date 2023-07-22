@@ -30,10 +30,10 @@ function AdsSlider({ type = 1, ads }) {
             <swiper-slide key={ad.id} class="w-full h-full">
               {ad.url ? (
                 <a href={ad.url || ""} target="_blank">
-                  <img src={`${BACKEND_URL}/uploads/ads/${ad.photo}`} alt="" className="w-full h-full object-cover" />
+                  <img src={`${BACKEND_URL}/uploads/abc/${ad.photo}`} alt="" className="w-full h-full object-cover" />
                 </a>
               ) : (
-                <img src={`${BACKEND_URL}/uploads/ads/${ad.photo}`} alt="" className="w-full h-full object-cover" />
+                <img src={`${BACKEND_URL}/uploads/abc/${ad.photo}`} alt="" className="w-full h-full object-cover" />
               )}
             </swiper-slide>
           ))}

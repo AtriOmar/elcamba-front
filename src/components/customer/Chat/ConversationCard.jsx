@@ -33,11 +33,17 @@ export default function ConversationCard({ conversation }) {
         )}
         <h3 className="font-semibold text-sky-800 capitalize">{otherUser?.username}</h3>
       </div>
-      <p className=" text-slate-700 break-all line-clamp-3">
-        {conversation?.Messages?.[0].senderId === user.id ? <span className="font-medium">Vous: </span> : ""}
-        {conversation?.Messages?.[0].content}
-      </p>
-      <p className="text-slate-500">{formatDate(conversation?.Messages?.[0].createdAt)}</p>
+      {conversation?.Messages?.[0] ? (
+        <>
+          <p className=" text-slate-700 break-all line-clamp-3">
+            {conversation?.Messages?.[0]?.senderId === user.id ? <span className="font-medium">Vous: </span> : ""}
+            {conversation?.Messages?.[0]?.content}
+          </p>
+          <p className="text-slate-500">{formatDate(conversation?.Messages?.[0].createdAt)}</p>
+        </>
+      ) : (
+        ""
+      )}
     </Link>
   );
 }

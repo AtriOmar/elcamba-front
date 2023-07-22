@@ -20,7 +20,7 @@ import RemainingTime from "../../RemainingTime";
 import { useQuery } from "@tanstack/react-query";
 
 async function fetchAds(filter, user) {
-  const result = await axios.get("/ads/getAll", {
+  const result = await axios.get("/abc/getAll", {
     params: {
       userId: user.id,
       ...filter,
@@ -146,7 +146,7 @@ function PromoteManager() {
               <div className="px-1 scr800:px-3 py-1 scr800:py-2 row-span-4 scr800:row-span-1">
                 <img
                   className="sticky top-0 w-full aspect-square border rounded-lg object-contain "
-                  src={`${import.meta.env.VITE_BACKEND_URL}/photo?path=${ad.type === 0 ? ad.Product.photos[0] : "ads/" + ad.photo}&size=150`}
+                  src={`${import.meta.env.VITE_BACKEND_URL}/photo?path=${ad.type === 0 ? ad.Product.photos[0] : "abc/" + ad.photo}&size=150`}
                   alt={ad.name}
                   loading="lazy"
                 />

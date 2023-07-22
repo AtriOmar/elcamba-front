@@ -7,8 +7,8 @@ import { Link, useLocation } from "react-router-dom";
 import { useUIContext } from "../contexts/UIProvider";
 import { Accordion, AccordionBody, AccordionHeader } from "@material-tailwind/react";
 import axios from "axios";
-import { faHeart, faMessage, faUser } from "@fortawesome/free-regular-svg-icons";
-import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import { faHeart, faMessage, faRectangleList, faUser } from "@fortawesome/free-regular-svg-icons";
+import { HomeIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { useAuthContext } from "../contexts/AuthProvider";
 
 function Sidebar() {
@@ -109,7 +109,8 @@ function Sidebar() {
                 }`}
                 to={"/"}
               >
-                <FontAwesomeIcon icon={faHouse} />
+                {/* <FontAwesomeIcon icon={faHouse} /> */}
+                <HomeIcon className="block h-5 w-5 flex-start" aria-hidden="true" />
                 <span>Acceuil</span>
               </Link>
             </li>
@@ -122,7 +123,7 @@ function Sidebar() {
                     }`}
                     to={"/customer/products"}
                   >
-                    <FontAwesomeIcon icon={faBox} />
+                    <FontAwesomeIcon icon={faRectangleList} className="" />
                     <span>Produits</span>
                   </Link>
                 </li>

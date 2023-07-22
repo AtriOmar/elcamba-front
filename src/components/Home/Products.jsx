@@ -19,7 +19,7 @@ async function fetchProducts() {
 }
 
 async function fetchAds() {
-  const res = await axios.get("/ads/getByType", { params: { type: 4, limit: 10, active: true } });
+  const res = await axios.get("/abc/getByType", { params: { type: 4, limit: 10, active: true } });
 
   return res.data;
 }
@@ -63,14 +63,14 @@ function Products() {
             <div className="grid scr1000:grid-cols-2 gap-1">
               <Link className="w-full" to={ads[(index / 3) % ads.length].url} target="_blank">
                 <img
-                  src={`${BACKEND_URL}/uploads/ads/${ads[(index / 3) % ads.length].photo}`}
+                  src={`${BACKEND_URL}/uploads/abc/${ads[(index / 3) % ads.length].photo}`}
                   className="max-w-[800px] mx-auto w-full rounded-lg aspect-[2/1] object-cover"
                   alt=""
                 />
               </Link>
               <Link className="hidden scr1000:block w-full" to={ads[((index / 3) % ads.length) + 1].url} target="_blank">
                 <img
-                  src={`${BACKEND_URL}/uploads/ads/${ads[((index / 3) % ads.length) + 1].photo}`}
+                  src={`${BACKEND_URL}/uploads/abc/${ads[((index / 3) % ads.length) + 1].photo}`}
                   className="max-w-[800px] mx-auto w-full rounded-lg aspect-[2/1] object-cover"
                   alt=""
                 />

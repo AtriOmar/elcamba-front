@@ -14,7 +14,7 @@ function PremiumProducts() {
 
   async function fetchProduct() {
     try {
-      const res = await axios.get("/ads/getByType", {
+      const res = await axios.get("/abc/getByType", {
         params: {
           limit: 10,
           type: 0,

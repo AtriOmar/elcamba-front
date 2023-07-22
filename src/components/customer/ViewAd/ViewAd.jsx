@@ -12,7 +12,7 @@ import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { useQuery } from "@tanstack/react-query";
 
 async function fetchAd(id, user) {
-  const res = await axios.get("/ads/getById", {
+  const res = await axios.get("/abc/getById", {
     params: {
       id,
     },

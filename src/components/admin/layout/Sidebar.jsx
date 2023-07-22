@@ -46,7 +46,7 @@ export default function Sidebar() {
       </Link>
       <Link to="/admin" className={`flex flex-row gap-4 p-4 duration-150 ${location?.pathname === "/admin" ? "bg-gray-700" : ""}`}>
         <HomeIcon className="block h-6 w-6 flex-start" aria-hidden="true" />
-        <span className="flex-end">Home</span>
+        <span className="flex-end">Acceuil</span>
       </Link>
       {user.accessId >= 3 ? (
         <>

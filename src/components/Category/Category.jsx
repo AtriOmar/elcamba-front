@@ -17,11 +17,12 @@ import PremiumProductCard from "./PremiumProductCard";
 import { Helmet } from "react-helmet-async";
 import { useQuery } from "@tanstack/react-query";
 import Select from "./Select";
+import SortSelect from "./SortSelect";
 
 let prevPage = null;
 
 async function fetchAds() {
-  const res = await axios.get("/ads/getByType", {
+  const res = await axios.get("/abc/getByType", {
     params: {
       limit: 5,
       type: 0,
@@ -66,8 +67,8 @@ function Products() {
           max: queryObj.max,
           page: queryObj.page,
           limit: queryObj.ppp,
-          orderBy: filter.orderBy,
-          order: filter.order,
+          orderBy: queryObj.sort,
+          order: queryObj.order,
           delivery: queryObj.delivery,
           cities: queryObj.cities || "all",
           search: queryObj.search?.trim(),
@@ -75,7 +76,7 @@ function Products() {
       });
 
       setProducts(res.data.products);
-
+      console.log("fmldsqmjlfjsmdqfjdsf", res.data.subCategory?.name || res.data.category?.name || "Tous les produits");
       setTitle(res.data.subCategory?.name || res.data.category?.name || "Tous les produits");
 
       if (res.data.category)
@@ -89,9 +90,9 @@ function Products() {
 
       setCount(res.data.count);
     } catch (err) {
-      if (err.response?.data === "category not found" || err.response?.data === "invalid data") {
-        setTitle("error");
-      }
+      // if (err.response?.data === "category not found" || err.response?.data === "invalid data") {
+      setTitle("error");
+      // }
     }
     setLoading(false);
     setFiltering(false);
@@ -207,7 +208,27 @@ function Products() {
       </div>
       <div>
         <p className="font-medium text-slate-900">Trier par:</p>
-        <SortProducts input={filter} setInput={setFilter} />
+        {/* <SortProducts input={filter} setInput={setFilter} /> */}
+        <SortSelect
+          position="right"
+          options={ORDER_OPTIONS}
+          // value={filter.orderBy}
+          value={{ label: ORDER_OPTIONS.find((el) => el.value === searchParams.get("sort"))?.label || "Nom", value: searchParams.get("sort") || "name" }}
+          onChange={(value) =>
+            setSearchParams((prev) => {
+              prev.set("sort", value.value);
+              return prev;
+            })
+          }
+          onOrderChange={(value) =>
+            setSearchParams((prev) => {
+              prev.set("order", value);
+              return prev;
+            })
+          }
+          // onChange={(value) => setFilter((prev) => ({ ...prev, orderBy: value.value }))}
+          order={searchParams.get("order") || "asc"}
+        />
       </div>
       <div className="w-full scr500:w-[300px]">
         <p className="font-medium text-slate-900">Recherche:</p>
@@ -269,5 +290,20 @@ const PPP_OPTIONS = [
   {
     value: "50",
     label: "50",
+  },
+];
+
+const ORDER_OPTIONS = [
+  {
+    value: "name",
+    label: "Nom",
+  },
+  {
+    value: "price",
+    label: "Prix",
+  },
+  {
+    value: "date",
+    label: "Créé le",
   },
 ];

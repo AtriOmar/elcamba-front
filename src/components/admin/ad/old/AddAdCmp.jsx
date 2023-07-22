@@ -46,7 +46,7 @@ export default function AddAdCmp() {
     formData.append("type", input.type);
     formData.append("duration", input.duration);
     axios
-      .post("/ads/create", formData)
+      .post("/abc/create", formData)
       .then((res) => {
         Swal.fire("Success", res.data.message, "success");
         resetInput();

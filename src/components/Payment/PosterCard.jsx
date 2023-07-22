@@ -52,7 +52,7 @@ function PosterCard({ order }) {
 
       <img
         className="mt-2 mx-auto max-w-[500px] max-h-[400px] border rounded-md object-cover"
-        src={`${BACKEND_URL}/uploads/ads/${order.photo}`}
+        src={`${BACKEND_URL}/uploads/abc/${order.photo}`}
         alt=""
         style={{ aspectRatio: RATIO[order.type] }}
       />

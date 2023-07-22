@@ -36,7 +36,7 @@ export default function Product() {
 
   async function fetchAds() {
     try {
-      const res = await axios.get("/ads/getById", {
+      const res = await axios.get("/abc/getById", {
         params: {
           id,
         },
@@ -65,7 +65,7 @@ export default function Product() {
     }
     setSending((prev) => ({ ...prev, status: true }));
     try {
-      const res = await axios.put("/ads/updateById", data);
+      const res = await axios.put("/abc/updateById", data);
 
       setAd(res.data);
 
@@ -86,7 +86,7 @@ export default function Product() {
     }
     setSending((prev) => ({ ...prev, paid: true }));
     try {
-      const res = await axios.put("/ads/updateById", data);
+      const res = await axios.put("/abc/updateById", data);
 
       setAd(res.data);
 
@@ -117,7 +117,7 @@ export default function Product() {
         <article className="scr1000:sticky top-20 shrink-0 w-full scr1000:w-2/5 min-w-[200px] max-w-[400px] mx-auto">
           {
             <img
-              src={`${BACKEND_URL}/uploads/${ad.photo ? "ads/" + ad.photo : ad.Product?.photos?.[0]}`}
+              src={`${BACKEND_URL}/uploads/${ad.photo ? "abc/" + ad.photo : ad.Product?.photos?.[0]}`}
               alt=""
               className="w-full border-2 border-slate-200 rounded-lg "
             />

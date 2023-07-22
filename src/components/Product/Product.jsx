@@ -45,7 +45,7 @@ export default function Product() {
 
   async function fetchAds() {
     try {
-      const res = await axios.get("/ads/getByType", {
+      const res = await axios.get("/abc/getByType", {
         params: {
           type: 4,
           limit: 2,
@@ -99,10 +99,10 @@ export default function Product() {
       {ads?.length ? (
         <div className="grid scr1000:grid-cols-2 gap-1">
           <Link className="w-full" to={ads[0].url} target="_blank">
-            <img src={`${BACKEND_URL}/uploads/ads/${ads[0].photo}`} className="max-w-[500px] mx-auto w-full rounded-lg aspect-[2/1] object-cover" alt="" />
+            <img src={`${BACKEND_URL}/uploads/abc/${ads[0].photo}`} className="max-w-[500px] mx-auto w-full rounded-lg aspect-[2/1] object-cover" alt="" />
           </Link>
           <Link className="hidden scr1000:block w-full" to={ads[1].url} target="_blank">
-            <img src={`${BACKEND_URL}/uploads/ads/${ads[1].photo}`} className="max-w-[500px] mx-auto w-full rounded-lg aspect-[2/1] object-cover" alt="" />
+            <img src={`${BACKEND_URL}/uploads/abc/${ads[1].photo}`} className="max-w-[500px] mx-auto w-full rounded-lg aspect-[2/1] object-cover" alt="" />
           </Link>
         </div>
       ) : (

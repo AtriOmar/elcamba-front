@@ -43,7 +43,7 @@ function AdDetails({ ad, fetchAd }) {
 
     setSending((prev) => ({ ...prev, url: true }));
     try {
-      await axios.put("/ads/updateById", data);
+      await axios.put("/abc/updateById", data);
 
       fetchAd();
 
@@ -77,7 +77,7 @@ function AdDetails({ ad, fetchAd }) {
 
     setSending((prev) => ({ ...prev, status: true }));
     try {
-      await axios.put("/ads/updateById", data);
+      await axios.put("/abc/updateById", data);
 
       fetchAd();
 
@@ -106,7 +106,7 @@ function AdDetails({ ad, fetchAd }) {
         <article className="scr1000:sticky top-20 shrink-0 w-full scr1000:w-2/5 min-w-[200px] max-w-[400px] mx-auto">
           {
             <img
-              src={`${BACKEND_URL}/uploads/${ad?.photo ? "ads/" + ad?.photo : ad?.Product?.photos?.[0]}`}
+              src={`${BACKEND_URL}/uploads/${ad?.photo ? "abc/" + ad?.photo : ad?.Product?.photos?.[0]}`}
               alt=""
               className="w-full border-2 border-slate-200 rounded-lg "
             />

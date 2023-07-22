@@ -71,7 +71,7 @@ function PromoteProduct() {
 
     setSending(true);
     try {
-      const res = await axios.post("/ads/createProductPayment", {
+      const res = await axios.post("/abc/createProductPayment", {
         amount,
         productId: product.id,
         duration: input.duration,

@@ -87,7 +87,7 @@ export default function PromotePoster() {
       formData.append("type", input.type);
       formData.append("amount", amount);
       formData.append("url", input.url);
-      const res = await axios.post("/ads/createPosterPayment", formData);
+      const res = await axios.post("/abc/createPosterPayment", formData);
       console.log("create poster payment", res.data);
       window.open(`/payment/${res.data}`, "_blank");
       navigate("/customer/promote/manage");

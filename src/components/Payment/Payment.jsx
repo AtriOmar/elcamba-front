@@ -23,7 +23,7 @@ function Payment() {
     // console.log("event", event.data);
     if (event.data.event_id === "paymee.complete") {
       setLoading(2);
-      const res = await axios.get(`/ads/pay`, {
+      const res = await axios.get(`/abc/pay`, {
         params: {
           token,
         },
@@ -38,7 +38,7 @@ function Payment() {
     async function fetchOrder() {
       if (!loading) setLoading(1);
       try {
-        const res = await axios.get("/ads/getByToken", {
+        const res = await axios.get("/abc/getByToken", {
           params: {
             token,
           },
