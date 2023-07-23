@@ -89,6 +89,18 @@ function Products() {
         });
 
       setCount(res.data.count);
+
+      console.log("-------------------- priceRange --------------------");
+      console.log(res.data);
+      if (!queryObj.min || !queryObj.max)
+        setPriceRange((prev) => ({
+          min: Number(res.data.minPrice),
+          max: Number(res.data.maxPrice),
+          inputMin: Number(res.data.minPrice),
+          inputMax: Number(res.data.maxPrice),
+          minValue: Number(res.data.minPrice),
+          maxValue: Number(res.data.maxPrice),
+        }));
     } catch (err) {
       // if (err.response?.data === "category not found" || err.response?.data === "invalid data") {
       setTitle("error");
@@ -252,7 +264,7 @@ function Products() {
     <>
       <Sidebar />
       <Helmet>
-        <title>{title} | CHARYOUL</title>
+        <title>{title} | ELCAMBA</title>
       </Helmet>
       <div className="min-h-full flex flex-col my-2 scr900:mx-2 py-6 px-3 scr900:px-6 rounded-lg bg-white shadow-md">
         <h2 className="text-2xl font-bold capitalize text-slate-900">{title}</h2>

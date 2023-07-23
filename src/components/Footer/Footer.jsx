@@ -16,7 +16,7 @@ export default function Footer() {
       <div className="relative w-full mx-auto px-8 py-10 bg-slate-500/25  before:absolute before:inset-0 before:bg-[url(./assets/images/agriculture.jpg) before:bg-cover before:bg-center before:z-[-1]">
         <section className="px-8 scr1000:px-20 py-10 rounded-lg grid grid-cols-1 scr600:grid-cols-2 scr1100:grid-cols-4 gap-6 relative bg-slate-100 ">
           <div>
-            <h3 className="pb-4 font-poppins font-semibold text-xl text-teal-500 uppercase">CHARYOUL</h3>
+            <h3 className="pb-4 font-poppins font-semibold text-xl text-teal-500 uppercase">ELCAMBA</h3>
             <ul className="flex flex-col gap-2">
               {settings?.map((setting) =>
                 Object.keys(SETTINGS_ICONS).includes(setting.name) ? (
@@ -78,7 +78,7 @@ export default function Footer() {
             </ul>
           </div>
           <div className="flex items-center justify-center">
-            <img src="logo.svg" alt="CHARYOUL logo" className="w-full max-w-[300px]" />
+            <img src="logo.svg" alt="ELCAMBA logo" className="w-full max-w-[300px]" />
           </div>
         </section>
       </div>

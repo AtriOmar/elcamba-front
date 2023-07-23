@@ -93,7 +93,7 @@ export default function Product() {
   return (
     <div className="grow">
       <Helmet>
-        <title>{product.name} | CHARYOUL</title>
+        <title>{product.name} | ELCAMBA</title>
       </Helmet>
       <ProductDetails product={product} path={path} />
       {ads?.length ? (

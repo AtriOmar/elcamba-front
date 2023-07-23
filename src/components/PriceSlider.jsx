@@ -7,9 +7,8 @@ import "../slider.css";
 import { useUIContext } from "../contexts/UIProvider";
 
 function PriceSlider() {
-  const [value, setValue] = useState({ min: 0, max: 5000 });
-  const handle = ({ value, dragging, index, ...restProps }) => <div className="square-handle" style={{ left: `${(value / 100) * 100}%` }} {...restProps} />;
   const { priceRange, setPriceRange } = useUIContext();
+  const handle = ({ value, dragging, index, ...restProps }) => <div className="square-handle" style={{ left: `${(value / 100) * 100}%` }} {...restProps} />;
 
   return (
     <div className="">
@@ -24,11 +23,11 @@ function PriceSlider() {
 
       <InputRange
         formatLabel={(value) => `${value} DT`}
-        maxValue={5000}
-        minValue={0}
+        maxValue={priceRange.maxValue}
+        minValue={priceRange.minValue}
         value={priceRange}
         onChange={(value) => {
-          if (value.min >= 0 && value.max <= 5000) setPriceRange((prev) => ({ ...prev, ...value }));
+          if (value.min >= priceRange.minValue && value.max <= priceRange.maxValue) setPriceRange((prev) => ({ ...prev, ...value }));
         }}
       />
     </div>

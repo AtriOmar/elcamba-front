@@ -68,7 +68,7 @@ export default function Search({ show, hide }) {
           onChange={(e) => setSearch(e.target.value)}
           ref={inputRef}
           className="grow w-[300px] py-2 pl-4 pr-8 text-gray-500 outline-none cursor-text"
-          placeholder="Rechercher dans CHARYOUL"
+          placeholder="Rechercher dans ELCAMBA"
         />
         <span className="flex items-center p-1 bg-amber-300">
           <MagnifyingGlassIcon className="h-7 w-7 text-amber-700" />

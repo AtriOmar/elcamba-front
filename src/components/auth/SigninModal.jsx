@@ -108,8 +108,7 @@ export default function SigninModal({ show, hide }) {
       </button>
       <header>
         <Link className="flex justify-center items-center gap-1" to="/">
-          <img src="/logo.svg" alt="" className="h-8 -mt-1.5" />
-          <span className=" font-rubik font-bold text-2xl text-red-600">CHARYOUL</span>
+          <img src="/logo.svg" alt="" className="h-20" />
         </Link>
         <h3 className="mt-4 font-semibold text-center text-2xl text-black">Connectez-vous</h3>
       </header>

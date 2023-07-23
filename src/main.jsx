@@ -204,7 +204,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   <QueryClientProvider client={queryClient}>
     <HelmetProvider>
       <Helmet>
-        <title>CHARYOUL</title>
+        <title>ELCAMBA</title>
       </Helmet>
       <AuthProvider>
         <ChatProvider>

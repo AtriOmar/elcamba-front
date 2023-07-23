@@ -75,8 +75,7 @@ export default function ResetPassword() {
       <div className="relative scr600:w-full scr600:max-w-[500px] py-28 px-6 scr600:rounded-[50px] bg-white text-left transform overflow-hidden shadow-xl transition-all">
         <header>
           <Link className="flex justify-center items-center gap-1" to="/">
-            <img src="/logo.svg" alt="" className="h-8 -mt-1.5" />
-            <span className=" font-rubik font-bold text-2xl text-red-600">CHARYOUL</span>
+            <img src="/logo.svg" alt="" className="h-20 " />
           </Link>
           <h3 className="mt-4 font-semibold text-center text-2xl text-black">Réintialiser votre mot de passe</h3>
         </header>

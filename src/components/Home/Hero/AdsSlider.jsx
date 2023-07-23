@@ -39,9 +39,8 @@ function AdsSlider({ type = 1, ads }) {
           ))}
         </swiper-container>
       ) : (
-        <div className="flex items-center justify-center flex-col gap-2 w-full h-full bg-red-100">
-          <img src="/logo.svg" alt="" className="h-10" />
-          <span className=" font-rubik font-bold text-2xl text-red-600">CHARYOUL</span>
+        <div className="flex items-center justify-center flex-col gap-2 w-full h-full bg-teal-100">
+          <img src="/logo.svg" alt="" className="h-16" />
         </div>
       )}
     </>

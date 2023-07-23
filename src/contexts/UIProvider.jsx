@@ -20,7 +20,7 @@ async function fetchCategories() {
 
 function UIProvider({ children }) {
   const [popups, setPopups] = useState([]);
-  const [priceRange, setPriceRange] = useState({ min: 0, max: 5000, inputMin: 0, inputMax: 5000 });
+  const [priceRange, setPriceRange] = useState({ min: 0, max: 5000, inputMin: 0, inputMax: 5000, minValue: 0, maxValue: 5000 });
   const [filtering, setFiltering] = useState(false);
   const [mobileNavbarOpen, setMobileNavbarOpen] = useState(false);
   const [filterSidebarOpen, setFilterSidebarOpen] = useState(false);

@@ -10,6 +10,7 @@ function ClientLayout() {
     <div className="flex flex-col min-h-screen">
       <Navbar />
       <Sidebar />
+      <div className="pt-[55px]"></div>
       <article
         className={`grow grid grid-cols-1 scroll-smooth customer-page-container ${
           location?.pathname === "/"

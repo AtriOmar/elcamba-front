@@ -23,7 +23,7 @@ function Navbar() {
   );
 
   return (
-    <header className="shrink-0 sticky top-0 left-0 z-[20] flex items-center h-[55px] px-4 bg-white shadow-md">
+    <header className="shrink-0 fixed w-full top-0 left-0 z-[20] flex items-center h-[55px] px-4 bg-white shadow-md">
       <Search show={searchOpen} hide={() => setSearchOpen(false)} />
       <SigninModal show={signinModalOpen} hide={() => setSigninModalOpen(false)} />
       <div className="flex items-center justify-between w-full max-w-w1300 mx-auto">
@@ -63,12 +63,12 @@ function Navbar() {
             <FontAwesomeIcon icon={faFilter} />
           </button>
         </div>
-        <Link className="hidden scr500:flex items-center gap-1" to="/">
-          <img src="/logo.svg" alt="" className="h-8 -mt-1.5" />
-          <span className=" font-rubik font-bold text-2xl text-red-600">CHARYOUL</span>
+        <Link className="flex items-center gap-1" to="/">
+          <img src="/logo_name.svg" alt="" className="h-8 hidden scr500:block" />
+          <img src="/logo_icon.svg" alt="" className="h-8" />
         </Link>
         <button className={`hidden scr800:flex items-stretch border border-amber-300 rounded-lg text-left overflow-hidden`} onClick={() => setSearchOpen(true)}>
-          <div className="w-[300px] py-2 px-4 text-gray-500 outline-none cursor-text">Rechercher dans CHARYOUL</div>
+          <div className="w-[300px] py-2 px-4 text-gray-500 outline-none cursor-text">Rechercher dans ELCAMBA</div>
           <span className="flex items-center p-1 bg-amber-300">
             <MagnifyingGlassIcon className="h-7 w-7 text-amber-700" />
           </span>

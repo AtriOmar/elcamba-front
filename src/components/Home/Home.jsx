@@ -70,7 +70,7 @@ function Home() {
   return (
     <div>
       <Helmet>
-        <title>CHARYOUL</title>
+        <title>ELCAMBA</title>
       </Helmet>
       <Sidebar />
       <Hero ads={ads} />

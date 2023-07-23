@@ -20,6 +20,7 @@ export default function PrivateRoute({ component: Component, aId = 1 }) {
         // if (res.data.user?.type == "visitor") {
         //   navigate("/login");
         // }
+        setUser(res.data.user);
         if (!(res.data.user?.accessId >= aId)) {
           addPopup({
             type: "info",
@@ -27,9 +28,9 @@ export default function PrivateRoute({ component: Component, aId = 1 }) {
             lastFor: 4000,
           });
           navigate(-1);
+        } else {
+          setLoading(false);
         }
-        setUser(res.data.user);
-        setLoading(false);
       } catch (err) {
         console.log(err);
       }
