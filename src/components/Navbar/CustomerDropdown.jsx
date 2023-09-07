@@ -42,8 +42,6 @@ function CustomerDropdown({ path = "" }) {
           text: "Une erreur s'est produite",
           lastFor: 4000,
         });
-        console.log(err.response);
-        console.log(err);
       });
   }
 
@@ -72,7 +70,7 @@ function CustomerDropdown({ path = "" }) {
         ) : (
           <UserCircleIcon className="h-7" />
         )}
-        {user?.username}
+        <span className="hidden scr500:block">{user?.username}</span>
         {/* <FontAwesomeIcon icon={faChevronDown} className={`ml-2 text-sm transition duration-300 ${isOpen ? "-rotate-180" : ""}`} /> */}
         <ChevronDownIcon className={` h-5 transition duration-300 ${isOpen ? "-rotate-180" : ""}`} />
       </button>

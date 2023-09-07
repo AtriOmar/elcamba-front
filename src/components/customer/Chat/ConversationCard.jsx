@@ -10,9 +10,6 @@ export default function ConversationCard({ conversation }) {
   const { user } = useAuthContext();
   const otherUser = useMemo(() => (conversation?.User1?.id === user?.id ? conversation?.User2 : conversation?.User1), [conversation]);
 
-  console.log("conversation", conversation);
-  console.log(conversation.seen === user.id + "");
-
   if (!conversation) return;
 
   return (

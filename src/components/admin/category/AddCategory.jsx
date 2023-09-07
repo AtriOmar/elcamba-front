@@ -41,7 +41,6 @@ export default function AddCategory({ show, hide, afterLeave }) {
       resetInput();
       setError("");
     } catch (err) {
-      console.log(err);
       setError("Une erreur s'est produite");
     }
     setSending(false);

@@ -62,7 +62,7 @@ export default function SigninModal({ show, hide }) {
     setSending(true);
     try {
       const result = await axios.post("/login", user);
-      console.log(result.data);
+
       setUser(result.data);
       addPopup({
         type: "success",
@@ -90,8 +90,6 @@ export default function SigninModal({ show, hide }) {
       }
 
       setError("Une erreur s'est produite");
-
-      console.log(err);
     }
   }
 

@@ -39,7 +39,6 @@ export default function Categories({ setActiveCategory }) {
         fetchCategories();
       }
     } catch (err) {
-      console.log(err);
       Swal.fire("Error", "Une erreur s'est produite", "error");
     }
   }
@@ -52,8 +51,6 @@ export default function Categories({ setActiveCategory }) {
       setCategories(res.data);
     } catch (err) {
       Swal.fire("Error", err?.response?.data.message, "error");
-
-      console.log(err);
     }
     setFetching(false);
     if (loading) setLoading(false);

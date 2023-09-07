@@ -52,7 +52,6 @@ export default function Chat() {
     const box2 = document.querySelector(".messagesContainer");
     if (box2) resizeObserver.current.observe(box2);
 
-    console.log(conversation?.Messages);
     if (!conversation?.Messages?.length || conversation?.Messages.length < 5) return;
 
     const elements = document.querySelectorAll(".message-container");
@@ -62,7 +61,6 @@ export default function Chat() {
     const msg = conversation?.Messages[conversation?.Messages?.length - 4];
 
     if (observing.current === msg?.id || !msg?.id) {
-      console.log("yes");
       return;
     }
 
@@ -79,15 +77,11 @@ export default function Chat() {
       if (eventUser) setReceiver(eventUser);
       setConversation(eventConversation);
 
-      console.log("event conversation", eventConversation);
-
       if (loading) setLoading(false);
       if (eventConversation) socket.off("messages", onMessages);
     }
 
     async function onMessage(message) {
-      console.log("new message");
-
       setLimit((prev) => prev + 1);
       setConversation((prev) => {
         const newConv = JSON.parse(JSON.stringify(prev));

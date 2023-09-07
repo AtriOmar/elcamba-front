@@ -53,7 +53,7 @@ export default function ResetPassword() {
     setSending(true);
     try {
       const result = await axios.post("/users/resetPassword", { token, password: input.password });
-      console.log(result.data);
+
       setSuccess(true);
     } catch (err) {
       setSending(false);
@@ -64,8 +64,6 @@ export default function ResetPassword() {
       }
 
       setError("Une erreur s'est produite");
-
-      console.log(err);
     }
     setSending(false);
   }

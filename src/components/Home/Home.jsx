@@ -36,8 +36,6 @@ function Home() {
     networkMode: "always",
   });
 
-  console.log(ads);
-
   useEffect(() => {
     if (!ads[0]?.length) {
       refetch();
@@ -54,7 +52,7 @@ function Home() {
       });
       setParams((prev) => {
         const { connected, ...rest } = parseQuery(prev);
-        console.log(rest);
+
         return rest;
       });
     }

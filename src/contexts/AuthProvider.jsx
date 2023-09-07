@@ -13,7 +13,6 @@ function AuthProvider({ children }) {
       setUser(res.data.user);
       return res;
     } catch (err) {
-      console.log(err);
       return err;
     }
   }

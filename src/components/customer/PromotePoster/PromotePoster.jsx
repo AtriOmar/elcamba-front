@@ -55,9 +55,7 @@ export default function PromotePoster() {
       res.data?.forEach((el) => (obj[el.name] = el.value));
 
       setSettings(obj);
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
     setLoading(false);
   }
 
@@ -88,12 +86,11 @@ export default function PromotePoster() {
       formData.append("amount", amount);
       formData.append("url", input.url);
       const res = await axios.post("/abc/createPosterPayment", formData);
-      console.log("create poster payment", res.data);
+
       window.open(`/payment/${res.data}`, "_blank");
       navigate("/customer/promote/manage");
     } catch (err) {
       setError("Une erreur s'est produite");
-      console.log(err);
     }
     setSending(false);
   }

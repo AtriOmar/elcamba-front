@@ -82,7 +82,7 @@ export default function ProfileInfo() {
       setSending((prev) => [prev[0], false]);
     } catch (err) {
       setSending((prev) => [prev[0], false]);
-      console.log(err?.response?.data);
+
       addPopup({
         type: "danger",
         text: "Une erreur s'est produite",
@@ -109,7 +109,7 @@ export default function ProfileInfo() {
       setSending((prev) => [false, prev[1]]);
     } catch (err) {
       setSending((prev) => [false, prev[1]]);
-      console.log(err?.response?.data);
+
       addPopup({
         type: "danger",
         text: "Une erreur s'est produite",

@@ -41,11 +41,9 @@ export default function Product() {
           id,
         },
       });
-      console.log("admin ad", res.data);
+
       setAd(res.data);
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
 
     setLoading(false);
   }
@@ -71,7 +69,6 @@ export default function Product() {
 
       Swal.fire("Success", "Modifié avec succés", "success");
     } catch (err) {
-      console.log(err);
       Swal.fire("Error", "Une erreur s'est produite", "error");
     }
     setSending((prev) => ({ ...prev, status: false }));
@@ -92,7 +89,6 @@ export default function Product() {
 
       Swal.fire("Success", "Modifié avec succés", "success");
     } catch (err) {
-      console.log(err);
       Swal.fire("Error", "Une erreur s'est produite", "error");
     }
     setSending((prev) => ({ ...prev, paid: false }));

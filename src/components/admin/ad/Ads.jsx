@@ -54,8 +54,6 @@ export default function Ads() {
     debouncedUpdateSearch();
   }, [search]);
 
-  console.log(filter);
-
   async function updateAds() {
     setFetching(true);
     try {
@@ -71,11 +69,8 @@ export default function Ads() {
         },
       });
 
-      console.log(res.data);
       setAds(res.data);
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
     setLoading(false);
     setFetching(false);
   }

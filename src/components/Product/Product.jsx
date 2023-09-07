@@ -49,20 +49,17 @@ export default function Product() {
         params: {
           type: 4,
           limit: 2,
+          active: true,
         },
       });
 
       setAds(res.data);
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   }
 
   useEffect(() => {
     fetchAds();
   }, []);
-
-  console.log("ads", ads);
 
   if (isLoading) {
     return (
@@ -94,6 +91,8 @@ export default function Product() {
     <div className="grow">
       <Helmet>
         <title>{product.name} | ELCAMBA</title>
+        <meta name="og:title" content={`${product.name} | ELCAMBA`} />
+        <meta name="og:image" content={`${BACKEND_URL}/uploads/${product?.photos?.[0]}`} />
       </Helmet>
       <ProductDetails product={product} path={path} />
       {ads?.length ? (

@@ -38,7 +38,6 @@ export default function User() {
 
       Swal.fire("Success", "Rôle modifié avec succés", "success");
     } catch (err) {
-      console.log(err);
       Swal.fire("Erreur", "Une erreur s'est produite", "error");
     }
     setSending((prev) => ({ ...prev, role: false }));
@@ -54,9 +53,7 @@ export default function User() {
 
       setUser(res.data);
       setRole(res.data.accessId);
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
     setLoading(false);
   }
 
@@ -75,11 +72,8 @@ export default function User() {
 
       setUser(res.data);
 
-      console.log(res.data);
-
       Swal.fire("Success", "Modifié avec succés", "success");
     } catch (err) {
-      console.log(err);
       Swal.fire("Erreur", "Une erreur s'est produite", "error");
     }
     setSending((prev) => ({ ...prev, status: false }));

@@ -20,7 +20,7 @@ function Payment() {
   const [status, setStatus] = useState(undefined);
 
   async function handlePayment(event) {
-    // console.log("event", event.data);
+    //
     if (event.data.event_id === "paymee.complete") {
       setLoading(2);
       const res = await axios.get(`/abc/pay`, {
@@ -28,7 +28,7 @@ function Payment() {
           token,
         },
       });
-      console.log(res.data);
+
       setStatus(res.data);
       setLoading(0);
     }
@@ -43,11 +43,9 @@ function Payment() {
             token,
           },
         });
-        console.log(res.data);
+
         setOrder(res.data);
-      } catch (err) {
-        console.log(err);
-      }
+      } catch (err) {}
       setLoading(0);
       window.addEventListener("message", handlePayment);
     }

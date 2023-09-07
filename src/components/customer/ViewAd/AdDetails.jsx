@@ -53,7 +53,6 @@ function AdDetails({ ad, fetchAd }) {
         lastFor: 2000,
       });
     } catch (err) {
-      console.log(err);
       addPopup({
         type: "danger",
         text: "Une erreur s'est produite",
@@ -87,7 +86,6 @@ function AdDetails({ ad, fetchAd }) {
         lastFor: 2000,
       });
     } catch (err) {
-      console.log(err);
       addPopup({
         type: "danger",
         text: "Une erreur s'est produite",

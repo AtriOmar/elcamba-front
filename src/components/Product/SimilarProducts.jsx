@@ -24,10 +24,7 @@ function SimilarProducts({ categoryId, categoryName }) {
       });
 
       setProducts(res.data);
-      console.log(res.data);
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
     setLoading(false);
   }
 

@@ -40,7 +40,6 @@ export default function SubCategories({ activeCategory, setActiveCategory }) {
         fetchSubCategories();
       }
     } catch (err) {
-      console.log(err);
       Swal.fire("Error", "Une erreur s'est produite", "error");
     }
   }
@@ -55,8 +54,6 @@ export default function SubCategories({ activeCategory, setActiveCategory }) {
       setSubCategories(res.data);
     } catch (err) {
       Swal.fire("Error", err?.response?.data.message, "error");
-
-      console.log(err);
     }
     setFetching(false);
     if (loading) setLoading(false);

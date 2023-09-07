@@ -40,7 +40,6 @@ function ProductDetails({ product, fetchProduct }) {
         text: "Modifié avec succés",
       });
     } catch (err) {
-      console.log(err);
       addPopup({
         type: "danger",
         text: "Une erreur s'est produite",
@@ -66,7 +65,6 @@ function ProductDetails({ product, fetchProduct }) {
         text: "Modifié avec succés",
       });
     } catch (err) {
-      console.log(err);
       addPopup({
         type: "danger",
         text: "Une erreur s'est produite",
@@ -214,7 +212,7 @@ function ProductDetails({ product, fetchProduct }) {
           <Tooltip
             anchorSelect={`#views-info`}
             content={<div className="max-w-[300px]">Le nombre de personnes ayant cliqué sur le produit (ouvert la page produit)</div>}
-            place="right"
+            place="bottom"
           />
           <p className="max-w-[700px] whitespace-pre-wrap">{product.views}</p>
           <p className="mt-2 font-medium text-sky-700">Description:</p>

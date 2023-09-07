@@ -14,9 +14,7 @@ import CitySelect from "./CitySelect";
 import Select from "./Select";
 
 const config = {
-  onUploadProgress: (e) => {
-    console.log(e);
-  },
+  onUploadProgress: (e) => {},
 };
 
 export default function AddProduct({ setPage, swiperRef, updateProducts }) {
@@ -121,7 +119,7 @@ export default function AddProduct({ setPage, swiperRef, updateProducts }) {
     try {
       const result = await axios.post("/products/create", formData);
       updateProducts();
-      console.log(result);
+
       addPopup({
         type: "success",
         text: "Produit ajouté avec success",
@@ -132,7 +130,7 @@ export default function AddProduct({ setPage, swiperRef, updateProducts }) {
       setSending(false);
     } catch (err) {
       setSending(false);
-      console.log(err);
+
       addPopup({
         type: "danger",
         text: "Une erreur s'est produite",

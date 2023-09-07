@@ -12,8 +12,6 @@ import { UserCircleIcon } from "@heroicons/react/24/outline";
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 function ProductDetails({ product, path }) {
-  console.log("product", product);
-
   const navigate = useNavigate();
 
   return (

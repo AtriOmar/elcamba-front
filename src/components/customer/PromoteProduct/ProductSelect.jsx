@@ -101,9 +101,7 @@ function ProductSelect({ product, setProduct }) {
         if (id) {
           setProduct(res.data.find((product) => product.id === Number(id)));
         }
-      } catch (err) {
-        console.log(err);
-      }
+      } catch (err) {}
     }
 
     fetchProducts();

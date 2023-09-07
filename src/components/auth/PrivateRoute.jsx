@@ -31,9 +31,7 @@ export default function PrivateRoute({ component: Component, aId = 1 }) {
         } else {
           setLoading(false);
         }
-      } catch (err) {
-        console.log(err);
-      }
+      } catch (err) {}
     }
 
     getStatus();

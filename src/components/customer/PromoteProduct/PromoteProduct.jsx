@@ -45,9 +45,7 @@ function PromoteProduct() {
         if (id) {
           setProduct(res.data.find((product) => product.id === Number(id)));
         }
-      } catch (err) {
-        console.log(err);
-      }
+      } catch (err) {}
       setLoading(false);
     }
 
@@ -57,7 +55,6 @@ function PromoteProduct() {
   function handlePayment(event) {
     if (event.data.event_id === "paymee.complete") {
       //Execute Step 3
-      console.log("payment is complete");
     }
   }
 
@@ -76,7 +73,7 @@ function PromoteProduct() {
         productId: product.id,
         duration: input.duration,
       });
-      console.log(res.data);
+
       // navigate(`/payment/${res.data}`);
       window.open(`/payment/${res.data}`, "_blank");
       navigate("/customer/promote/manage");
@@ -85,7 +82,7 @@ function PromoteProduct() {
       setSending(false);
     } catch (err) {
       setSending(false);
-      console.log(err);
+
       setError("Une erreur s'est produite");
     }
   }

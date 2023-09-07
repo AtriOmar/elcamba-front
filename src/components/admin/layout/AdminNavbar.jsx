@@ -26,9 +26,7 @@ export default function AdminNavbar() {
         Swal.fire("Success", "Successfully Logged out", "success");
         navigate("/");
       })
-      .catch((err) => {
-        console.log(err.response);
-      });
+      .catch((err) => {});
   }
 
   return (

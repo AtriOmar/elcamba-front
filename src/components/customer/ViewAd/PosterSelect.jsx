@@ -53,7 +53,7 @@ function PosterSelect({ input, setInput }) {
         hidden
         // onChange={(e) => {
         //   const file = e.target.files[0];
-        //   console.log(file);
+        //
         //   if (file?.type?.startsWith("image")) {
         //     file.id = uuidv4().toString();
         //     setInput((prev) => ({ ...prev, photo: file }));

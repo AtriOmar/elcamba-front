@@ -14,13 +14,10 @@ function SelectCategory({ show, setShow, category, setCategory }) {
     axios
       .get("/categories/getAll")
       .then((res) => {
-        console.log(res.data);
         setCategories(res.data);
         setActive(0);
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   }, []);
 
   return (

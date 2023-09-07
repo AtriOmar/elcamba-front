@@ -23,7 +23,7 @@ export default function Footer() {
                   <li key={setting.id} className="group">
                     {setting.name === "address" ? (
                       <div href={setting.value} className="grid grid-cols-[30px_1fr] items-center">
-                        <span className="w-6 h-6 rounded-[50%] flex items-center justify-center bg-blue-500 transition duration-300">
+                        <span className="w-6 h-6 rounded-[50%] flex items-center justify-center bg-teal-500 transition duration-300">
                           {SETTINGS_ICONS[setting.name]}
                         </span>
                         <span className="text-sm">{setting.value}</span>

@@ -10,8 +10,6 @@ function SortSelect({ value, onChange, options, order, onOrderChange, position =
   const buttonRef = useRef(null);
   const [isOverflowing, setIsOverflowing] = useState(false);
 
-  console.log(value, order);
-
   useEffect(() => {
     function handleScroll() {
       if (!isOverflowing && buttonRef.current?.getBoundingClientRect().bottom > window.innerHeight - 120) {

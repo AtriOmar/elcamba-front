@@ -64,9 +64,7 @@ function UIProvider({ children }) {
     }
   }, [mobileNavbarOpen]);
 
-  useEffect(() => {
-    console.log(filterSidebarOpen);
-  }, [filterSidebarOpen]);
+  useEffect(() => {}, [filterSidebarOpen]);
 
   useEffect(() => {
     function handleKeydown(e) {

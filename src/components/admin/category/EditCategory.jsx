@@ -46,13 +46,10 @@ export default function EditCategory({ show, hide, category, afterLeave }) {
       //   resetInput();
       setError("");
     } catch (err) {
-      console.log(err);
       setError("Une erreur s'est produite");
     }
     setSending(false);
   }
-
-  console.log(input);
 
   return (
     <Modal

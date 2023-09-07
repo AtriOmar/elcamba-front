@@ -55,7 +55,7 @@ export default function LoginCmp() {
         }
       } catch (err) {
         const response = err?.response;
-        console.log(response);
+
         if (response.status == 401) setErrors((errors) => [...errors, "Email ou mot de passe Incorrect"]);
       }
   };

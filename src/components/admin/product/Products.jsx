@@ -24,7 +24,7 @@ export default function Products() {
     search: "",
   });
   const [fetching, setFetching] = useState(false);
-  // console.log(swiper);
+  //
   const [search, setSearch] = useState("");
   const observer = useRef(
     new IntersectionObserver((entries, obs) => {
@@ -61,11 +61,8 @@ export default function Products() {
         },
       });
 
-      console.log(res.data);
       setProducts(res.data);
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
     setLoading(false);
     setFetching(false);
   }

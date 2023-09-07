@@ -118,7 +118,7 @@ function EditProduct({ product, fetchProduct }) {
       setSending(false);
     } catch (err) {
       setSending(false);
-      console.log(err);
+
       addPopup({
         type: "danger",
         text: "Une erreur s'est produite",

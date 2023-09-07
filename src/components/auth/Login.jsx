@@ -34,9 +34,7 @@ export default function Login() {
         }
         setUser(res.data.user);
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   }, []);
 
   const handleSubmit = async (event) => {
@@ -46,9 +44,7 @@ export default function Login() {
       if (res.data.user.type != "visitor") {
         navigate("/admin");
       }
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   };
 
   if (loading) {

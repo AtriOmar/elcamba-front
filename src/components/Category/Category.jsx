@@ -55,7 +55,7 @@ function Products() {
 
   async function fetchProducts() {
     setFiltering(true);
-    console.log("fetching");
+
     const queryObj = parseQuery(searchParams);
 
     try {
@@ -76,7 +76,7 @@ function Products() {
       });
 
       setProducts(res.data.products);
-      console.log("fmldsqmjlfjsmdqfjdsf", res.data.subCategory?.name || res.data.category?.name || "Tous les produits");
+
       setTitle(res.data.subCategory?.name || res.data.category?.name || "Tous les produits");
 
       if (res.data.category)
@@ -90,8 +90,6 @@ function Products() {
 
       setCount(res.data.count);
 
-      console.log("-------------------- priceRange --------------------");
-      console.log(res.data);
       if (!queryObj.min || !queryObj.max)
         setPriceRange((prev) => ({
           min: Number(res.data.minPrice),

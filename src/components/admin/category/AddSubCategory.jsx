@@ -40,7 +40,6 @@ export default function AddSubCategory({ show, hide, categoryId, afterLeave }) {
       resetInput();
       setError("");
     } catch (err) {
-      console.log(err);
       setError("Une erreur s'est produite");
     }
     setSending(false);

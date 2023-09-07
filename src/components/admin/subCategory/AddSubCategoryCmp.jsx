@@ -16,9 +16,7 @@ export default function AddSousCategoryCmp() {
       try {
         const res = await axios.get("/categories/getAll");
         setOptions(res.data.map((category) => ({ value: category.id, label: category.name })));
-      } catch (err) {
-        console.log(err);
-      }
+      } catch (err) {}
     }
     fetchOptions();
   }, []);
@@ -45,7 +43,7 @@ export default function AddSousCategoryCmp() {
       .post("/sub-categories/create", data)
       .then((res) => {
         Swal.fire("Success", res.data?.message, "success");
-        console.log(res.data);
+
         resetInput();
       })
       .catch((err) => {
@@ -54,9 +52,7 @@ export default function AddSousCategoryCmp() {
       });
   }
 
-  useEffect(() => {
-    console.log(Input);
-  }, [Input]);
+  useEffect(() => {}, [Input]);
 
   return (
     <div className="max-w-xl mx-auto h-100 flex justify-center items-center">

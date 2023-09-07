@@ -41,8 +41,6 @@ function ViewAd() {
     networkMode: "always",
   });
 
-  console.log("error", error);
-
   if (error?.message === "not found") {
     addPopup({
       type: "danger",

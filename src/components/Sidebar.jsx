@@ -23,8 +23,6 @@ function Sidebar() {
     }
   }, [mobileNavbarOpen]);
 
-  console.log("mobileNavbarOpen", JSON.stringify(mobileNavbarOpen, null, 2));
-
   useEffect(() => {
     function handleResize(e) {
       if (
@@ -89,7 +87,7 @@ function Sidebar() {
           <FontAwesomeIcon icon={faXmark} className="text-black" size="lg" />
         </button>
         <div className="relative h-full py-10 px-3 overflow-y-auto">
-          <ul className="flex flex-col gap-1 text-[17px] text-cyan-600 ">
+          <ul className="flex flex-col gap-1 text-[17px] text-black ">
             <li>
               <button
                 onClick={() => {

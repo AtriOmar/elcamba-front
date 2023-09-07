@@ -68,7 +68,6 @@ export default function SigninModal() {
     try {
       const res = await axios.post("/users/sendVerificationEmail", data);
 
-      console.log(res.data);
       setCode((prev) => ({ ...prev, hash: res.data }));
     } catch (err) {
       setSending(false);
@@ -104,7 +103,7 @@ export default function SigninModal() {
     setSending(true);
     try {
       const result = await axios.post("/users/create", user);
-      console.log(result.data);
+
       setUser(result.data);
       addPopup({
         type: "success",

@@ -61,8 +61,6 @@ export default function Users({ setActiveCategory }) {
       setUsers(res.data);
     } catch (err) {
       Swal.fire("Error", err?.response?.data.message, "error");
-
-      console.log(err);
     }
     setFetching(false);
     if (loading) setLoading(false);

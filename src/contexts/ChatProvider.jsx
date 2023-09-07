@@ -42,14 +42,12 @@ function ChatProvider({ children }) {
   }, [conversations]);
 
   useEffect(() => {
-    console.log("user", user);
     if (!user) {
       setOpenConversations([]);
       return;
     }
 
     async function onConversations(value) {
-      console.log("conversations", value);
       setConversations(value);
 
       socket.off("conversations", onConversations);

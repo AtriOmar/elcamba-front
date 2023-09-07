@@ -29,9 +29,7 @@ export default function Settings() {
       setSettings(obj);
       setInput(inputObj);
       setSending(sendingObj);
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
     setLoading(false);
   }
 
@@ -53,7 +51,6 @@ export default function Settings() {
 
       Swal.fire("Success", "Supprimé avec succés", "success");
     } catch (err) {
-      console.log(err);
       Swal.fire("Error", "Une erreur s'est produite", "error");
     }
     setSending((prev) => ({ ...prev, [id]: false }));
@@ -74,7 +71,6 @@ export default function Settings() {
 
       Swal.fire("Success", "Modifié avec succés", "success");
     } catch (err) {
-      console.log(err);
       Swal.fire("Error", "Une erreur s'est produite", "error");
     }
     setSending((prev) => ({ ...prev, [id]: false }));

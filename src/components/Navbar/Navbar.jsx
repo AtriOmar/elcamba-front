@@ -64,13 +64,13 @@ function Navbar() {
           </button>
         </div>
         <Link className="flex items-center gap-1" to="/">
-          <img src="/logo_name.svg" alt="" className="h-8 hidden scr500:block" />
+          <img src="/logo_name.svg" alt="" className="h-8" />
           <img src="/logo_icon.svg" alt="" className="h-8" />
         </Link>
-        <button className={`hidden scr800:flex items-stretch border border-amber-300 rounded-lg text-left overflow-hidden`} onClick={() => setSearchOpen(true)}>
+        <button className={`hidden scr800:flex items-stretch border border-teal-400 rounded-lg text-left overflow-hidden`} onClick={() => setSearchOpen(true)}>
           <div className="w-[300px] py-2 px-4 text-gray-500 outline-none cursor-text">Rechercher dans ELCAMBA</div>
-          <span className="flex items-center p-1 bg-amber-300">
-            <MagnifyingGlassIcon className="h-7 w-7 text-amber-700" />
+          <span className="flex items-center p-1 bg-teal-400">
+            <MagnifyingGlassIcon className="h-7 w-7 text-teal-700" />
           </span>
         </button>
         <div className="flex items-center gap-4">
@@ -94,7 +94,7 @@ function Navbar() {
               }}
             >
               <UserCircleIcon className="h-7" />
-              Se connecter
+              <span className="hidden scr500:block">Se connecter</span>
               {/* <FontAwesomeIcon icon={faChevronDown} className={`ml-2 text-sm transition duration-300 ${isOpen ? "-rotate-180" : ""}`} /> */}
             </button>
           )}

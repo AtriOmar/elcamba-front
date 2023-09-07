@@ -24,15 +24,9 @@ export default function MessagesBox({ user: receiver, messages, limit }) {
     prevReceiver = receiver?.id;
   }, [receiver?.id]);
 
-  useEffect(() => {
-    console.log("id", receiver.id);
+  useEffect(() => {}, [firstRender]);
 
-    console.log("first render", firstRender);
-  }, [firstRender]);
-
-  useEffect(() => {
-    console.log("isconnected", isConnected);
-  }, [isConnected]);
+  useEffect(() => {}, [isConnected]);
 
   // scrolling to bottom when a new message arrives
   useLayoutEffect(() => {
@@ -52,9 +46,7 @@ export default function MessagesBox({ user: receiver, messages, limit }) {
     }
   }, [messages, firstRender]);
 
-  // console.log(new Date(messages[0]?.createdAt).getTime() - new Date(messages[1]?.createdAt).getTime());
-
-  console.log("limit", limit, "length", messages?.length);
+  //
 
   return (
     <div className="grow h-0 overflow-y-scroll pl-[140px] ml-[-140px] max-[600px]:scrollbar-none messagesBox relative" style={{ pointerEvents: "auto" }}>

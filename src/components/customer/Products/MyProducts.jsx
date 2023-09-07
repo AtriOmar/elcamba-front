@@ -17,7 +17,7 @@ import SortSelect from "./SortSelect";
 const clientId = import.meta.env.VITE_CLIENT_ID;
 
 function MyProducts({ swiperRef, products, fetching, filter, setFilter }) {
-  // console.log(swiper);
+  //
   const [search, setSearch] = useState("");
 
   function updateSearch() {

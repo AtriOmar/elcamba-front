@@ -45,7 +45,7 @@ export default function ResetPasswordRequest() {
     setSending(true);
     try {
       const result = await axios.post("/users/sendResetEmail", { email });
-      console.log(result.data);
+
       setSent(true);
     } catch (err) {
       setSending(false);
@@ -56,7 +56,6 @@ export default function ResetPasswordRequest() {
       }
 
       setError("Une erreur s'est produite");
-      console.log(err);
     }
     setSending(false);
   }

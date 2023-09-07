@@ -16,7 +16,7 @@
 
 //   useEffect(() => {
 //     localStorage.setItem(prefixedKey, JSON.stringify(value));
-//     console.log(value);
+//
 //   }, [prefixedKey, value]);
 
 //   return [value, setValue];

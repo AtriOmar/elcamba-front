@@ -9,8 +9,6 @@ function Select({ value, onChange, options, position = "center", formatOption = 
   const buttonRef = useRef(null);
   const [isOverflowing, setIsOverflowing] = useState(false);
 
-  console.log("fjsqmlmfjsqdflds", value, options);
-
   useEffect(() => {
     function handleScroll() {
       if (!isOverflowing && buttonRef.current?.getBoundingClientRect().bottom > window.innerHeight - 120) {
