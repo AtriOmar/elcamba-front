@@ -10,6 +10,7 @@ import AddCategory from "./AddCategory";
 import { PencilSquareIcon, TrashIcon, InboxIcon } from "@heroicons/react/24/outline";
 import EditCategory from "./EditCategory";
 import Loader from "../../Loader";
+import DeleteCategory from "./DeleteCategory";
 
 export default function Categories({ setActiveCategory }) {
   const [categories, setCategories] = useState([]);
@@ -17,6 +18,8 @@ export default function Categories({ setActiveCategory }) {
   const [loading, setLoading] = useState(true);
   const [addCategoryOpen, setAddCategoryOpen] = useState(false);
   const [toEdit, setToEdit] = useState(null);
+  const [toDelete, setToDelete] = useState(null);
+  const { refetchCategories } = useUIContext();
 
   async function deleteCategory(category) {
     try {
@@ -69,8 +72,32 @@ export default function Categories({ setActiveCategory }) {
 
   return (
     <div className="flex flex-col min-h-full rounded-lg pt-3 bg-white shadow-card1">
-      <AddCategory show={addCategoryOpen} hide={() => setAddCategoryOpen(false)} afterLeave={fetchCategories} />
-      <EditCategory show={toEdit !== null} hide={() => setToEdit(null)} category={toEdit} afterLeave={fetchCategories} />
+      <AddCategory
+        show={addCategoryOpen}
+        hide={() => setAddCategoryOpen(false)}
+        afterLeave={() => {
+          fetchCategories();
+          refetchCategories();
+        }}
+      />
+      <EditCategory
+        show={toEdit !== null}
+        hide={() => setToEdit(null)}
+        category={toEdit}
+        afterLeave={() => {
+          fetchCategories();
+          refetchCategories();
+        }}
+      />
+      <DeleteCategory
+        show={toDelete !== null}
+        hide={() => setToDelete(null)}
+        category={toDelete}
+        afterLeave={() => {
+          fetchCategories();
+          refetchCategories();
+        }}
+      />
       <div className="flex scr500:items-center justify-between flex-col scr500:flex-row rounded-t-lg p-3">
         <h5 className="mb-0 mb-3">Catégories ( {categories.length} )</h5>
         <button
@@ -113,7 +140,8 @@ export default function Categories({ setActiveCategory }) {
                   type="button"
                   className="btn p-0"
                   onClick={() => {
-                    deleteCategory(category);
+                    // deleteCategory(category);
+                    setToDelete(category);
                   }}
                 >
                   <TrashIcon className={"block h-8 w-8 text-red-600"} aria-hidden="true" />

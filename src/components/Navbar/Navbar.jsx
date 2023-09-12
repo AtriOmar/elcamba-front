@@ -67,10 +67,10 @@ function Navbar() {
           <img src="/logo_name.svg" alt="" className="h-8" />
           <img src="/logo_icon.svg" alt="" className="h-8" />
         </Link>
-        <button className={`hidden scr800:flex items-stretch border border-teal-400 rounded-lg text-left overflow-hidden`} onClick={() => setSearchOpen(true)}>
+        <button className={`hidden scr800:flex items-stretch border border-[#a5da24] rounded-lg text-left overflow-hidden`} onClick={() => setSearchOpen(true)}>
           <div className="w-[300px] py-2 px-4 text-gray-500 outline-none cursor-text">Rechercher dans ELCAMBA</div>
-          <span className="flex items-center p-1 bg-teal-400">
-            <MagnifyingGlassIcon className="h-7 w-7 text-teal-700" />
+          <span className="flex items-center p-1 bg-[#a5da24]">
+            <MagnifyingGlassIcon className="h-7 w-7 text-green-600" />
           </span>
         </button>
         <div className="flex items-center gap-4">

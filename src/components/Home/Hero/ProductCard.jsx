@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 function ProductCard({ product }) {
+  if (!product) return;
   return (
     <Link
       to={`/products/${product.id}`}

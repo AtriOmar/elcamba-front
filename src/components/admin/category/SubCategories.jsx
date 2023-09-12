@@ -11,6 +11,7 @@ import EditCategory from "./EditCategory";
 import AddSubCategory from "./AddSubCategory";
 import EditSubCategory from "./EditSubCategory";
 import Loader from "../../Loader";
+import DeleteSubCategory from "./DeleteSubCategory";
 
 export default function SubCategories({ activeCategory, setActiveCategory }) {
   const [subCategories, setSubCategories] = useState([]);
@@ -18,6 +19,8 @@ export default function SubCategories({ activeCategory, setActiveCategory }) {
   const [loading, setLoading] = useState(true);
   const [addSubCategoryOpen, setAddSubCategoryOpen] = useState(false);
   const [toEdit, setToEdit] = useState(null);
+  const [toDelete, setToDelete] = useState(null);
+  const { categories, refetchCategories } = useUIContext();
 
   async function deleteCategory(sub) {
     try {
@@ -79,8 +82,33 @@ export default function SubCategories({ activeCategory, setActiveCategory }) {
 
   return (
     <div className="flex flex-col min-h-full rounded-lg pt-3 bg-white shadow-card1">
-      <AddSubCategory show={addSubCategoryOpen} hide={() => setAddSubCategoryOpen(false)} afterLeave={fetchSubCategories} categoryId={activeCategory?.id} />
-      <EditSubCategory show={toEdit !== null} hide={() => setToEdit(null)} subCategory={toEdit} afterLeave={fetchSubCategories} />
+      <AddSubCategory
+        show={addSubCategoryOpen}
+        hide={() => setAddSubCategoryOpen(false)}
+        afterLeave={() => {
+          fetchSubCategories();
+          refetchCategories();
+        }}
+        categoryId={activeCategory?.id}
+      />
+      <EditSubCategory
+        show={toEdit !== null}
+        hide={() => setToEdit(null)}
+        subCategory={toEdit}
+        afterLeave={() => {
+          fetchSubCategories();
+          refetchCategories();
+        }}
+      />
+      <DeleteSubCategory
+        show={toDelete !== null}
+        hide={() => setToDelete(null)}
+        subCategory={toDelete}
+        afterLeave={() => {
+          fetchSubCategories();
+          refetchCategories();
+        }}
+      />
       <div className="flex scr600:items-center justify-between flex-col scr600:flex-row rounded-t-lg p-3">
         <div className="mb-0 mb-3">
           <button onClick={() => setActiveCategory(null)} className="flex items-center gap-2 hover:text-slate-700 duration-300">
@@ -125,7 +153,7 @@ export default function SubCategories({ activeCategory, setActiveCategory }) {
                   type="button"
                   className="btn p-0"
                   onClick={() => {
-                    deleteCategory(sub);
+                    setToDelete(sub);
                   }}
                 >
                   <TrashIcon className={"block h-8 w-8 text-red-600"} aria-hidden="true" />

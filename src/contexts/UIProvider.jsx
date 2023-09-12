@@ -102,6 +102,7 @@ function UIProvider({ children }) {
     mobileNavbarOpen,
     setMobileNavbarOpen,
     categories,
+    refetchCategories,
     filterSidebarOpen,
     setFilterSidebarOpen,
     searchOpen,

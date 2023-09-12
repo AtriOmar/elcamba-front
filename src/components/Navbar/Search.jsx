@@ -60,7 +60,7 @@ export default function Search({ show, hide }) {
       >
         <XMarkIcon className="block h-8 w-8 text-black" aria-hidden="true" />
       </button>
-      <div className={`shrink-0 relative flex items-stretch w-full border border-teal-400 rounded-lg text-left overflow-hidden`}>
+      <div className={`shrink-0 relative flex items-stretch w-full border border-[#a5da24] rounded-lg text-left overflow-hidden`}>
         <input
           value={search}
           onChange={(e) => setSearch(e.target.value)}
@@ -68,8 +68,8 @@ export default function Search({ show, hide }) {
           className="grow w-[300px] py-2 pl-4 pr-8 text-gray-500 outline-none cursor-text"
           placeholder="Rechercher dans ELCAMBA"
         />
-        <span className="flex items-center p-1 bg-teal-400">
-          <MagnifyingGlassIcon className="h-7 w-7 text-teal-700" />
+        <span className="flex items-center p-1 bg-[#a5da24]">
+          <MagnifyingGlassIcon className="h-7 w-7 text-green-600" />
         </span>
         {fetching ? (
           <div className="absolute top-1/2 -translate-y-1/2 right-9 w-fit mx-auto py-8">

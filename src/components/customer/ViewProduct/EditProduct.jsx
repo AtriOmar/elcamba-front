@@ -20,8 +20,8 @@ function EditProduct({ product, fetchProduct }) {
   const [photos, setPhotos] = useState([...(product.photos || [])]);
   const [input, setInput] = useState({
     name: product.name,
-    category: product.SubCategory.Category.id,
-    subCategory: product.SubCategory.id,
+    category: product.SubCategory?.Category?.id,
+    subCategory: product.SubCategory?.id,
     salePrice: product.salePrice,
     price: product.price,
     description: product.description,
@@ -392,7 +392,7 @@ function EditProduct({ product, fetchProduct }) {
                   if (!product) return true;
                   const obj = {
                     name: product.name,
-                    category: { name: product.SubCategory.Category.name + " > " + product.SubCategory.name, id: product.SubCategory.id },
+                    category: { name: product.SubCategory?.Category?.name + " > " + product.SubCategory?.name, id: product.SubCategory?.id },
                     salePrice: product.salePrice,
                     price: product.price,
                     description: product.description,
