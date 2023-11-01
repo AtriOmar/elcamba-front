@@ -71,7 +71,7 @@ export default function Product() {
 
   if (!product) {
     return (
-      <div className="flex items-center justify-center w-full py-20 px-20 rounded-lg bg-white shadow-md">
+      <div className="grid place-items-center m-2 py-10 px-10 rounded-lg bg-white shadow-md">
         <div className="">
           <img className="w-[150px] mx-auto " src={sad} alt="" />
           <h3 className="mt-8 font-medium text-slate-900 text-xl text-center ">Nous ne trouvons pas le produit demandé</h3>
@@ -80,7 +80,7 @@ export default function Product() {
             className="flex items-center justify-center gap-3 w-full py-2 px-3 mt-8 rounded-full bg-amber-400 hover:bg-amber-500 font-medium text-lg text-white cursor-pointer transition duration-300"
           >
             <FontAwesomeIcon icon={faArrowLeft} size="lg" />
-            Retourner à l'acceuil
+            Retourner à l'accueil
           </Link>
         </div>
       </div>

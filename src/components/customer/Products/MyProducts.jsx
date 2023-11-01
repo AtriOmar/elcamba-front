@@ -89,6 +89,7 @@ function MyProducts({ swiperRef, products, fetching, filter, setFilter }) {
           ""
         )}
       </div>
+
       {products?.length ? (
         <>
           <div className="hidden scr900:grid grid-cols-[minmax(100px,110px)_minmax(120px,2fr)_minmax(160px,1fr)_130px_130px_100px_100px] bg-sky-600 font-medium text-white text-xs text-left uppercase">
@@ -110,7 +111,9 @@ function MyProducts({ swiperRef, products, fetching, filter, setFilter }) {
               <div className="px-1 scr900:px-3 py-1 scr900:py-2 row-span-6 scr900:row-span-1">
                 <img
                   className="sticky top-0 w-full aspect-square border rounded-lg object-contain"
-                  src={`${import.meta.env.VITE_BACKEND_URL}/photo?path=${product.photos?.[0]}&size=150`}
+                  src={`${import.meta.env.VITE_BACKEND_URL}/uploads/thumbnails/${product.photos?.[0]}`}
+                  // src={`${import.meta.env.VITE_BACKEND_URL}/photo?path=${product.photos?.[0]}&size=150`}
+                  // src={`https://node.omaratri.online?url=${import.meta.env.VITE_BACKEND_URL}/uploads/${product.photos?.[0]}&size=150`}
                   alt={product.name}
                   loading="lazy"
                 />

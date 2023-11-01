@@ -147,7 +147,8 @@ export default function Products() {
               <div className="order-[-1] scr800:order-none px-1 scr800:px-3 py-1 scr800:py-2 row-span-5 scr800:row-span-1">
                 <img
                   className="sticky top-0 w-full aspect-square border rounded-lg object-contain"
-                  src={`${import.meta.env.VITE_BACKEND_URL}/uploads/${product?.photos?.[0]}`}
+                  src={`${import.meta.env.VITE_BACKEND_URL}/uploads/thumbnails/${product?.photos?.[0]}`}
+                  // src={`https://node.omaratri.online?url=${import.meta.env.VITE_BACKEND_URL}/uploads/${product?.photos?.[0]}&size=150`}
                   alt={product?.name}
                 />
               </div>

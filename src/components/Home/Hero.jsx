@@ -16,7 +16,9 @@ function Hero({ ads }) {
         <div className="grow flex flex-col scr1150:flex-row gap-1 max-w-full">
           <section className="flex flex-col gap-1 justify-between scr1150:w-[55.55%] ">
             <article className="grid aspect-[2/1] border border-slate-200 rounded-lg bg-cover overflow-hidden">
-              <AdsSlider type={1} ads={ads[1]} />
+              <div className="grid grid-cols-1">
+                <AdsSlider type={1} ads={ads[1]} />
+              </div>
             </article>
             <article className="grow w-0 min-w-full border border-slate-200 rounded-lg">
               <PremiumProducts ads={ads[0]} />
@@ -25,14 +27,20 @@ function Hero({ ads }) {
           <section className="flex flex-col scr600:flex-row scr1150:flex-col justify-between gap-1 scr1150:w-[45.45%]">
             <article className="grid grid-cols-2 gap-1 h-fit w-full scr600:w-1/2 scr1150:w-full">
               <div className="aspect-square border border-slate-200 rounded-lg bg-cover overflow-hidden">
-                <AdsSlider type={2} ads={ads[2]} />
+                <div className="grid grid-cols-1 w-full h-full">
+                  <AdsSlider type={2} ads={ads[2]} />
+                </div>
               </div>
               <div className="aspect-square border border-slate-200 rounded-lg bg-cover overflow-hidden">
-                <AdsSlider type={2} ads={ads[2]} />
+                <div className="grid grid-cols-1 w-full h-full">
+                  <AdsSlider type={2} ads={ads[2]} />
+                </div>
               </div>
             </article>
             <article className="grid w-full scr600:w-1/2 scr1150:w-full aspect-[2/1] border border-slate-200 rounded-lg bg-cover overflow-hidden">
-              <AdsSlider type={3} ads={ads[3]} />
+              <div className="grid grid-cols-1">
+                <AdsSlider type={3} ads={ads[3]} />
+              </div>
             </article>
           </section>
           {/* <section className="flex flex-col justify-between w-[450px]">

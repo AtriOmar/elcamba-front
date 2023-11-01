@@ -225,13 +225,13 @@ function AdDetails({ ad, fetchAd }) {
               {/*  ---------------------------- Frame ---------------------------- */}
               <p className="mt-4 font-medium text-sky-700">Cadre:</p>
               <div className="flex justify-center gap-8 mb-2">
-                <div className={`${ad.type === 4 ? "text-slate-400" : "border-b-2 border-blue-500"} font-medium text-lg`}>Page d'acceuil</div>
+                <div className={`${ad.type === 4 ? "text-slate-400" : "border-b-2 border-blue-500"} font-medium text-lg`}>Page d'accueil</div>
                 <div className={`${ad.type === 4 ? "border-b-2 border-blue-500" : "text-slate-400"} font-medium text-lg`}>Aléatoire</div>
               </div>
               {ad.type === 4 ? (
                 <div className={`w-full max-w-[500px] grid place-items-center mx-auto aspect-[2/1] ring-blue-500 border rounded-lg hover:bg-slate-100 ring-2`}>
                   <div className="">
-                    <p>Page d'acceuil</p>
+                    <p>Page d'accueil</p>
                     <p>Page de détails produit</p>
                     <p>Page des produits</p>
                     <p className="mt-2 text-center font-medium">2:1</p>

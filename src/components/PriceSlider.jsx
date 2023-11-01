@@ -21,15 +21,19 @@ function PriceSlider() {
         railStyle={{ backgroundColor: "#ddd", height: "10px" }}
       /> */}
 
-      <InputRange
-        formatLabel={(value) => `${value} DT`}
-        maxValue={priceRange.maxValue}
-        minValue={priceRange.minValue}
-        value={priceRange}
-        onChange={(value) => {
-          if (value.min >= priceRange.minValue && value.max <= priceRange.maxValue) setPriceRange((prev) => ({ ...prev, ...value }));
-        }}
-      />
+      {priceRange.maxValue || priceRange.minValue ? (
+        <InputRange
+          formatLabel={(value) => `${value} DT`}
+          maxValue={priceRange.maxValue}
+          minValue={priceRange.minValue}
+          value={priceRange}
+          onChange={(value) => {
+            if (value.min >= priceRange.minValue && value.max <= priceRange.maxValue) setPriceRange((prev) => ({ ...prev, ...value }));
+          }}
+        />
+      ) : (
+        <InputRange maxValue={10000} minValue={0} value={{ min: 0, max: 10000 }} onChange={() => {}} />
+      )}
     </div>
   );
 }

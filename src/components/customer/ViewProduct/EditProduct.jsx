@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { faImage } from "@fortawesome/free-regular-svg-icons";
 import { faArrowLeft, faExclamationTriangle, faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -34,6 +34,7 @@ function EditProduct({ product, fetchProduct }) {
   });
   const [error, setError] = useState("");
   const [sending, setSending] = useState(false);
+  const swiperRef = useRef();
 
   const { addPopup, categories } = useUIContext();
   const navigate = useNavigate();
@@ -126,10 +127,31 @@ function EditProduct({ product, fetchProduct }) {
     }
   }
 
+  useEffect(() => {
+    if (!photos?.length) return;
+
+    const params = {
+      pagination: {
+        clickable: true,
+      },
+    };
+
+    // Assign it to swiper element
+    Object.assign(swiperRef.current, params);
+
+    // initialize swiper
+    swiperRef.current.initialize();
+  }, [photos]);
+
   const photosSwiper = useMemo(
     () =>
       photos?.length ? (
-        <swiper-container pagination="true" pagination-clickable="true" class="h-full w-full">
+        <swiper-container
+          init="false"
+          ref={swiperRef}
+          // pagination="true" pagination-clickable="true"
+          class="h-full w-full"
+        >
           {photos.map((photo, index) => (
             <swiper-slide key={Math.random()} class="relative h-full w-full rounded overflow-hidden">
               <button

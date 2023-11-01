@@ -6,7 +6,7 @@ export default function formatPath(path, className = "flex-wrap mt-2 font-medium
       <div className="flex gap-1">
         <span className="text-slate-600">{`>`}</span>
         <Link to="/" className="hover:underline focus:underline">
-          Acceuil
+          Accueil
         </Link>
       </div>
 

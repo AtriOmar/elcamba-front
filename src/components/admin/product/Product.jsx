@@ -103,7 +103,7 @@ export default function Product() {
             className="flex items-center justify-center gap-3 w-full py-2 px-3 mt-8 rounded-full bg-amber-400 hover:bg-amber-500 font-medium text-lg text-white cursor-pointer transition duration-300"
           >
             <FontAwesomeIcon icon={faArrowLeft} size="lg" />
-            Retourner à l'acceuil
+            Retourner à l'accueil
           </Link>
         </div>
       </div>

@@ -2,7 +2,7 @@ import { faImage } from "@fortawesome/free-regular-svg-icons";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 
 import AddProduct from "./AddProduct";
 import MyProducts from "./MyProducts";
@@ -10,6 +10,7 @@ import { useAuthContext } from "../../../contexts/AuthProvider";
 import SelectCategory from "./SelectCategory";
 import Loader from "../../Loader";
 import { useQuery } from "@tanstack/react-query";
+import { useLocation } from "react-router";
 
 async function fetchProducts(filter, user) {
   const res = await axios.get("/products/getAll", {
@@ -61,6 +62,24 @@ function Products() {
     })
   );
   const observing = useRef(0);
+  const location = useLocation();
+
+  useEffect(() => {
+    if (loading) return;
+
+    // Register Swiper web component
+
+    // Object with parameters
+    const params = {
+      autoHeight: "true",
+    };
+
+    // Assign it to swiper element
+    Object.assign(swiperElRef.current, params);
+
+    // initialize swiper
+    swiperElRef.current.initialize();
+  }, [loading]);
 
   useEffect(() => {
     function handleSlideChange(e, swiper) {
@@ -109,13 +128,13 @@ function Products() {
   return (
     <div className="my-2 scr1200:mx-2 py-6 px-3 scr1200:px-6 rounded-lg bg-white shadow-md">
       <div className="w-full overflow-hidden">
-        <swiper-container ref={swiperElRef} auto-height="true">
-          <swiper-slide class="swiper-no-swiping ">
+        <swiper-container ref={swiperElRef} init="false">
+          <swiper-slide class="swiper-no-swiping">
             <div className="my-products-container">
               <MyProducts swiperRef={swiperElRef} products={products} fetching={fetching} filter={filter} setFilter={setFilter} />
             </div>
           </swiper-slide>
-          <swiper-slide class="swiper-no-swiping ">
+          <swiper-slide class="swiper-no-swiping">
             <div className="add-product-container">
               <AddProduct swiperRef={swiperElRef} updateProducts={updateProducts} />
             </div>

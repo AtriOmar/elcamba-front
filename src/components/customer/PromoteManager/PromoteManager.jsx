@@ -146,7 +146,11 @@ function PromoteManager() {
               <div className="px-1 scr800:px-3 py-1 scr800:py-2 row-span-4 scr800:row-span-1">
                 <img
                   className="sticky top-0 w-full aspect-square border rounded-lg object-contain "
-                  src={`${import.meta.env.VITE_BACKEND_URL}/photo?path=${ad.type === 0 ? ad.Product.photos[0] : "abc/" + ad.photo}&size=150`}
+                  src={`${import.meta.env.VITE_BACKEND_URL}/uploads/${ad.type === 0 ? "thumbnails/" + ad.Product.photos[0] : "abc/" + ad.photo}`}
+                  // src={`${import.meta.env.VITE_BACKEND_URL}/photo?path=${ad.type === 0 ? ad.Product.photos[0] : "abc/" + ad.photo}&size=150`}
+                  // src={`https://node.omaratri.online?url=${import.meta.env.VITE_BACKEND_URL}/uploads/${
+                  //   ad.type === 0 ? ad.Product.photos[0] : "abc/" + ad.photo
+                  // }&size=150`}
                   alt={ad.name}
                   loading="lazy"
                 />

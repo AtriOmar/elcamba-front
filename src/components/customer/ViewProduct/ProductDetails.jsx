@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBan, faExclamationTriangle, faLocationDot, faTruck } from "@fortawesome/free-solid-svg-icons";
+import { faBan, faChevronLeft, faChevronRight, faExclamationTriangle, faLocationDot, faTruck } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import Switch from "../../Switch";
 import { IonIcon } from "@ionic/react";
@@ -87,16 +87,38 @@ function ProductDetails({ product, fetchProduct }) {
               </swiper-slide>
             ))}
           </swiper-container>
-          <swiper-container navigation="true" slides-per-group="4" slides-per-view="auto" space-between="10" class="product-thumbs w-fit p-2">
-            {product?.photos?.map((photo, index) => (
-              <swiper-slide
-                key={index}
-                class=" w-fit rounded-md opacity-60 ring-2 ring-slate-200 transition-all duration-300 [&.swiper-slide-thumb-active]:opacity-100 [&.swiper-slide-thumb-active]:ring-red-500 [&.swiper-slide-thumb-active]:ring-offset-1"
-              >
-                <img src={`${BACKEND_URL}/uploads/${photo}`} alt="" className="aspect-square h-14 cursor-pointer rounded-md object-contain" />
-              </swiper-slide>
-            ))}
-          </swiper-container>
+          <div className="relative">
+            <button
+              id="product-details-next"
+              className="absolute right-0 top-1/2 z-10 -translate-y-1/2 flex items-center justify-center h-8 w-4 rounded-md bg-[rgb(0,0,0,.65)] hover:bg-[rgb(0,0,0,.8)] duration-150 disabled:opacity-25"
+            >
+              <FontAwesomeIcon icon={faChevronRight} className="text-white" size="sm" />
+            </button>
+            <button
+              id="product-details-prev"
+              className="absolute left-0 top-1/2 z-10 -translate-y-1/2 flex items-center justify-center h-8 w-4 rounded-md bg-[rgb(0,0,0,.65)] hover:bg-[rgb(0,0,0,.8)] duration-150 disabled:opacity-25"
+            >
+              <FontAwesomeIcon icon={faChevronLeft} className="text-white" size="sm" />
+            </button>
+            <swiper-container
+              navigation="true"
+              slides-per-group="4"
+              slides-per-view="auto"
+              space-between="10"
+              class="product-thumbs w-fit p-1"
+              navigation-next-el="#product-details-next"
+              navigation-prev-el="#product-details-prev"
+            >
+              {product?.photos?.map((photo, index) => (
+                <swiper-slide
+                  key={index}
+                  class=" w-fit rounded-md opacity-60 ring-2 ring-slate-200 transition-all duration-300 [&.swiper-slide-thumb-active]:opacity-100 [&.swiper-slide-thumb-active]:ring-red-500 [&.swiper-slide-thumb-active]:ring-offset-1 m-1"
+                >
+                  <img src={`${BACKEND_URL}/uploads//${photo}`} alt="" className="aspect-square h-14 cursor-pointer rounded-md object-contain" />
+                </swiper-slide>
+              ))}
+            </swiper-container>
+          </div>
         </article>
         {/* ---------------------------- product details ---------------------------- */}
         <article className="grow w-full scr1000:w-auto">
@@ -200,7 +222,7 @@ function ProductDetails({ product, fetchProduct }) {
           <p className="mt-2 font-medium text-sky-700">Vendu:</p>
           <Switch checked={product.sold} disabled={true} />
           <p className="w-fit mt-10 px-2 py-1 rounded-lg bg-yellow-500 font-rubik font-normal capitalize text-white">
-            {product.salePrice ? <span className="mr-2 text-xs line-through">{Number(product?.price)} DT</span> : ""}
+            {Number(product.salePrice) ? <span className="mr-2 text-xs line-through">{Number(product?.price)} DT</span> : ""}
             <span className="text-base">{Number(product?.salePrice) || Number(product?.price)} DT</span>
           </p>
           <p className="mt-10 font-medium text-sky-700">

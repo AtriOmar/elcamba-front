@@ -176,7 +176,7 @@ export default function SigninModal() {
                 Mot de passe oublié ?
               </Link>
               <Link to="/" className="text-blue-500 hover:underline">
-                Page d'acceuil
+                Page d'accueil
               </Link>
             </div>
           </form>
@@ -261,7 +261,7 @@ export default function SigninModal() {
               Mot de passe oublié ?
             </Link>
             <Link to="/" className="text-blue-500 hover:underline">
-              Page d'acceuil
+              Page d'accueil
             </Link>
           </div>
           <div className="relative mx-4 mt-5">

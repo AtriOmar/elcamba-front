@@ -21,6 +21,7 @@ export default function AddProduct({ setPage, swiperRef, updateProducts }) {
   const [photos, setPhotos] = useState(null);
   const { user } = useAuthContext();
   const { addPopup, categories } = useUIContext();
+  const swiperElRef = useRef(null);
 
   const [input, setInput] = useLocalStorage("product-" + user.id, {
     name: "",
@@ -138,6 +139,26 @@ export default function AddProduct({ setPage, swiperRef, updateProducts }) {
     }
   }
 
+  useEffect(() => {
+    if (!swiperElRef.current) return;
+
+    // Register Swiper web component
+
+    // Object with parameters
+    const params = {
+      pagination: {
+        clickable: true,
+      },
+      noSwiping: false,
+    };
+
+    // Assign it to swiper element
+    Object.assign(swiperElRef.current, params);
+
+    // initialize swiper
+    swiperElRef.current.initialize();
+  }, [photos]);
+
   return (
     <>
       <div className="flex items-center gap-4">
@@ -186,12 +207,19 @@ export default function AddProduct({ setPage, swiperRef, updateProducts }) {
             {photos?.length ? (
               <>
                 {/* <img src={URL.createObjectURL(photos[0])} alt="" className="w-full h-full object-cover" /> */}
-                <swiper-container pagination="true" pagination-clickable="true" class="h-full w-full overflow-y-visible overflow-x-clip" no-swiping="false">
+                <swiper-container
+                  // pagination="true"
+                  // pagination-clickable="true"
+                  class="h-full w-full overflow-y-visible overflow-x-clip hey"
+                  init="false"
+                  ref={swiperElRef}
+                  // no-swiping="false"
+                >
                   {photos.map((photo, index) => (
-                    <swiper-slide key={photo.id} className="relative h-full w-full">
+                    <swiper-slide key={photo.id} class="relative h-full w-full">
                       <button
                         type="button"
-                        className="absolute right-0 -top-2"
+                        className="absolute right-0 -top2"
                         onClick={() => {
                           setPhotos((prev) => prev.filter((currPhoto) => currPhoto.id !== photo.id));
                         }}

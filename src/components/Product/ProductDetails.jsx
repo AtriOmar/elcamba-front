@@ -5,7 +5,7 @@ import { useNavigate, useParams } from "react-router";
 import formatPath from "../../lib/formatPath";
 import { UserIcon } from "@heroicons/react/24/solid";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft, faLocationDot, faMessage, faPhone, faStar, faStarHalfStroke, faTruck } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft, faLocationDot, faMessage, faPhone, faRectangleList, faStar, faStarHalfStroke, faTruck } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { UserCircleIcon } from "@heroicons/react/24/outline";
 
@@ -29,11 +29,11 @@ function ProductDetails({ product, path }) {
               </swiper-slide>
             ))}
           </swiper-container>
-          <swiper-container slides-per-view="auto" space-between="10" class="product-thumbs w-fit p-2">
+          <swiper-container slides-per-view="auto" space-between="10" class="product-thumbs w-fit p-1">
             {product?.photos?.map?.((photo, index) => (
               <swiper-slide
                 key={index}
-                class=" w-fit rounded-md opacity-60 ring-2 ring-slate-200 transition-all duration-300 [&.swiper-slide-thumb-active]:opacity-100 [&.swiper-slide-thumb-active]:ring-red-500 [&.swiper-slide-thumb-active]:ring-offset-1"
+                class=" w-fit rounded-md opacity-60 ring-2 ring-slate-200 transition-all duration-300 [&.swiper-slide-thumb-active]:opacity-100 [&.swiper-slide-thumb-active]:ring-red-500 [&.swiper-slide-thumb-active]:ring-offset-1 m-1"
               >
                 <img src={`${BACKEND_URL}/uploads/${photo}`} alt="" className="aspect-square h-14 cursor-pointer rounded-md object-contain" />
               </swiper-slide>
@@ -44,8 +44,8 @@ function ProductDetails({ product, path }) {
           {formatPath(path, "font-medium text-sm flex-wrap")}
           <h2 className="mt-4 text-2xl font-bold capitalize text-sky-600">{product?.name}</h2>
           <p className="w-fit mt-10 px-2 py-1 rounded-lg bg-yellow-500 font-rubik font-normal capitalize text-white">
-            {product?.oldPrice ? <span className="mr-2 text-xs line-through">{Number(product?.salePrice)} DT</span> : ""}
-            <span className="text-base">{Number(product?.price)} DT</span>
+            {Number(product.salePrice) ? <span className="mr-2 text-xs line-through">{Number(product?.price)} DT</span> : ""}
+            <span className="text-base">{Number(product?.salePrice) || Number(product?.price)} DT</span>
           </p>
           <p className="mt-10 font-medium text-sky-700">Description:</p>
           <p className="max-w-[700px] whitespace-pre-wrap">{product?.description}</p>
@@ -84,6 +84,13 @@ function ProductDetails({ product, path }) {
               ) : (
                 ""
               )}
+              <Link
+                className="grid grid-cols-[20px_1fr] items-center gap-4 py-2 px-10 rounded-lg bg-sky-500 hover:bg-sky-600 text-white duration-300"
+                to={"/products?user=" + product?.User?.id}
+              >
+                <FontAwesomeIcon icon={faRectangleList} className="text-white" />
+                Produits de {product?.User.username.split(" ")[0]}
+              </Link>
             </div>
           </div>
           {/* <p className="mt-10 font-medium text-sky-700">Adresse:</p>

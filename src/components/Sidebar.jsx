@@ -1,4 +1,4 @@
-import { faBox, faBoxArchive, faBoxOpen, faChevronDown, faHouse, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faBox, faBoxArchive, faBoxOpen, faChevronDown, faHouse, faUserShield, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IonIcon } from "@ionic/react";
 import { gridOutline, megaphoneOutline } from "ionicons/icons";
@@ -109,11 +109,26 @@ function Sidebar() {
               >
                 {/* <FontAwesomeIcon icon={faHouse} /> */}
                 <HomeIcon className="block h-5 w-5 flex-start" aria-hidden="true" />
-                <span>Acceuil</span>
+                <span>Accueil</span>
               </Link>
             </li>
             {user ? (
               <>
+                {user?.accessId > 1 ? (
+                  <li>
+                    <Link
+                      className={`grid grid-cols-[20px_1fr] gap-2 items-center py-3 px-3 rounded-lg duration-200 ${
+                        location?.pathname?.startsWith("/admin") ? "bg-slate-200 shadow-md bg-opacity-[.82]" : "hover:bg-slate-100 hover:shadow-md"
+                      }`}
+                      to={"/admin"}
+                    >
+                      <FontAwesomeIcon icon={faUserShield} className="" />
+                      <span>Interface Admin</span>
+                    </Link>
+                  </li>
+                ) : (
+                  ""
+                )}
                 <li>
                   <Link
                     className={`grid grid-cols-[20px_1fr] gap-2 items-center py-3 px-3 rounded-lg duration-200 ${
@@ -122,7 +137,7 @@ function Sidebar() {
                     to={"/customer/products"}
                   >
                     <FontAwesomeIcon icon={faRectangleList} className="" />
-                    <span>Produits</span>
+                    <span>Mes Produits</span>
                   </Link>
                 </li>
                 <li>
@@ -133,7 +148,7 @@ function Sidebar() {
                     to={"/customer/promote/manage"}
                   >
                     <IonIcon icon={megaphoneOutline} className="text-xl" aria-hidden="true" />
-                    <span>Publicités</span>
+                    <span>Mes Publicités</span>
                   </Link>
                 </li>
                 <li>
@@ -146,7 +161,7 @@ function Sidebar() {
                     }`}
                   >
                     <FontAwesomeIcon icon={faUser} />
-                    <span>Mon compte</span>
+                    <span>Mon Compte</span>
                   </Link>
                 </li>
                 <li>
@@ -157,7 +172,7 @@ function Sidebar() {
                     }`}
                   >
                     <FontAwesomeIcon icon={faMessage} />
-                    <span>Discussions</span>
+                    <span>Mes Discussions</span>
                   </Link>
                 </li>
               </>

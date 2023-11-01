@@ -106,7 +106,7 @@ export default function ResetPasswordRequest() {
                   Créer un nouveau compte ?
                 </Link>
                 <Link to="/" className="text-blue-500 hover:underline">
-                  Page d'acceuil
+                  Page d'accueil
                 </Link>
               </div>
             </form>
@@ -124,7 +124,7 @@ export default function ResetPasswordRequest() {
               className="flex items-center justify-center gap-3 w-full py-2 px-3 mt-6 rounded-full bg-amber-400 hover:bg-amber-500 font-medium text-lg text-white cursor-pointer transition duration-300"
             >
               <FontAwesomeIcon icon={faArrowLeft} size="lg" />
-              Retourner à l'acceuil
+              Retourner à l'accueil
             </Link>
           </>
         )}

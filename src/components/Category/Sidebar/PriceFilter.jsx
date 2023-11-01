@@ -7,6 +7,42 @@ export default function PriceFilter() {
   const [searchParams, setSearchParams] = useSearchParams();
   const { priceRange, setPriceRange } = useUIContext();
 
+  if (priceRange.minValue === null) {
+    return (
+      <>
+        <div className="px-2">
+          <PriceSlider />
+        </div>
+        <section className="flex justify-between">
+          <div className="flex mt-1 rounded-md text-sm duration-150">
+            <input
+              id="min"
+              name="min"
+              type="number"
+              className="w-[50px] py-1 px-1 border border-slate-700 border-r-slate-300 rounded-l outline-0 focus:ring-1 ring-inset ring-blue-500 transition-all duration-150 hidden-arrows"
+              placeholder="0000"
+              value={0}
+              onChange={(e) => {}}
+            />
+            <span className="flex items-center px-1 border border-l-0 border-slate-700 rounded-r text-xs">DT</span>
+          </div>
+          <div className="flex mt-1 rounded-md text-sm duration-150">
+            <input
+              id="max"
+              name="max"
+              type="number"
+              className="w-[50px] py-1 px-1 border border-slate-700 border-r-slate-300 rounded-l outline-0 focus:ring-1 ring-inset ring-blue-500 transition-all duration-150 hidden-arrows"
+              placeholder="0000"
+              value={10000}
+              onChange={(e) => {}}
+            />
+            <span className="flex items-center px-1 border border-l-0 border-slate-700 rounded-r text-xs">DT</span>
+          </div>
+        </section>
+      </>
+    );
+  }
+
   return (
     <>
       <div className="px-2">

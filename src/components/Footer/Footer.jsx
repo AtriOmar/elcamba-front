@@ -88,7 +88,7 @@ export default function Footer() {
 
 const usefulLinks = [
   {
-    text: "Acceuil",
+    text: "Accueil",
     path: "/",
   },
   {

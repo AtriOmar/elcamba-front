@@ -9,7 +9,7 @@ function TypeSelect({ input, setInput }) {
     return (
       <div className={`w-full max-w-[500px] grid place-items-center mx-auto aspect-[2/1] ring-blue-500 border rounded-lg hover:bg-slate-100 ring-2`}>
         <div className="">
-          <p>Page d'acceuil</p>
+          <p>Page d'accueil</p>
           <p>Page de détails produit</p>
           <p>Page des produits</p>
           <p className="mt-2 text-center font-medium">2:1</p>

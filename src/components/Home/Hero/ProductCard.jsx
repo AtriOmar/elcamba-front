@@ -13,7 +13,13 @@ function ProductCard({ product }) {
       className="block w-[125px] h-full rounded-lg bg-white shadow-card1 hover:shadow-card2 hover:scale-[1.02] duration-300 overflow-hidden"
     >
       <div className="h-[125px] w-full border-b">
-        <img src={`${BACKEND_URL}/photo?path=${product.photos?.[0]}&size=200`} alt="" className="w-full h-full object-cover" />
+        <img
+          src={`${BACKEND_URL}/uploads/thumbnails/${product.photos?.[0]}`}
+          // src={`${BACKEND_URL}/photo?path=${product.photos?.[0]}&size=200`}
+          // src={`https://node.omaratri.online?url=${BACKEND_URL}/uploads/${product.photos?.[0]}&size=300`}
+          alt={product?.name}
+          className="w-full h-full object-cover"
+        />
       </div>
       <div className="py-0.5 px-3">
         <h5 className="font-normal font-rubik text-slate-900 text-[12px] capitalize line-clamp-2">{product.name}</h5>

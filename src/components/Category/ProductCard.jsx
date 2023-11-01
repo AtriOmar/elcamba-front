@@ -14,7 +14,9 @@ function Product({ product }) {
       to={`/products/${product.id}`}
     >
       <div className="aspect-square w-full border-b">
-        <img src={`${BACKEND_URL}/photo?path=${product.photos[0]}&size=250`} alt="" className="h-full w-full object-cover" />
+        <img src={`${BACKEND_URL}/uploads/thumbnails/${product.photos[0]}`} alt={product.name} className="h-full w-full object-cover" />
+        {/* <img src={`${BACKEND_URL}/photo?path=${product.photos[0]}&size=250`} alt={product.name} className="h-full w-full object-cover" /> */}
+        {/* src={`https://node.omaratri.online?url=${BACKEND_URL}/uploads/${product.photos[0]}&size=250`} */}
       </div>
       <div className="px-3 py-2">
         <h5 className="line-clamp-2 font-rubik text-[14px] font-normal capitalize text-slate-900">{product.name}</h5>

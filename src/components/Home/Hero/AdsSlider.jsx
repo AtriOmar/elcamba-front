@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -14,15 +14,18 @@ function shuffleArray(arr) {
 }
 
 function AdsSlider({ type = 1, ads }) {
+  const swiperRef = useRef();
+
   return (
     <>
       {ads.length ? (
         <swiper-container
+          ref={swiperRef}
           slides-per-view="1"
           // navigation="true"
           pagination="true"
           pagination-clickable="true"
-          class="w-full h-full"
+          class="w-0 h-0 min-w-full min-h-full"
           autoplay-delay="8000"
           autoplay-disable-on-interaction="false"
         >

@@ -129,7 +129,7 @@ export default function ResetPassword() {
                   Créer un nouveau compte ?
                 </Link>
                 <Link to="/" className="text-blue-500 hover:underline">
-                  Page d'acceuil
+                  Page d'accueil
                 </Link>
               </div>
             </>
@@ -145,7 +145,7 @@ export default function ResetPassword() {
                 autoFocus
               >
                 <FontAwesomeIcon icon={faArrowLeft} size="lg" />
-                Retourner à l'acceuil
+                Retourner à l'accueil
               </button>
             </>
           )}

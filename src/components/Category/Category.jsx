@@ -18,6 +18,7 @@ import { Helmet } from "react-helmet-async";
 import { useQuery } from "@tanstack/react-query";
 import Select from "./Select";
 import SortSelect from "./SortSelect";
+import UserProfile from "./UserProfile";
 
 let prevPage = null;
 
@@ -52,6 +53,7 @@ function Products() {
     queryFn: fetchAds,
     networkMode: "always",
   });
+  const [user, setUser] = useState(null);
 
   async function fetchProducts() {
     setFiltering(true);
@@ -72,25 +74,31 @@ function Products() {
           delivery: queryObj.delivery,
           cities: queryObj.cities || "all",
           search: queryObj.search?.trim(),
+          userId: queryObj.user,
         },
       });
+
+      console.log("-------------------- res.data --------------------");
+      console.log(res.data);
 
       setProducts(res.data.products);
 
       setTitle(res.data.subCategory?.name || res.data.category?.name || "Tous les produits");
 
+      setUser(res.data.user);
+
       if (res.data.category)
         setPath(() => {
           const newPath = [];
-          if (queryObj.c) newPath[0] = { name: res.data.category?.name, path: `/products?c=${res.data.category?.id}` };
-          if (queryObj.s) newPath[1] = { name: res.data?.subCategory?.name, path: `/products?s=${res.data.subCategory?.id}` };
+          if (res?.data?.category) newPath[0] = { name: res.data.category?.name, path: `/products?c=${res.data.category?.id}` };
+          if (res?.data?.subCategory) newPath[1] = { name: res.data?.subCategory?.name, path: `/products?s=${res.data.subCategory?.id}` };
 
           return newPath;
         });
 
       setCount(res.data.count);
 
-      if (!queryObj.min || !queryObj.max)
+      if (!queryObj.min || !queryObj.max) {
         setPriceRange((prev) => ({
           min: Number(res.data.minPrice),
           max: Number(res.data.maxPrice),
@@ -99,6 +107,16 @@ function Products() {
           minValue: Number(res.data.minPrice),
           maxValue: Number(res.data.maxPrice),
         }));
+      } else {
+        setPriceRange((prev) => ({
+          min: Number(queryObj.min),
+          max: Number(queryObj.max),
+          inputMin: Number(queryObj.min),
+          inputMax: Number(queryObj.max),
+          minValue: Number(res.data.minPrice),
+          maxValue: Number(res.data.maxPrice),
+        }));
+      }
     } catch (err) {
       // if (err.response?.data === "category not found" || err.response?.data === "invalid data") {
       setTitle("error");
@@ -145,16 +163,24 @@ function Products() {
 
       if (params.search) setSearch(params.search);
 
-      if (params.min || params.max) {
-        if ((params.min || 0) <= (params.max || 5000)) {
-          setPriceRange((prev) => ({ ...prev, min: Number(params.min) || 0, max: Number(params.max) || 5000 }));
-        } else {
-          setSearchParams((prev) => {
-            const { min, max, ...rest } = parseQuery(prev);
-            return { ...rest };
-          });
-        }
-      }
+      console.log("-------------------- params --------------------");
+      console.log(params);
+      // if (params.min || params.max) {
+      //   if ((Number(params.min) || 0) <= (Number(params.max) || 10000)) {
+      //     setPriceRange((prev) => ({
+      //       ...prev,
+      //       min: Number(params.min),
+      //       max: Number(params.max),
+      //       inputMin: Number(params.min),
+      //       inputMax: Number(params.max),
+      //     }));
+      //   } else {
+      //     setSearchParams((prev) => {
+      //       const { min, max, ...rest } = parseQuery(prev);
+      //       return { ...rest };
+      //     });
+      //   }
+      // }
       return;
     }
 
@@ -195,7 +221,7 @@ function Products() {
   }
 
   const filters = (
-    <div className="mt-6 flex flex-wrap gap-x-10">
+    <div className="flex flex-wrap gap-x-10">
       <div>
         <p className="font-medium text-slate-900">Il existe {count} produit(s)</p>
         <PageNavigation searchParams={searchParams} setSearchParams={setSearchParams} count={count} filter={filter} />
@@ -264,9 +290,17 @@ function Products() {
       <Helmet>
         <title>{title} | ELCAMBA</title>
       </Helmet>
+      {searchParams.get("user") ? <UserProfile user={user} /> : ""}
       <div className="min-h-full flex flex-col my-2 scr900:mx-2 py-6 px-3 scr900:px-6 rounded-lg bg-white shadow-md">
-        <h2 className="text-2xl font-bold capitalize text-slate-900">{title}</h2>
-        {formatPath(path)}
+        {!searchParams.get("user") ? (
+          <>
+            <h2 className="text-2xl font-bold capitalize text-slate-900">{title}</h2>
+            {formatPath(path)}
+            <div className="mb-6"></div>
+          </>
+        ) : (
+          ""
+        )}
         {filters}
         {products.length ? (
           <div className="mt-2 flex flex-wrap gap-3 p-1">

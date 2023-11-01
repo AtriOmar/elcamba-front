@@ -25,7 +25,7 @@ function Home() {
   const [params, setParams] = useSearchParams();
   const { addPopup } = useUIContext();
   const {
-    isLoading: loading,
+    isLoading: adsLoading,
     error,
     refetch,
     data: ads = [[], [], [], []],
@@ -35,6 +35,7 @@ function Home() {
     enabled: false,
     networkMode: "always",
   });
+  const [productsLoading, setProductsLoading] = useState(false);
 
   useEffect(() => {
     if (!ads[0]?.length) {
@@ -44,37 +45,45 @@ function Home() {
 
   useEffect(() => {
     const connected = params.get("connected");
+
     if (connected) {
       addPopup({
         type: "success",
         text: "Connected avec succés",
         lastFor: 4000,
       });
-      setParams((prev) => {
-        const { connected, ...rest } = parseQuery(prev);
 
-        return rest;
-      });
+      setParams(
+        (prev) => {
+          const { connected, ...rest } = parseQuery(prev);
+
+          return rest;
+        },
+        { replace: true }
+      );
     }
   }, []);
 
-  if (loading)
-    return (
-      <div className="grid place-items-center">
-        <Loader />
-      </div>
-    );
-
   return (
-    <div>
-      <Helmet>
-        <title>ELCAMBA</title>
-      </Helmet>
-      <Sidebar />
-      <Hero ads={ads} />
-      <Products />
-      <Footer />
-    </div>
+    <>
+      {adsLoading || productsLoading ? (
+        <div className="grid place-items-center">
+          <Loader />
+        </div>
+      ) : (
+        ""
+      )}
+
+      <div className={`${adsLoading || productsLoading ? "hidden" : ""}`}>
+        <Helmet>
+          <title>ELCAMBA</title>
+        </Helmet>
+        <Sidebar />
+        <Hero ads={ads} />
+        <Products productsLoading={productsLoading} setProductsLoading={setProductsLoading} />
+        <Footer />
+      </div>
+    </>
   );
 }
 

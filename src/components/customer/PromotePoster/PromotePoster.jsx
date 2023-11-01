@@ -112,13 +112,13 @@ export default function PromotePoster() {
           </Link>
           <h2 className=" text-2xl font-bold capitalize text-sky-600">Promouvoir affiche:</h2>
         </div>
-        {/* <h3 className="mt-10 mb-2 font-medium text-xl text-center ">Page d'acceuil</h3> */}
+        {/* <h3 className="mt-10 mb-2 font-medium text-xl text-center ">Page d'accueil</h3> */}
         <div className="flex justify-center gap-8 mt-10 mb-4">
           <button
             onClick={() => setInput((prev) => ({ ...prev, type: 1 }))}
             className={`${input.type === 4 ? "text-slate-400" : "border-b-2 border-blue-500"} font-medium text-xl`}
           >
-            Page d'acceuil
+            Page d'accueil
           </button>
           <button
             onClick={() => setInput((prev) => ({ ...prev, type: 4 }))}

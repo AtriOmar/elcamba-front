@@ -24,7 +24,7 @@ async function fetchAds() {
   return res.data;
 }
 
-function Products() {
+function Products({ setProductsLoading }) {
   const {
     data: products = [],
     isLoading: productsLoading,
@@ -54,6 +54,10 @@ function Products() {
       refetchAds();
     }
   }, []);
+
+  useEffect(() => {
+    setProductsLoading(productsLoading);
+  }, [productsLoading]);
 
   return (
     <div className="px-1">
@@ -121,7 +125,7 @@ function Products() {
                 navigation-prev-el={`#home-prev-` + index}
               >
                 {group.products.map((product) => (
-                  <swiper-slide key={product.id} class="w-fit h-auto" lazy="true">
+                  <swiper-slide key={product.id} class="w-fit h-auto">
                     <ProductCard product={product} />
                   </swiper-slide>
                 ))}

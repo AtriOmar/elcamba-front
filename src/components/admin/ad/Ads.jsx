@@ -163,7 +163,7 @@ export default function Ads() {
         </article>
         <article className={`grid place-items-center scr600:ml-auto aspect-[2/1] border rounded-lg`}>
           <div className="">
-            {/* <p>Page d'acceuil</p>
+            {/* <p>Page d'accueil</p>
             <p>Page de détails produit</p>
             <p>Page des produits</p> */}
             <p className="mt-2 text-center font-medium">
@@ -197,8 +197,11 @@ export default function Ads() {
               <div className="order-[-1] scr800:order-none px-1 scr800:px-3 py-1 scr800:py-2 row-span-6 scr800:row-span-1">
                 <img
                   className="sticky top-0 w-full aspect-square border rounded-lg object-contain"
-                  // src={`${import.meta.env.VITE_BACKEND_URL}/uploads/${ad.type === 0 ? ad.Product?.photos?.[0] : "abc/" + ad.photo}`}
-                  src={`${import.meta.env.VITE_BACKEND_URL}/photo?path=${ad.type === 0 ? ad.Product?.photos?.[0] : "abc/" + ad.photo}&size=150`}
+                  src={`${import.meta.env.VITE_BACKEND_URL}/uploads/${ad.type === 0 ? ad.Product?.photos?.[0] : "abc/" + ad.photo}`}
+                  // src={`${import.meta.env.VITE_BACKEND_URL}/photo?path=${ad.type === 0 ? ad.Product?.photos?.[0] : "abc/" + ad.photo}&size=150`}
+                  // src={`https://node.omaratri.online?url=${import.meta.env.VITE_BACKEND_URL}/uploads/${
+                  //   ad.type === 0 ? ad.Product?.photos?.[0] : "abc/" + ad.photo
+                  // }&size=150`}
                   alt={"Photo"}
                 />
               </div>
