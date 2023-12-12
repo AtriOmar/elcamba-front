@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Outlet, useLocation } from "react-router";
 import Popup from "../components/Popup";
 import { useUIContext } from "../contexts/UIProvider";
@@ -6,12 +6,14 @@ import { ScrollRestoration } from "react-router-dom";
 import { useChatContext } from "../contexts/ChatProvider";
 import ConversationBubble from "../components/ConversationBubble";
 import { useAuthContext } from "../contexts/AuthProvider";
+import { Helmet } from "react-helmet-async";
 
 function Layout() {
   const { popups, mobileNavbarOpen, setMobileNavbarOpen } = useUIContext();
   const location = useLocation();
-  const { openConversations } = useChatContext();
+  const { openConversations, unread, setPreTitle, preTitle } = useChatContext();
   const { user } = useAuthContext();
+  const [title, setTitle] = useState("ELCAMBA");
 
   useEffect(() => {
     if (mobileNavbarOpen) {
@@ -19,9 +21,37 @@ function Layout() {
     }
   }, [location]);
 
+  useEffect(() => {
+    if (!user) {
+      if (preTitle) {
+        setPreTitle("(_) ");
+        setTimeout(() => {
+          setPreTitle("");
+        }, 100);
+      }
+      return;
+    }
+
+    setPreTitle("(_) ");
+    setTimeout(() => {
+      setPreTitle(unread ? `(${unread}) ` : "");
+    }, 100);
+  }, [unread, location, user]);
+
+  // useEffect(() => {
+  //   document.title = title;
+  //   return () => {
+  //     document.title = "ELCAMBA";
+  //   };
+  // }, [title]);
+
   return (
     <div className={`${location?.pathname.startsWith("/admin") ? "" : "bg-agriculture"}`}>
-      <ScrollRestoration />
+      <Helmet>
+        <title>{preTitle}ELCAMBA</title>
+        {/* <title>{unread ? `(${unread})` : ""} ELCAMBA</title> */}
+      </Helmet>
+      <ScrollRestoration getKey={(location) => (location.pathname === "/products" ? location.pathname : location.key)} />
       <Outlet />
       {user && openConversations?.length ? (
         <div

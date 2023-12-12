@@ -16,7 +16,7 @@ import {
 import { useAuthContext } from "../../../contexts/AuthProvider";
 import { Link, useLocation } from "react-router-dom";
 import { IonIcon } from "@ionic/react";
-import { megaphoneOutline } from "ionicons/icons";
+import { helpCircle, helpCircleOutline, megaphoneOutline } from "ionicons/icons";
 import { useUIContext } from "../../../contexts/UIProvider";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
@@ -84,6 +84,14 @@ export default function Sidebar() {
         </>
       ) : (
         <></>
+      )}
+      {user.accessId >= 2 ? (
+        <Link to="/admin/support" className={`flex flex-row gap-4 p-4 duration-150 ${location?.pathname?.startsWith("/admin/support") ? "bg-gray-700" : ""}`}>
+          <IonIcon icon={helpCircleOutline} className={"block h-6 w-6 text-white"} aria-hidden="true" />
+          <span>Service Client</span>
+        </Link>
+      ) : (
+        ""
       )}
     </div>
   );

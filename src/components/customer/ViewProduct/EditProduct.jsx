@@ -35,6 +35,14 @@ function EditProduct({ product, fetchProduct }) {
   const [error, setError] = useState("");
   const [sending, setSending] = useState(false);
   const swiperRef = useRef();
+  const [progress, setProgress] = useState(-1);
+
+  const config = {
+    onUploadProgress: (e) => {
+      const prog = Math.round((e.loaded * 100) / e.total);
+      setProgress(prog);
+    },
+  };
 
   const { addPopup, categories } = useUIContext();
   const navigate = useNavigate();
@@ -107,7 +115,7 @@ function EditProduct({ product, fetchProduct }) {
     setSending(true);
 
     try {
-      const res = await axios.post("/products/update", formData);
+      const res = await axios.post("/products/update", formData, config);
 
       fetchProduct();
       addPopup({
@@ -116,15 +124,14 @@ function EditProduct({ product, fetchProduct }) {
         lastFor: 2000,
       });
       // navigate("/products");
-      setSending(false);
     } catch (err) {
-      setSending(false);
-
       addPopup({
         type: "danger",
         text: "Une erreur s'est produite",
       });
     }
+    setSending(false);
+    setProgress(-1);
   }
 
   useEffect(() => {
@@ -443,6 +450,12 @@ function EditProduct({ product, fetchProduct }) {
               Annuler
             </Link>
           </div>
+          {progress > -1 && (
+            <div className="relative rounded-full border border-green-500 overflow-hidden mt-2 ">
+              <div className="bg-green-500 h-7" style={{ width: progress + "%" }}></div>
+              <p className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">{progress}%</p>
+            </div>
+          )}
         </article>
       </form>
     </>

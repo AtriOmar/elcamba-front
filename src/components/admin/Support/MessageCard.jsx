@@ -12,7 +12,7 @@ export default function MessageCard({ message }) {
         <div
           id={`message-${message.id}`}
           className={`w-fit max-w-[85%] py-1 px-3 rounded-xl whitespace-pre-wrap break-words ${
-            message.senderId === user.id ? "ml-auto bg-sky-600 text-white" : "bg-slate-300"
+            message.senderId === 0 ? "ml-auto bg-sky-600 text-white" : "bg-slate-300"
           } `}
         >
           {message.content}

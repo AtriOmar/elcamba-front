@@ -3,6 +3,7 @@ import API from "../utils/API";
 import axios from "axios";
 import { useLocation } from "react-router";
 import { useQuery } from "@tanstack/react-query";
+import { socket2 } from "../lib/socket2";
 
 const UIContext = React.createContext();
 

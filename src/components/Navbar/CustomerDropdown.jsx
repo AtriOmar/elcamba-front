@@ -11,7 +11,7 @@ import { faUserGear, faUserPen } from "@fortawesome/free-solid-svg-icons";
 import { faMessage, faUser } from "@fortawesome/free-regular-svg-icons";
 import { faRectangleList } from "@fortawesome/free-regular-svg-icons";
 import { IonIcon } from "@ionic/react";
-import { logOutOutline, megaphoneOutline } from "ionicons/icons";
+import { helpCircleOutline, logOutOutline, megaphoneOutline } from "ionicons/icons";
 import { useUIContext } from "../../contexts/UIProvider";
 import axios from "axios";
 
@@ -24,7 +24,18 @@ function CustomerDropdown({ path = "" }) {
   const navigate = useNavigate();
   const { addPopup } = useUIContext();
 
-  function handleLogout() {
+  async function handleLogout() {
+    // localStorage.removeItem("ELCAMBA_token");
+    // axios.defaults.headers.common["Authorization"] = null;
+    // await axios.get("/logout");
+    // setUser(null);
+    // addPopup({
+    //   type: "success",
+    //   text: "Déconnecté avec succés",
+    //   lastFor: 4000,
+    // });
+    // navigate("/");
+
     axios
       .get("/logout")
       .then((res) => {
@@ -85,51 +96,43 @@ function CustomerDropdown({ path = "" }) {
         leaveTo="translate-y-[30px] opacity-0"
       >
         <ul className="absolute top-full right-0 translate-y-[10px] w-max max-w-[200px] p-2 rounded shadow-card1 bg-white text-[15px] list-none">
-          {/* <li>
-            <Link to="/customer/products">Mes produits</Link>
-          </li> */}
           <li className="">
-            <Link to="/customer/products" className="flex gap-2 items-center hover:bg-slate-100 p-2 rounded-lg">
+            <Link to="/customer/products" className="grid grid-cols-[25px_1fr] items-center hover:bg-slate-100 p-2 rounded-lg">
               <FontAwesomeIcon icon={faRectangleList} className="" />
               Mes produits
             </Link>
           </li>
           <li className="">
-            <Link to="/customer/promote/manage" className="flex gap-2 items-center hover:bg-slate-100 p-2 rounded-lg">
+            <Link to="/customer/promote/manage" className="grid grid-cols-[25px_1fr] items-center hover:bg-slate-100 p-2 rounded-lg">
               <IonIcon icon={megaphoneOutline} className="text-xl" aria-hidden="true" />
               Mes publicités
             </Link>
           </li>
           <li className="">
-            <Link to="/customer/chat" className="flex gap-2 items-center hover:bg-slate-100 p-2 rounded-lg">
+            <Link to="/customer/chat" className="grid grid-cols-[25px_1fr] items-center hover:bg-slate-100 p-2 rounded-lg">
               <FontAwesomeIcon icon={faMessage} className="" />
               Mes discussions
             </Link>
           </li>
           <li className="">
-            <Link to="/customer/profile/info" className="flex gap-2 items-center hover:bg-slate-100 p-2 rounded-lg">
+            <Link to="/customer/profile/info" className="grid grid-cols-[25px_1fr] items-center hover:bg-slate-100 p-2 rounded-lg">
               <FontAwesomeIcon icon={faUser} className="" />
               Mes compte
             </Link>
           </li>
           <li className="">
-            <button onClick={handleLogout} className="flex gap-2 items-center w-full p-2  hover:bg-slate-100 rounded-lg">
+            <Link to="/customer/chat/0" className="grid grid-cols-[25px_1fr] items-center hover:bg-slate-100 p-2 rounded-lg">
+              <IonIcon icon={helpCircleOutline} className="text-xl -ml-1" aria-hidden="true" />
+              Service Client
+            </Link>
+          </li>
+          <li className="">
+            <button onClick={handleLogout} className="grid grid-cols-[25px_1fr] items-center hover:bg-slate-100 p-2 rounded-lg">
               <IonIcon icon={logOutOutline} className="text-xl" />
               Déconnecter
             </button>
           </li>
         </ul>
-        {/* <ul className="absolute mt-2 px-4 py-3 rounded-lg bg-white w-60 shadow-lg">
-          <li className="flex gap-3 items-center hover:bg-slate-100 p-2 rounded-lg">
-            <FontAwesomeIcon icon={faUserGear} className="text-slate-500" />
-            Manage your account
-          </li>
-        </ul>
-        <div className="w-full h-px bg-slate-300 rounded-[50%] my-2"></div> */}
-        {/* <button className="flex items-center w-full gap-3 text-center hover:bg-slate-100 p-2 rounded-lg">
-          <LogoutIcon className="text-slate-500" />
-          Log out
-        </button> */}
       </Transition>
     </div>
   );

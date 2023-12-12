@@ -13,14 +13,19 @@ import { mdTransitionAnimation } from "@ionic/react";
 import CitySelect from "./CitySelect";
 import Select from "./Select";
 
-const config = {
-  onUploadProgress: (e) => {},
-};
-
 export default function AddProduct({ setPage, swiperRef, updateProducts }) {
   const [photos, setPhotos] = useState(null);
   const { user } = useAuthContext();
   const { addPopup, categories } = useUIContext();
+  const [progress, setProgress] = useState(-1);
+
+  const config = {
+    onUploadProgress: (e) => {
+      const prog = Math.round((e.loaded * 100) / e.total);
+      setProgress(prog);
+    },
+  };
+
   const swiperElRef = useRef(null);
 
   const [input, setInput] = useLocalStorage("product-" + user.id, {
@@ -52,6 +57,7 @@ export default function AddProduct({ setPage, swiperRef, updateProducts }) {
       address: user.address || "",
       city: user.city || "sfax",
     });
+    setProgress(-1);
   }
 
   function handleChange(e) {
@@ -118,7 +124,7 @@ export default function AddProduct({ setPage, swiperRef, updateProducts }) {
 
     setSending(true);
     try {
-      const result = await axios.post("/products/create", formData);
+      const result = await axios.post("/products/create", formData, config);
       updateProducts();
 
       addPopup({
@@ -216,7 +222,7 @@ export default function AddProduct({ setPage, swiperRef, updateProducts }) {
                   // no-swiping="false"
                 >
                   {photos.map((photo, index) => (
-                    <swiper-slide key={photo.id} class="relative h-full w-full">
+                    <swiper-slide key={photo.id} className="relative h-full w-full">
                       <button
                         type="button"
                         className="absolute right-0 -top2"
@@ -388,7 +394,7 @@ export default function AddProduct({ setPage, swiperRef, updateProducts }) {
               {error}
             </div>
           )}
-          <div className="relative mt-2 mb-20">
+          <div className="relative my-2">
             <input
               type="submit"
               value="Ajouter"
@@ -402,6 +408,13 @@ export default function AddProduct({ setPage, swiperRef, updateProducts }) {
               ""
             )}
           </div>
+          {progress > -1 && (
+            <div className="relative rounded-full border border-green-500 overflow-hidden ">
+              <div className="bg-green-500 h-8" style={{ width: progress + "%" }}></div>
+              <p className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">{progress}%</p>
+            </div>
+          )}
+          <div className="mb-20"></div>
         </article>
       </form>
     </>

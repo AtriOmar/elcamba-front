@@ -5,9 +5,21 @@ import { useNavigate, useParams } from "react-router";
 import formatPath from "../../lib/formatPath";
 import { UserIcon } from "@heroicons/react/24/solid";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft, faLocationDot, faMessage, faPhone, faRectangleList, faStar, faStarHalfStroke, faTruck } from "@fortawesome/free-solid-svg-icons";
+import {
+  faArrowLeft,
+  faChevronLeft,
+  faChevronRight,
+  faLocationDot,
+  faMessage,
+  faPhone,
+  faRectangleList,
+  faStar,
+  faStarHalfStroke,
+  faTruck,
+} from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { UserCircleIcon } from "@heroicons/react/24/outline";
+import { formatDateRelative } from "../../lib/formatDate";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -29,16 +41,36 @@ function ProductDetails({ product, path }) {
               </swiper-slide>
             ))}
           </swiper-container>
-          <swiper-container slides-per-view="auto" space-between="10" class="product-thumbs w-fit p-1">
-            {product?.photos?.map?.((photo, index) => (
-              <swiper-slide
-                key={index}
-                class=" w-fit rounded-md opacity-60 ring-2 ring-slate-200 transition-all duration-300 [&.swiper-slide-thumb-active]:opacity-100 [&.swiper-slide-thumb-active]:ring-red-500 [&.swiper-slide-thumb-active]:ring-offset-1 m-1"
-              >
-                <img src={`${BACKEND_URL}/uploads/${photo}`} alt="" className="aspect-square h-14 cursor-pointer rounded-md object-contain" />
-              </swiper-slide>
-            ))}
-          </swiper-container>
+          <div className="relative">
+            <button
+              id="p-product-details-next"
+              className="absolute right-0 top-1/2 z-10 -translate-y-1/2 flex items-center justify-center h-8 w-4 rounded-md bg-[rgb(0,0,0,.65)] hover:bg-[rgb(0,0,0,.8)] duration-150 disabled:opacity-25"
+            >
+              <FontAwesomeIcon icon={faChevronRight} className="text-white" size="sm" />
+            </button>
+            <button
+              id="p-product-details-prev"
+              className="absolute left-0 top-1/2 z-10 -translate-y-1/2 flex items-center justify-center h-8 w-4 rounded-md bg-[rgb(0,0,0,.65)] hover:bg-[rgb(0,0,0,.8)] duration-150 disabled:opacity-25"
+            >
+              <FontAwesomeIcon icon={faChevronLeft} className="text-white" size="sm" />
+            </button>
+            <swiper-container
+              slides-per-view="auto"
+              space-between="10"
+              class="product-thumbs w-fit p-1"
+              navigation-next-el="#p-product-details-next"
+              navigation-prev-el="#p-product-details-prev"
+            >
+              {product?.photos?.map?.((photo, index) => (
+                <swiper-slide
+                  key={index}
+                  class="m-1 w-fit rounded-md opacity-60 ring-2 ring-slate-200 transition-all duration-300 [&.swiper-slide-thumb-active]:opacity-100 [&.swiper-slide-thumb-active]:ring-red-500 [&.swiper-slide-thumb-active]:ring-offset-1"
+                >
+                  <img src={`${BACKEND_URL}/uploads/${photo}`} alt="" className="aspect-square h-14 cursor-pointer rounded-md object-contain" />
+                </swiper-slide>
+              ))}
+            </swiper-container>
+          </div>
         </article>
         <article className="grow">
           {formatPath(path, "font-medium text-sm flex-wrap")}
@@ -47,6 +79,10 @@ function ProductDetails({ product, path }) {
             {Number(product.salePrice) ? <span className="mr-2 text-xs line-through">{Number(product?.price)} DT</span> : ""}
             <span className="text-base">{Number(product?.salePrice) || Number(product?.price)} DT</span>
           </p>
+          <p className="mt-10 font-medium text-sky-700">Référence:</p>
+          <p className="max-w-[700px] whitespace-pre-wrap">{product.id}</p>
+          <p className="mt-2 font-medium text-sky-700">Date de publication:</p>
+          <p className="max-w-[700px] whitespace-pre-wrap">{formatDateRelative(product.createdAt)}</p>
           <p className="mt-10 font-medium text-sky-700">Description:</p>
           <p className="max-w-[700px] whitespace-pre-wrap">{product?.description}</p>
           <div className="flex flex-col scr600:flex-row scr800:flex-col scr1100:flex-row items-start scr600:items-center scr800:items-start scr1100:items-center gap-4 mt-10 max-w-[700px]">

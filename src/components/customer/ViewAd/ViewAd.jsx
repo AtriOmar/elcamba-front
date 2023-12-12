@@ -46,7 +46,7 @@ function ViewAd() {
       type: "danger",
       text: "Produit non trouvé",
     });
-    navigate("/customer/ads");
+    navigate("/customer/promote/manage");
     return;
   }
 

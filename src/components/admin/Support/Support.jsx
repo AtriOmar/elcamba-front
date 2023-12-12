@@ -16,7 +16,7 @@ const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 let currentBoxHeight;
 
-export default function Chat() {
+export default function Support() {
   const navigate = useNavigate();
   const { id } = useParams();
   const [receiver, setReceiver] = useState(null);
@@ -81,10 +81,12 @@ export default function Chat() {
       setConversation(eventConversation);
 
       if (loading) setLoading(false);
-      if (eventConversation) socket.off("messages", onMessages);
+      if (eventConversation) socket.off("supportMessages", onMessages);
     }
 
     async function onMessage(message) {
+      console.log("-------------------- message --------------------");
+      console.log(message);
       setLimit((prev) => prev + 1);
       setConversation((prev) => {
         const newConv = JSON.parse(JSON.stringify(prev));
@@ -93,16 +95,16 @@ export default function Chat() {
       });
     }
 
-    socket.emit("watchSingle", id, limit);
+    socket.emit("supportWatchSingle", id, limit);
 
-    socket.on("messages", onMessages);
+    socket.on("supportMessages", onMessages);
 
-    socket.on("message", onMessage);
+    socket.on("supportMessage", onMessage);
 
     return () => {
-      socket.emit("unwatchSingle", id);
-      socket.off("messages");
-      socket.off("message");
+      socket.emit("supportUnwatchSingle", id);
+      socket.off("supportMessages");
+      socket.off("supportMessage");
     };
   }, [isConnected, id, newLimit, visible]);
 

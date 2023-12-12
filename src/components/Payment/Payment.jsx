@@ -80,7 +80,7 @@ function Payment() {
 
   return (
     <div className="flex items-center justify-center min-h-screen w-full">
-      <div className="my-6 scr1000:mx-6 py-12 px-3 scr1000:px-6 rounded-lg bg-white shadow-md">
+      <div className="w-full max-w-[500px] my-6 scr1000:mx-6 py-12 px-3 scr1000:px-6 rounded-lg bg-white shadow-md">
         <h3 className="font-medium text-sky-700 text-xl text-center ">Détails du commande</h3>
         {order.type === 0 ? <ProductCard order={order} /> : <PosterCard order={order} />}
         <p className="flex gap-3 mt-6">

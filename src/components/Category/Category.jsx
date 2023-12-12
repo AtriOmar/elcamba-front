@@ -19,15 +19,17 @@ import { useQuery } from "@tanstack/react-query";
 import Select from "./Select";
 import SortSelect from "./SortSelect";
 import UserProfile from "./UserProfile";
+import { useChatContext } from "../../contexts/ChatProvider";
 
 let prevPage = null;
 
 async function fetchAds() {
-  const res = await axios.get("/abc/getByType", {
+  const res = await axios.get("/abc/getAll", {
     params: {
       limit: 5,
       type: 0,
-      active: true,
+      active: 2,
+      orderBy: "random",
     },
   });
   return res?.data;
@@ -42,6 +44,7 @@ function Products() {
   const [title, setTitle] = useState(null);
   const [count, setCount] = useState(0);
   const [loading, setLoading] = useState(true);
+  const { unread, preTitle } = useChatContext();
   const [filter, setFilter] = useState({
     productsPerPage: 25,
     orderBy: "name",
@@ -69,12 +72,14 @@ function Products() {
           max: queryObj.max,
           page: queryObj.page,
           limit: queryObj.ppp,
-          orderBy: queryObj.sort,
-          order: queryObj.order,
+          orderBy: queryObj.sort || "name",
+          order: queryObj.order || "asc",
           delivery: queryObj.delivery,
           cities: queryObj.cities || "all",
           search: queryObj.search?.trim(),
           userId: queryObj.user,
+          sold: searchParams.get("user") ? undefined : false,
+          active: 2,
         },
       });
 
@@ -87,14 +92,13 @@ function Products() {
 
       setUser(res.data.user);
 
-      if (res.data.category)
-        setPath(() => {
-          const newPath = [];
-          if (res?.data?.category) newPath[0] = { name: res.data.category?.name, path: `/products?c=${res.data.category?.id}` };
-          if (res?.data?.subCategory) newPath[1] = { name: res.data?.subCategory?.name, path: `/products?s=${res.data.subCategory?.id}` };
+      setPath(() => {
+        const newPath = [{ name: "Produits", path: "/products" }];
+        if (res?.data?.category) newPath.push({ name: res.data.category?.name, path: `/products?c=${res.data.category?.id}` });
+        if (res?.data?.subCategory) newPath.push({ name: res.data?.subCategory?.name, path: `/products?s=${res.data.subCategory?.id}` });
 
-          return newPath;
-        });
+        return newPath;
+      });
 
       setCount(res.data.count);
 
@@ -134,11 +138,11 @@ function Products() {
     if (search) {
       if (typeof searchParams.get("search") !== search) {
         searchParams.set("search", search);
-        setSearchParams(searchParams);
+        setSearchParams(searchParams, { replace: true });
       }
     } else if (typeof searchParams.get("search") !== "undefined") {
       searchParams.delete("search");
-      setSearchParams(searchParams);
+      setSearchParams(searchParams, { replace: true });
     }
   }
 
@@ -151,7 +155,7 @@ function Products() {
   function updatePrice() {
     if (priceRange.min >= priceRange.max) return;
 
-    setSearchParams((prev) => ({ ...parseQuery(prev), min: priceRange.min, max: priceRange.max }));
+    setSearchParams((prev) => ({ ...parseQuery(prev), min: priceRange.min, max: priceRange.max }), { replace: true });
   }
 
   const updatePriceDebounced = useDebouncedCallback(updatePrice, 1000);
@@ -234,10 +238,13 @@ function Products() {
           options={PPP_OPTIONS}
           value={{ label: searchParams.get("ppp") || "25", value: searchParams.get("ppp") || "25" }}
           onChange={(value) =>
-            setSearchParams((prev) => {
-              prev.set("ppp", value.value);
-              return prev;
-            })
+            setSearchParams(
+              (prev) => {
+                prev.set("ppp", value.value);
+                return prev;
+              },
+              { replace: true }
+            )
           }
           formatSelectedOption={(option) => <>{option.label} Produits</>}
         />
@@ -251,16 +258,22 @@ function Products() {
           // value={filter.orderBy}
           value={{ label: ORDER_OPTIONS.find((el) => el.value === searchParams.get("sort"))?.label || "Nom", value: searchParams.get("sort") || "name" }}
           onChange={(value) =>
-            setSearchParams((prev) => {
-              prev.set("sort", value.value);
-              return prev;
-            })
+            setSearchParams(
+              (prev) => {
+                prev.set("sort", value.value);
+                return prev;
+              },
+              { replace: true }
+            )
           }
           onOrderChange={(value) =>
-            setSearchParams((prev) => {
-              prev.set("order", value);
-              return prev;
-            })
+            setSearchParams(
+              (prev) => {
+                prev.set("order", value);
+                return prev;
+              },
+              { replace: true }
+            )
           }
           // onChange={(value) => setFilter((prev) => ({ ...prev, orderBy: value.value }))}
           order={searchParams.get("order") || "asc"}
@@ -288,7 +301,19 @@ function Products() {
     <>
       <Sidebar />
       <Helmet>
-        <title>{title} | ELCAMBA</title>
+        <title>
+          {preTitle}
+          {title} | ELCAMBA
+        </title>
+        <link
+          rel="canonical"
+          href={`https://elcamba.net/products${
+            searchParams.get("s") ? `?s=${searchParams.get("s")}` : searchParams.get("c") ? `?c=${searchParams.get("c")}` : ""
+          }`}
+        />
+        {/* <title>
+          {unread ? `(${unread})` : ""} {title} | ELCAMBA
+        </title> */}
       </Helmet>
       {searchParams.get("user") ? <UserProfile user={user} /> : ""}
       <div className="min-h-full flex flex-col my-2 scr900:mx-2 py-6 px-3 scr900:px-6 rounded-lg bg-white shadow-md">
@@ -347,7 +372,7 @@ const ORDER_OPTIONS = [
     label: "Prix",
   },
   {
-    value: "date",
+    value: "createdAt",
     label: "Créé le",
   },
 ];

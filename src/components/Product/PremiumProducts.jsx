@@ -71,7 +71,7 @@ function PremiumProducts() {
           navigation-prev-el="#premium-prev"
         >
           {ads.map((ad) => (
-            <swiper-slide key={ad.id} class="w-fit h-auto">
+            <swiper-slide key={ad.id} class="w-fit h-auto my-2 mx-1">
               <ProductCard product={ad.Product} />
             </swiper-slide>
           ))}

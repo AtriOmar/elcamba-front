@@ -28,6 +28,15 @@ export default function ProfileInfo() {
     phone: user.phone,
   });
 
+  const [progress, setProgress] = useState(-1);
+
+  const config = {
+    onUploadProgress: (e) => {
+      const prog = Math.round((e.loaded * 100) / e.total);
+      setProgress(prog);
+    },
+  };
+
   function resetInfo() {
     setInput({
       username: user.username,
@@ -98,7 +107,7 @@ export default function ProfileInfo() {
 
     setSending((prev) => [true, prev[1]]);
     try {
-      const res = await axios.post("/users/updatePicture", formData);
+      const res = await axios.post("/users/updatePicture", formData, config);
 
       setUser(res.data);
       addPopup({
@@ -116,6 +125,7 @@ export default function ProfileInfo() {
         lastFor: 2000,
       });
     }
+    setProgress(-1);
   }
 
   return (
@@ -166,6 +176,12 @@ export default function ProfileInfo() {
           ""
         )}
       </div>
+      {progress > -1 && (
+        <div className="relative w-full max-w-[250px] rounded-full border border-green-500 overflow-hidden mt-2">
+          <div className="bg-green-500 h-8" style={{ width: progress + "%" }}></div>
+          <p className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">{progress}%</p>
+        </div>
+      )}
 
       <label className="block relative mt-3 text-base font-semibold text-slate-700">Nom d'utilisateur:</label>
       {edit ? (

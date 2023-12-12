@@ -63,6 +63,9 @@ export default function SigninModal({ show, hide }) {
     try {
       const result = await axios.post("/login", user);
 
+      // localStorage.setItem("ELCAMBA_token", result?.data?.token);
+      // axios.defaults.headers.common["Authorization"] = `Bearer ${localStorage.getItem("ELCAMBA_token")}`;
+
       setUser(result.data);
       addPopup({
         type: "success",

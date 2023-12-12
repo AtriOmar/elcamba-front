@@ -37,6 +37,14 @@ export default function PromotePoster() {
     photo: null,
     url: "",
   });
+  const [progress, setProgress] = useState(-1);
+
+  const config = {
+    onUploadProgress: (e) => {
+      const prog = Math.round((e.loaded * 100) / e.total);
+      setProgress(prog);
+    },
+  };
 
   const amount = useMemo(
     () => (input.photo ? input.duration * (Number(settings[PRICES[input.type]]) || 0) : 0),
@@ -85,7 +93,7 @@ export default function PromotePoster() {
       formData.append("type", input.type);
       formData.append("amount", amount);
       formData.append("url", input.url);
-      const res = await axios.post("/abc/createPosterPayment", formData);
+      const res = await axios.post("/abc/createPosterPayment", formData, config);
 
       window.open(`/payment/${res.data}`, "_blank");
       navigate("/customer/promote/manage");
@@ -180,6 +188,12 @@ export default function PromotePoster() {
             ""
           )}
         </div>
+        {progress > -1 && (
+          <div className="relative rounded-full border border-green-500 overflow-hidden mt-2">
+            <div className="bg-green-500 h-8" style={{ width: progress + "%" }}></div>
+            <p className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">{progress}%</p>
+          </div>
+        )}
       </div>
     </div>
   );

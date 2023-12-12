@@ -5,6 +5,7 @@ import API from "../../utils/API";
 import axios from "axios";
 import Loader from "../Loader";
 import { useUIContext } from "../../contexts/UIProvider";
+import deepEqual from "deep-equal";
 
 export default function PrivateRoute({ component: Component, aId = 1 }) {
   const { user, setUser } = useAuthContext();
@@ -20,7 +21,7 @@ export default function PrivateRoute({ component: Component, aId = 1 }) {
         // if (res.data.user?.type == "visitor") {
         //   navigate("/login");
         // }
-        setUser(res.data.user);
+        if (!deepEqual(user, res.data.user)) setUser(res.data.user);
         if (!(res.data.user?.accessId >= aId)) {
           addPopup({
             type: "info",

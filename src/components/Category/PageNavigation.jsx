@@ -7,7 +7,7 @@ function PageNavigation({ searchParams, setSearchParams, count, filter }) {
   function pages() {
     const arr = [];
     const activePage = Number(query.page) || 1;
-    const pagesNb = Math.floor(count / ((Number(query.ppp) || 25) + 1)) + 1;
+    const pagesNb = Math.floor((count - 1) / (Number(query.ppp) || 25)) + 1;
 
     // Calculate the starting and ending page numbers
     let startPage = Math.max(1, activePage - 2);
@@ -30,7 +30,7 @@ function PageNavigation({ searchParams, setSearchParams, count, filter }) {
           className={`flex h-9 w-9 items-center justify-center rounded-md border bg-sky-600 text-white ${
             activePage === i ? "ring-2 ring-offset-1 ring-sky-500" : ""
           } duration-300 hover:bg-sky-700`}
-          onClick={() => setSearchParams((prev) => ({ ...parseQuery(prev), page: i }))}
+          onClick={() => setSearchParams((prev) => ({ ...parseQuery(prev), page: i }), { replace: true })}
         >
           {i}
         </button>
@@ -66,7 +66,7 @@ function PageNavigation({ searchParams, setSearchParams, count, filter }) {
           (Number(query.page) || 1) <= 1 ? "cursor-not-allowed" : "hover:bg-sky-700"
         }`}
         onClick={() => {
-          if ((Number(query.page) || 1) > 1) setSearchParams({ ...query, page: (Number(query.page) || 1) - 1 });
+          if ((Number(query.page) || 1) > 1) setSearchParams({ ...query, page: (Number(query.page) || 1) - 1 }, { replace: true });
         }}
       >
         {`<`}
@@ -75,10 +75,10 @@ function PageNavigation({ searchParams, setSearchParams, count, filter }) {
 
       <button
         className={`flex h-9 w-9 items-center justify-center rounded-md border bg-sky-600 text-xl font-medium text-white duration-300 ${
-          (Number(query.page) || 1) >= Math.floor(count / (Number(searchParams.get("ppp")) || 25) + 1) ? "cursor-not-allowed" : "hover:bg-sky-700"
+          (Number(query.page) || 1) >= Math.floor((count - 1) / (Number(searchParams.get("ppp")) || 25) + 1) ? "cursor-not-allowed" : "hover:bg-sky-700"
         }`}
         onClick={() => {
-          if ((Number(query.page) || 1) < Math.floor(count / (Number(searchParams.get("ppp")) || 25) + 1))
+          if ((Number(query.page) || 1) < Math.floor((count - 1) / (Number(searchParams.get("ppp")) || 25) + 1))
             setSearchParams({ ...query, page: (Number(query.page) || 1) + 1 });
         }}
       >

@@ -4,7 +4,8 @@ import axios from "axios";
 import { useParams } from "react-router";
 import ProductCard from "../Home/ProductCard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRight, faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -42,9 +43,15 @@ function SimilarProducts({ categoryId, categoryName }) {
 
   return (
     <div className="scr800:mx-2 my-10 py-6 px-3 scr800:px-6 rounded-lg bg-white shadow-md">
-      <div className="relative max-w-[700px] mx-auto mb-6 py-1.5 rounded-xl bg-sky-500">
+      <Link
+        className="block relative max-w-[700px] mx-auto mb-6 py-1.5 rounded-xl bg-sky-500"
+        to={`/products?${categoryId.categoryId ? "c=" + categoryId.categoryId : "s=" + categoryId.subCategoryId}`}
+      >
         <h3 className="relative z-10 w-fit mx-auto px-2 bg-inherit font-medium text-lg text-center text-white capitalize">Produits de '{categoryName}'</h3>
-      </div>
+        <div className="absolute top-1/2 -translate-y-1/2 right-2 flex items-center gap-2 text-white text-xs hover:underline">
+          <FontAwesomeIcon icon={faArrowRight} />
+        </div>
+      </Link>
       <div className="relative">
         <button
           id={`similar-next-` + (categoryId.categoryId || categoryId.subCategoryId)}
@@ -65,12 +72,12 @@ function SimilarProducts({ categoryId, categoryName }) {
           navigation="true"
           autoplay-delay="5000"
           autoplay-disable-on-interaction="false"
-          class="mt-2 py-2 px-1"
+          class="mt-2 px-1"
           navigation-next-el={"#similar-next-" + (categoryId.categoryId || categoryId.subCategoryId)}
           navigation-prev-el={"#similar-prev-" + (categoryId.categoryId || categoryId.subCategoryId)}
         >
           {products.map((product) => (
-            <swiper-slide key={product.id} class="w-fit h-auto">
+            <swiper-slide key={product.id} class="w-fit h-auto my-2 mx-1">
               <ProductCard product={product} />
             </swiper-slide>
           ))}

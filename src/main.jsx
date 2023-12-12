@@ -45,16 +45,23 @@ import AdminAd from "./components/admin/ad/Ad";
 import Settings from "./components/admin/Settings/Settings";
 import { Helmet, HelmetProvider } from "react-helmet-async";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import Error from "./components/Error";
+import SupportDashboard from "./components/admin/Support/SupportDashboard";
+import Support from "./components/admin/Support/Support";
 
 register();
 
 axios.defaults.baseURL = import.meta.env.VITE_BACKEND_URL;
 axios.defaults.withCredentials = true;
+// if (localStorage.getItem("ELCAMBA_token")) {
+//   axios.defaults.headers.common["Authorization"] = `Bearer ${localStorage.getItem("ELCAMBA_token")}`;
+// }
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
+    errorElement: <Error />,
     children: [
       {
         path: "admin",
@@ -99,6 +106,14 @@ const router = createBrowserRouter([
           {
             path: "settings",
             element: <Settings />,
+          },
+          {
+            path: "support",
+            element: <SupportDashboard />,
+          },
+          {
+            path: "support/:id",
+            element: <Support />,
           },
         ],
       },
@@ -198,7 +213,13 @@ const router = createBrowserRouter([
   },
 ]);
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false, // default: true
+    },
+  },
+});
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <QueryClientProvider client={queryClient}>

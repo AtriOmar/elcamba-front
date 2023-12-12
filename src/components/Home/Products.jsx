@@ -9,55 +9,28 @@ import { useQuery } from "@tanstack/react-query";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
-async function fetchProducts() {
-  const res = await axios.get("/products/getByEachCategory", {
-    params: {
-      limit: 15,
-    },
-  });
-  return res.data;
-}
-
 async function fetchAds() {
-  const res = await axios.get("/abc/getByType", { params: { type: 4, limit: 10, active: true } });
+  const res = await axios.get("/abc/getAll", { params: { type: 4, limit: 10, active: 2, orderBy: "random" } });
 
   return res.data;
 }
 
-function Products({ setProductsLoading }) {
-  const {
-    data: products = [],
-    isLoading: productsLoading,
-    refetch: refetchProducts,
-  } = useQuery({
-    queryKey: ["home-products"],
-    queryFn: fetchProducts,
-    enabled: false,
-    networkMode: "always",
-  });
+function Products({ products }) {
   const {
     data: ads = [],
     isLoading: adsLoading,
     refetch: refetchAds,
   } = useQuery({
-    queryKey: ["ads", { type: 4, limit: 10, active: true }],
+    queryKey: ["ads", { type: 4, limit: 10, active: 2 }],
     queryFn: fetchAds,
     enabled: false,
-    networkMode: "always",
   });
 
   useEffect(() => {
-    if (!products?.length) {
-      refetchProducts();
-    }
     if (!ads?.length) {
       refetchAds();
     }
   }, []);
-
-  useEffect(() => {
-    setProductsLoading(productsLoading);
-  }, [productsLoading]);
 
   return (
     <div className="px-1">
@@ -65,20 +38,40 @@ function Products({ setProductsLoading }) {
         <React.Fragment key={group.category.name}>
           {index % 3 === 0 && index !== 0 && ads?.length > 0 ? (
             <div className="grid scr1000:grid-cols-2 gap-1">
-              <Link className="w-full" to={ads[(index / 3) % ads.length].url} target="_blank">
-                <img
-                  src={`${BACKEND_URL}/uploads/abc/${ads[(index / 3) % ads.length].photo}`}
-                  className="max-w-[800px] mx-auto w-full rounded-lg aspect-[2/1] object-cover"
-                  alt=""
-                />
-              </Link>
-              <Link className="hidden scr1000:block w-full" to={ads[((index / 3) % ads.length) + 1].url} target="_blank">
-                <img
-                  src={`${BACKEND_URL}/uploads/abc/${ads[((index / 3) % ads.length) + 1].photo}`}
-                  className="max-w-[800px] mx-auto w-full rounded-lg aspect-[2/1] object-cover"
-                  alt=""
-                />
-              </Link>
+              {ads[(index / 3) % ads.length].url ? (
+                <Link className="w-full" to={ads[(index / 3) % ads.length].url} target="_blank">
+                  <img
+                    src={`${BACKEND_URL}/uploads/abc/${ads[(index / 3) % ads.length].photo}`}
+                    className="max-w-[800px] mx-auto w-full rounded-lg aspect-[2/1] object-cover"
+                    alt=""
+                  />
+                </Link>
+              ) : (
+                <div className="w-full">
+                  <img
+                    src={`${BACKEND_URL}/uploads/abc/${ads[(index / 3) % ads.length].photo}`}
+                    className="max-w-[800px] mx-auto w-full rounded-lg aspect-[2/1] object-cover"
+                    alt=""
+                  />
+                </div>
+              )}
+              {ads[((index / 3) % ads.length) + 1].url ? (
+                <Link className="hidden scr1000:block w-full" to={ads[((index / 3) % ads.length) + 1].url} target="_blank">
+                  <img
+                    src={`${BACKEND_URL}/uploads/abc/${ads[((index / 3) % ads.length) + 1].photo}`}
+                    className="max-w-[800px] mx-auto w-full rounded-lg aspect-[2/1] object-cover"
+                    alt=""
+                  />
+                </Link>
+              ) : (
+                <div className="hidden scr1000:block w-full">
+                  <img
+                    src={`${BACKEND_URL}/uploads/abc/${ads[((index / 3) % ads.length) + 1].photo}`}
+                    className="max-w-[800px] mx-auto w-full rounded-lg aspect-[2/1] object-cover"
+                    alt=""
+                  />
+                </div>
+              )}
             </div>
           ) : (
             ""

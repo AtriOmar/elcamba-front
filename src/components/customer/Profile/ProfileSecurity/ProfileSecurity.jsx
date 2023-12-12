@@ -7,14 +7,17 @@ import axios from "axios";
 import { useUIContext } from "../../../../contexts/UIProvider";
 import EmailLogo from "../../../../assets/images/email.png";
 import formatDate from "../../../../lib/formatDate";
+import RingLoader from "../../../RingLoader";
 
 export default function ProfileSecurity() {
   const { user } = useAuthContext();
   const [open, setOpen] = useState(-1);
   const [resetPasswordSent, setResetPasswordSent] = useState(false);
   const { addPopup } = useUIContext();
+  const [sending, setSending] = useState(false);
 
   async function sendResetPasswordEmail() {
+    setSending(true);
     try {
       const res = await axios.post("/users/sendResetEmail", { email: user.email });
 
@@ -25,6 +28,7 @@ export default function ProfileSecurity() {
         text: "Une erreur s'est produite",
       });
     }
+    setSending(false);
   }
 
   return (
@@ -67,7 +71,7 @@ export default function ProfileSecurity() {
             <>
               <p>*** Nous allons vous envoyer un email qui vous permettra de réinitialiser votre mot de passe</p>
 
-              <div className="flex gap-2 mt-1 font-normal">
+              <div className="relative flex gap-2 mt-1 font-normal">
                 <button
                   className="flex items-center gap-2 w-fit  py-1 px-3 rounded-lg bg-green-500 hover:bg-green-600 text-sm text-white duration-300"
                   onClick={sendResetPasswordEmail}
@@ -82,6 +86,13 @@ export default function ProfileSecurity() {
                 >
                   Annuler
                 </button>
+                {sending ? (
+                  <i className="">
+                    <RingLoader color="black" />
+                  </i>
+                ) : (
+                  ""
+                )}
               </div>
             </>
           )}

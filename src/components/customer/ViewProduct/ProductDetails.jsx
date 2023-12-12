@@ -112,7 +112,7 @@ function ProductDetails({ product, fetchProduct }) {
               {product?.photos?.map((photo, index) => (
                 <swiper-slide
                   key={index}
-                  class=" w-fit rounded-md opacity-60 ring-2 ring-slate-200 transition-all duration-300 [&.swiper-slide-thumb-active]:opacity-100 [&.swiper-slide-thumb-active]:ring-red-500 [&.swiper-slide-thumb-active]:ring-offset-1 m-1"
+                  class="m-1 w-fit rounded-md opacity-60 ring-2 ring-slate-200 transition-all duration-300 [&.swiper-slide-thumb-active]:opacity-100 [&.swiper-slide-thumb-active]:ring-red-500 [&.swiper-slide-thumb-active]:ring-offset-1"
                 >
                   <img src={`${BACKEND_URL}/uploads//${photo}`} alt="" className="aspect-square h-14 cursor-pointer rounded-md object-contain" />
                 </swiper-slide>
@@ -188,7 +188,7 @@ function ProductDetails({ product, fetchProduct }) {
                   className="flex items-center gap-4 w-fit  py-1.5 px-6 rounded-lg bg-blue-500 hover:bg-blue-600 text-white duration-300"
                 >
                   {/* <FontAwesomeIcon icon={faPenToSquare} size="lg" /> */}
-                  Rendre non active
+                  Rendre non visible
                 </button>
               ) : product.active === 1 ? (
                 <button
@@ -196,7 +196,7 @@ function ProductDetails({ product, fetchProduct }) {
                   className="flex items-center gap-4 w-fit  py-1.5 px-6 rounded-lg bg-blue-500 hover:bg-blue-600 text-white duration-300"
                 >
                   {/* <FontAwesomeIcon icon={faPenToSquare} size="lg" /> */}
-                  Rendre active
+                  Rendre visible
                 </button>
               ) : (
                 ""
@@ -225,7 +225,17 @@ function ProductDetails({ product, fetchProduct }) {
             {Number(product.salePrice) ? <span className="mr-2 text-xs line-through">{Number(product?.price)} DT</span> : ""}
             <span className="text-base">{Number(product?.salePrice) || Number(product?.price)} DT</span>
           </p>
-          <p className="mt-10 font-medium text-sky-700">
+          <p className="mt-8 font-medium text-sky-700">Catégorie:</p>
+          <p className="max-w-[700px] whitespace-pre-wrap">
+            <Link to={`/products?c=${product.SubCategory?.Category?.id}`} className="font-medium hover:underline focus:underline">
+              {product.SubCategory?.Category?.name}
+            </Link>
+            <span className="text-slate-600 mx-2">{`>`}</span>
+            <Link to={`/products?s=${product.SubCategory?.id}`} className="font-medium hover:underline focus:underline">
+              {product.SubCategory?.name}
+            </Link>
+          </p>
+          <p className="mt-2 font-medium text-sky-700">
             Nombre de vues:
             <i id="views-info" className="ml-2">
               <Info />

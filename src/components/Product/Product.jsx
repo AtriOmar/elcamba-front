@@ -13,14 +13,22 @@ import sad from "../../assets/images/sad.png";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { Helmet } from "react-helmet-async";
 import { useQuery } from "@tanstack/react-query";
+import { ClientJS } from "clientjs";
+import CryptoJS from "crypto-js";
+import { useChatContext } from "../../contexts/ChatProvider";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
+const client = new ClientJS();
+const fingerprint = client.getFingerprint() + "";
+const fingerprintToken = CryptoJS.AES.encrypt(fingerprint, import.meta.env.VITE_FINGERPRINT_PASSWORD).toString();
 
 async function fetchProduct(id) {
   const res = await axios.get("/products/getById", {
     params: {
       id,
       view: "true",
+      fingerprintToken,
     },
   });
   return res.data;
@@ -35,13 +43,15 @@ export default function Product() {
   });
   const path = useMemo(() => {
     const newPath = [];
-    newPath[0] = { name: product?.SubCategory?.Category?.name, path: `/products?c=${product?.SubCategory?.Category?.id}` };
-    newPath[1] = { name: product?.SubCategory?.name, path: `/products?s=${product?.SubCategory?.id}` };
-    newPath[2] = { name: product?.name, path: `/products/${product?.id}` };
+    newPath[0] = { name: "Produits", path: "/products" };
+    newPath[1] = { name: product?.SubCategory?.Category?.name, path: `/products?c=${product?.SubCategory?.Category?.id}` };
+    newPath[2] = { name: product?.SubCategory?.name, path: `/products?s=${product?.SubCategory?.id}` };
+    newPath[3] = { name: product?.name, path: `/products/${product?.id}` };
 
     return newPath;
   }, [product]);
   const [ads, setAds] = useState([]);
+  const { preTitle } = useChatContext();
 
   async function fetchAds() {
     try {
@@ -90,19 +100,37 @@ export default function Product() {
   return (
     <div className="grow">
       <Helmet>
-        <title>{product.name} | ELCAMBA</title>
+        {/* <title>
+          {unread ? `(${unread})` : ""} {product.name} | ELCAMBA
+        </title> */}
+        <title>
+          {preTitle}
+          {product.name} | ELCAMBA
+        </title>
         <meta name="og:title" content={`${product.name} | ELCAMBA`} />
         <meta name="og:image" content={`${BACKEND_URL}/uploads/${product?.photos?.[0]}`} />
       </Helmet>
       <ProductDetails product={product} path={path} />
       {ads?.length ? (
         <div className="grid scr1000:grid-cols-2 gap-1">
-          <Link className="w-full" to={ads[0].url} target="_blank">
-            <img src={`${BACKEND_URL}/uploads/abc/${ads[0].photo}`} className="max-w-[500px] mx-auto w-full rounded-lg aspect-[2/1] object-cover" alt="" />
-          </Link>
-          <Link className="hidden scr1000:block w-full" to={ads[1].url} target="_blank">
-            <img src={`${BACKEND_URL}/uploads/abc/${ads[1].photo}`} className="max-w-[500px] mx-auto w-full rounded-lg aspect-[2/1] object-cover" alt="" />
-          </Link>
+          {ads[0]?.url ? (
+            <Link className="w-full" to={ads[0].url} target="_blank">
+              <img src={`${BACKEND_URL}/uploads/abc/${ads[0].photo}`} className="max-w-[500px] mx-auto w-full rounded-lg aspect-[2/1] object-cover" alt="" />
+            </Link>
+          ) : (
+            <div className="w-full">
+              <img src={`${BACKEND_URL}/uploads/abc/${ads[0].photo}`} className="max-w-[500px] mx-auto w-full rounded-lg aspect-[2/1] object-cover" alt="" />
+            </div>
+          )}
+          {ads[1]?.url ? (
+            <Link className="w-full" to={ads[1].url} target="_blank">
+              <img src={`${BACKEND_URL}/uploads/abc/${ads[1].photo}`} className="max-w-[500px] mx-auto w-full rounded-lg aspect-[2/1] object-cover" alt="" />
+            </Link>
+          ) : (
+            <div className="w-full">
+              <img src={`${BACKEND_URL}/uploads/abc/${ads[1].photo}`} className="max-w-[500px] mx-auto w-full rounded-lg aspect-[2/1] object-cover" alt="" />
+            </div>
+          )}
         </div>
       ) : (
         ""
