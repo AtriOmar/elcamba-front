@@ -121,7 +121,8 @@ function Payment() {
           <div className="relative w-full max-w-full">
             <div className={`${loading === 2 ? "invisible" : ""}`}>
               <h3 className="text-center font-bold text-lg text-slate-900">Payer</h3>
-              <iframe src={`https://sandbox.paymee.tn/gateway/${order.token}`} className="w-[500px] max-w-full h-[500px] mx-auto"></iframe>
+              <iframe src={order.paymentUrl} className="w-[500px] max-w-full h-[800px] mx-auto"></iframe>
+              {/* <iframe src={`https://sandbox.paymee.tn/gateway/${order.token}`} className="w-[500px] max-w-full h-[500px] mx-auto"></iframe> */}
             </div>
             {loading === 2 ? (
               <i className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
