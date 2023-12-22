@@ -48,6 +48,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Error from "./components/Error";
 import SupportDashboard from "./components/admin/Support/SupportDashboard";
 import Support from "./components/admin/Support/Support";
+import PaymentDone from "./components/Payment/PaymentDone";
 
 register();
 
@@ -196,6 +197,10 @@ const router = createBrowserRouter([
       {
         path: "payment/:token",
         element: <Payment />,
+      },
+      {
+        path: "payment-done/:status",
+        element: <PaymentDone />,
       },
       {
         path: "register",

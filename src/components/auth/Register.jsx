@@ -17,8 +17,6 @@ import RingLoader from "../RingLoader";
 import EmailLogo from "../../assets/images/email.png";
 import bcrypt from "bcryptjs";
 
-const clientId = import.meta.env.VITE_CLIENT_ID;
-
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 export default function SigninModal() {

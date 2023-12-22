@@ -19,8 +19,24 @@ function Payment() {
   const [loading, setLoading] = useState(1);
   const [status, setStatus] = useState(undefined);
 
+  useEffect(() => {
+    window.addEventListener("message", async (event) => {
+      if (event.data.id === "payment_done") {
+        // setStatus(event.data.status === "success" ? true : false);
+        setLoading(2);
+        const res = await axios.get(`/abc/pay`, {
+          params: {
+            token,
+          },
+        });
+
+        setStatus(res.data);
+        setLoading(0);
+      }
+    });
+  }, []);
+
   async function handlePayment(event) {
-    //
     if (event.data.event_id === "paymee.complete") {
       setLoading(2);
       const res = await axios.get(`/abc/pay`, {

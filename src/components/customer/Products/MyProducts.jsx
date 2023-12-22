@@ -14,8 +14,6 @@ import Switch from "../../Switch";
 import CustomSelect from "./CustomSelect";
 import SortSelect from "./SortSelect";
 
-const clientId = import.meta.env.VITE_CLIENT_ID;
-
 function MyProducts({ swiperRef, products, fetching, filter, setFilter }) {
   //
   const [search, setSearch] = useState("");

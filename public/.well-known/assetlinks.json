@@ -1,0 +1,14 @@
+[
+    {
+      "relation": [
+        "delegate_permission/common.handle_all_urls"
+      ],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "net.elcamba.android",
+        "sha256_cert_fingerprints": [
+          "CD:15:48:2F:14:9C:0F:25:5C:9F:FA:A4:73:7D:FB:E5:74:8C:BD:6D:27:E6:AA:D5:44:0A:7A:B2:9B:1C:1B:48"
+        ]
+      }
+    }
+  ]

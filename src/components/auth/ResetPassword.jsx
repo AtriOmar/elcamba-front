@@ -15,8 +15,6 @@ import { IonIcon } from "@ionic/react";
 import { eyeOffOutline, eyeOutline, shieldCheckmark } from "ionicons/icons";
 import RingLoader from "../RingLoader";
 
-const clientId = import.meta.env.VITE_CLIENT_ID;
-
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 export default function ResetPassword() {
