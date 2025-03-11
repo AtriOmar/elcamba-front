@@ -8,19 +8,9 @@ import { useUIContext } from "../contexts/UIProvider";
 
 function PriceSlider() {
   const { priceRange, setPriceRange } = useUIContext();
-  const handle = ({ value, dragging, index, ...restProps }) => <div className="square-handle" style={{ left: `${(value / 100) * 100}%` }} {...restProps} />;
 
   return (
     <div className="">
-      {/* <Slider
-        range
-        defaultValue={[20, 40]}
-        pushable
-        trackStyle={{ backgroundColor: "blue", height: "10px", borderRadius: "2px" }}
-        handleStyle={{ backgroundColor: "white", borderRadius: "2px", height: "20px", width: "20px" }}
-        railStyle={{ backgroundColor: "#ddd", height: "10px" }}
-      /> */}
-
       {priceRange.maxValue || priceRange.minValue ? (
         <InputRange
           formatLabel={(value) => `${value} DT`}
