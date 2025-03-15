@@ -307,7 +307,7 @@ function Products() {
         </title>
         <link
           rel="canonical"
-          href={`https://elcamba.net/products${
+          href={`https://elcamba.omaratri.com/products${
             searchParams.get("s") ? `?s=${searchParams.get("s")}` : searchParams.get("c") ? `?c=${searchParams.get("c")}` : ""
           }`}
         />
